@@ -11,12 +11,12 @@
 				<div class="form-group">
 					<div class="row">
 						<div class="col-md-4">
-							<label for="table-name">Tablename</label>
-							<input type="text" class="form-control" id="table-name" name="table-name">
-						</div>
-						<div class="col-md-4">
 							<label for="csv-upload">CSV File</label>
 							<input type="file" class="form-control-file" id="csv-file" name="csv-file">
+						</div>
+						<div class="col-md-4">
+							<label for="table-name">Tablename</label>
+							<input type="text" class="form-control" id="table-name" name="table-name">
 						</div>
 					</div>
 				</div>

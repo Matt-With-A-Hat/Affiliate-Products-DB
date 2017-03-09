@@ -21,9 +21,7 @@ class AffiliateProductDb {
 		 * Hook for adding admin menus
 		 */
 		function setupBackendMenu() {
-//			add_menu_page( 'Affiliate Product DB Setup Menu', 'Affiliate Products', 'manage_options', 'apdsetupmenu', 'setupMenuPage', '', 75 );
 			add_options_page( 'Affiliate Product DB Setup Menu', 'Affiliate Products', 'manage_options', 'affiliate-product-db', 'setupMenuPage' );
-
 		}
 
 		add_action( 'admin_menu', 'setupBackendMenu' );
@@ -37,6 +35,17 @@ class AffiliateProductDb {
 		}
 
 		add_action( 'admin_enqueue_scripts', 'add_apd_stylesheets' );
+
+		/**
+		 * include stylesheets for plugin
+		 */
+		function add_apd_scripts() {
+			wp_enqueue_script( 'apd-jquery', plugins_url( '/js/jquery-3.1.1.min.js', __FILE__ ), array(), '3.1.1', true);
+			wp_enqueue_script( 'bootstrap', plugins_url( '/js/bootstrap.min.js', __FILE__ ) );
+			wp_enqueue_script( 'apd-functions', plugins_url( '/js/functions.js', __FILE__ ) );
+		}
+
+		add_action( 'admin_enqueue_scripts', 'add_apd_scripts' );
 
 		/**
 		 * Create the setup menupage
