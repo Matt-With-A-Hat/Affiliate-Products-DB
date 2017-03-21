@@ -76,6 +76,51 @@ class ApdDatabase {
 	}
 
 	/**
+	 * Finds the first unique column specified with "unique" in a table
+	 * @param $table
+	 *
+	 * @return bool|mixed
+	 */
+	public function getUniqueColumn( $tablename ) {
+
+		$tablename = $this->addTablePrefix($tablename);
+		$columns = $this->getTableColumns( $tablename );
+
+		foreach ( $columns as $column ) {
+			if ( preg_match( "/_unique/", $column ) ) {
+
+				return $column;
+
+			}
+
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Gets a row out of the default database by the set unique database field
+	 *
+	 * @param $item
+	 */
+	public function getItem($item){
+
+		//@todo #lastedit
+		global $wpdb;
+		global $apd;
+
+		$uniqeField = $this->getUniqueColumn( $apd->datatable );
+
+		$sql = "SELECT * FROM $apd->datatable WHERE $uniqeField = %s";
+
+		$item = $wpdb->get_row( $wpdb->prepare( $sql, $item ), ARRAY_A );
+
+		return $item;
+
+	}
+
+	/**
 	 * create a table with the supplied tablename and an array of fields
 	 *
 	 * @param $tablename
@@ -101,11 +146,14 @@ class ApdDatabase {
 
 		foreach ( $fields as $field ) {
 
-			$sql .= ", $field TEXT";
 
 			if ( preg_match( "/_unique/", $field ) ) {
 
-				$sql .= " NOT NULL UNIQUE";
+				$sql .= ", $field VARCHAR(255) NOT NULL UNIQUE";
+
+			} else {
+
+				$sql .= ", $field TEXT";
 
 			}
 
@@ -113,8 +161,6 @@ class ApdDatabase {
 
 		$sql .= ')';
 
-		echo $sql;
-		exit();
 		$result = $wpdb->query( $sql );
 
 		return $result;
@@ -134,7 +180,7 @@ class ApdDatabase {
 
 		$tablenameArray = explode( "_", $tablename );
 
-		if ( $tablenameArray[0] . "_" == $wpdb->prefix ) {
+		if ( strtolower( $tablenameArray[0] . "_" ) == strtolower( $wpdb->prefix ) ) {
 
 			return $tablename;
 
@@ -203,12 +249,6 @@ class ApdDatabase {
 		}
 
 		$csvFields = array_shift( $csvArray );
-
-		//if installation is local, csv path may have backslashes, which have to be replaced with regular slashes
-		if ( isLocalInstallation() ) {
-			$csvPathNoBackslash = str_replace( "\\", "/", $csvPath );
-			$csvPath            = $csvPathNoBackslash;
-		}
 
 		$sql    = "REPLACE INTO " . $tablename . " (";
 		$values = '';
@@ -319,6 +359,7 @@ class ApdDatabase {
 		//@TODO also check if fields already exist in table
 
 		//create table if it doesn't exist yet
+
 		$resultCreate = true;
 		if ( $this->tableExists( $tablename ) === false ) {
 

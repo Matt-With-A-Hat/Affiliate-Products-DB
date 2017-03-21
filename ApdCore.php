@@ -1,6 +1,6 @@
 <?php
 
-class AffiliateProductDb {
+class ApdCore {
 
 	/**
 	 * this plugins home directory
@@ -10,12 +10,29 @@ class AffiliateProductDb {
 	protected $plugin_url = 'options-general.php?page=/affiliate-product-db.php';
 
 	/**
+	 * template placeholder prefix
+	 */
+	protected $tpl_prefix = '{$';
+
+	/**
+	 * template placeholder postfix
+	 */
+	protected $tpl_postfix = '}';
+
+	/**
+	 * table in database with product details
+	 */
+	//@todo get this dynamically from db
+	public $datatable = 'hxvct_products';
+
+	/**
 	 * constructor
 	 */
 	public function __construct() {
 
-		// register shortcode handler for [apd] tags
-		add_shortcode( 'apd-tpl', 'apd_shortcode_handler' );
+		// register shortcode handlers
+		add_shortcode( 'apd-template', 'apd_shortcode_handler' );
+		add_shortcode( 'apd-data', 'apd_shortcode_handler' );
 
 		/**
 		 * Hook for adding admin menus
@@ -40,7 +57,7 @@ class AffiliateProductDb {
 		 * include stylesheets for plugin
 		 */
 		function add_apd_scripts() {
-			wp_enqueue_script( 'apd-jquery', plugins_url( '/js/jquery-3.1.1.min.js', __FILE__ ), array(), '3.1.1', true);
+			wp_enqueue_script( 'apd-jquery', plugins_url( '/js/jquery-3.1.1.min.js', __FILE__ ), array(), '3.1.1', true );
 			wp_enqueue_script( 'bootstrap', plugins_url( '/js/bootstrap.min.js', __FILE__ ) );
 			wp_enqueue_script( 'apd-functions', plugins_url( '/js/functions.js', __FILE__ ) );
 		}
@@ -62,8 +79,6 @@ class AffiliateProductDb {
 		 * Handles the form content
 		 */
 		function handleUploadForm() {
-
-			require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
 
 			// First check if the file appears in the _FILES array
 			if ( isset( $_FILES['csv-file'] ) AND $_POST['table-name'] ) {
@@ -179,51 +194,52 @@ class AffiliateProductDb {
 	}
 
 	public function parseTpl( $shortname, $tpl_src ) {
-		return false;
+
+		$apdDB = new ApdDatabase();
+		$item = $apdDB->getItem($shortname);
+
+		krumo( $item );
+
+		$html = '';
+
+//		krumo($shortname);
+
+//		krumo($tpl_src);
+
+		return $html;
+
 	}
 
 }
 
 global $wpdb;
-$apd = new AffiliateProductDb( $wpdb );
+$apd = new ApdCore( $wpdb );
 
-/**
- * return the rendered product template
- *
- * @param string $shortname
- * @param bool $tpl
- *
- * @return string
- */
-function apd_get_item( $shortname, $tpl = false ) {
-	global $apd;
-
-	return $apd->getItem( $shortname, $tpl );
-}
-
-/**
- * shortcode handler for [apd] tags
- *
- * @param array $atts
- * @param string $content
- * @param string $code
- *
- * @return string
- */
-function apd_shortcode_handler( $atts, $content = null, $code = "" ) {
-
-	echo "atts:";
-	krumo( $atts );
-	echo "<br>";
-	echo "content:";
-	krumo( $content );
-	echo "<br>";
-
-	$tpl = false;
-	if ( ! empty( $atts[0] ) ) {
-		$tpl = $atts[0];
-	}
-
-	return apd_get_item( $content, $tpl );
-}
-
+///**
+// * Tries to access the amazonsimpleadmin plugin for use of Amazon placeholders
+// * @return bool
+// */
+//function try_amazonsimpleadmin() {
+//	global $wpdb;
+//
+//	$active_plugins = get_option( 'active_plugins' );
+//
+//	if ( in_array( 'amazonsimpleadmin/amazonsimpleadmin.php', $active_plugins ) ) {
+//
+//		$path = plugin_dir_path(__DIR__).'amazonsimpleadmin/amazonsimpleadmin.php';
+//		$path = path_for_local($path);
+//		echo $path;
+//		include_once ($path);
+//		$asa = new AmazonSimpleAdmin( $wpdb );
+//		$item = $asa->getItemObject( 'B00GSMNIM6' );
+//
+//		krumo($item);
+//
+//	}else{
+//
+//		return false;
+//
+//	}
+//
+//}
+//add_action('plugins_loaded', 'try_amazonsimpleadmin');

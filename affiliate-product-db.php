@@ -11,7 +11,7 @@
 Plugin Name: Affiliate Product DB
 Plugin URI: https://#
 Description: Manage details on all your presented affiliate products of your affiliate site.
-Version: 0.1
+Version: 0.1.3
 Author: Matthias Müller
 Author URI: https://#
 Author email: matthias.mueller88@web.de
@@ -46,14 +46,20 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 /**
  * APD Functions
  */
-include_once (dirname(__FILE__) . '/ApdFunctions.php');
+include_once( dirname( __FILE__ ) . '/ApdFunctions.php' );
 
 /**
- * APD Core
+ * APD Classes
  */
-include_once(dirname(__FILE__) . '/ApdCore.php');
+include_once( dirname( __FILE__ ) . '/ApdCore.php' );
+require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
 
 /**
  * Krumo
  */
-require dirname(__FILE__) . '/krumo_0.2.1a/class.krumo.php';
+require dirname( __FILE__ ) . '/krumo_0.2.1a/class.krumo.php';
+
+/**
+ * Debug
+ */
+require dirname( __FILE__ ) . '/debug.php';
