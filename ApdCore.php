@@ -26,6 +26,79 @@ class ApdCore {
 	public $datatable = 'hxvct_products';
 
 	/**
+	 * available template placeholders
+	 */
+	protected $tpl_placeholder = array(
+		'ASIN',
+		'SmallImageUrl',
+		'SmallImageWidth',
+		'SmallImageHeight',
+		'MediumImageUrl',
+		'MediumImageWidth',
+		'MediumImageHeight',
+		'LargeImageUrl',
+		'LargeImageWidth',
+		'LargeImageHeight',
+		'Label',
+		'Manufacturer',
+		'Publisher',
+		'Studio',
+		'Title',
+		'AmazonUrl',
+		'TotalOffers',
+		'LowestOfferPrice',
+		'LowestOfferCurrency',
+		'LowestOfferFormattedPrice',
+		'LowestNewPrice',
+		'LowestNewOfferFormattedPrice',
+		'LowestUsedPrice',
+		'LowestUsedOfferFormattedPrice',
+		'AmazonPrice',
+		'AmazonPriceFormatted',
+		'ListPriceFormatted',
+		'AmazonCurrency',
+		'AmazonAvailability',
+		'AmazonLogoSmallUrl',
+		'AmazonLogoLargeUrl',
+		'DetailPageURL',
+		'Platform',
+		'ISBN',
+		'EAN',
+		'NumberOfPages',
+		'ReleaseDate',
+		'Binding',
+		'Author',
+		'Creator',
+		'Edition',
+		'AverageRating',
+		'TotalReviews',
+		'RatingStars',
+		'RatingStarsSrc',
+		'Director',
+		'Actors',
+		'RunningTime',
+		'Format',
+		'CustomRating',
+		'ProductDescription',
+		'AmazonDescription',
+		'Artist',
+		'Comment',
+		'PercentageSaved',
+		'Prime',
+		'PrimePic',
+		'ProductReviewsURL',
+		'TrackingId',
+		'AmazonShopURL',
+		'SalePriceAmount',
+		'SalePriceCurrencyCode',
+		'SalePriceFormatted',
+		'Class',
+		'OffersMainPriceAmount',
+		'OffersMainPriceCurrencyCode',
+		'OffersMainPriceFormattedPrice'
+	);
+
+	/**
 	 * constructor
 	 */
 	public function __construct() {
@@ -44,14 +117,23 @@ class ApdCore {
 		add_action( 'admin_menu', 'setupBackendMenu' );
 
 		/**
-		 * include stylesheets for plugin
+		 * include frontend stylesheets
 		 */
-		function add_apd_stylesheets() {
-			wp_enqueue_style( 'bootstrap', plugins_url( '/css/bootstrap.min.css', __FILE__ ) );
+		function add_apd_stylesheets(){
 			wp_enqueue_style( 'apdplugin', plugins_url( '/css/apdplugin.css', __FILE__ ) );
 		}
 
-		add_action( 'admin_enqueue_scripts', 'add_apd_stylesheets' );
+		add_action( 'wp_enqueue_scripts', 'add_apd_stylesheets' );
+
+		/**
+		 * include backend stylesheets
+		 */
+		function add_apd_admin_stylesheets() {
+			wp_enqueue_style( 'bootstrap', plugins_url( '/css/bootstrap.min.css', __FILE__ ) );
+			wp_enqueue_style( 'setupmenu', plugins_url( '/css/setupmenu.css', __FILE__ ) );
+		}
+
+		add_action( 'admin_enqueue_scripts', 'add_apd_admin_stylesheets' );
 
 		/**
 		 * include stylesheets for plugin
@@ -133,7 +215,11 @@ class ApdCore {
 
 		$tpl_src = $this->getTpl( $tpl );
 
+//		krumo($tpl_src);
+
 		$item_html .= $this->parseTpl( trim( $shortname ), $tpl_src );
+
+		$item_html = $tpl_src;
 
 		return $item_html;
 	}
@@ -198,13 +284,7 @@ class ApdCore {
 		$apdDB = new ApdDatabase();
 		$item = $apdDB->getItem($shortname);
 
-		krumo( $item );
-
 		$html = '';
-
-//		krumo($shortname);
-
-//		krumo($tpl_src);
 
 		return $html;
 
@@ -214,32 +294,3 @@ class ApdCore {
 
 global $wpdb;
 $apd = new ApdCore( $wpdb );
-
-///**
-// * Tries to access the amazonsimpleadmin plugin for use of Amazon placeholders
-// * @return bool
-// */
-//function try_amazonsimpleadmin() {
-//	global $wpdb;
-//
-//	$active_plugins = get_option( 'active_plugins' );
-//
-//	if ( in_array( 'amazonsimpleadmin/amazonsimpleadmin.php', $active_plugins ) ) {
-//
-//		$path = plugin_dir_path(__DIR__).'amazonsimpleadmin/amazonsimpleadmin.php';
-//		$path = path_for_local($path);
-//		echo $path;
-//		include_once ($path);
-//		$asa = new AmazonSimpleAdmin( $wpdb );
-//		$item = $asa->getItemObject( 'B00GSMNIM6' );
-//
-//		krumo($item);
-//
-//	}else{
-//
-//		return false;
-//
-//	}
-//
-//}
-//add_action('plugins_loaded', 'try_amazonsimpleadmin');

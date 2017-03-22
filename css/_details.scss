@@ -1,0 +1,47 @@
+/**
+* --------------------------------------------------------------
+* =Details Template
+* --------------------------------------------------------------
+*/
+
+.infobox-top {
+  margin-top: 15px;
+}
+
+.infobox {
+  
+  .img-thumbnail {
+    margin-left: 15px;
+    margin-bottom: 5px;
+    padding-bottom: 10px;
+    
+    .zoom {
+      background: #CCC;
+      border-radius: 100%;
+      bottom: 8px;
+      color: #FFF;
+      display: block;
+      height: 30px;
+      padding: 6px;
+      position: absolute;
+      right: 8px;
+      text-align: center;
+      width: 30px;
+    }
+    
+    a {
+      text-decoration: none;
+    }
+  }
+  
+  img.img-responsive {
+    padding: 0 10px;
+    margin-bottom: 30px;
+  }
+  
+  span.label-info {
+    font-size: 16px !important;
+    margin-right: 10px;
+  }
+  
+}
