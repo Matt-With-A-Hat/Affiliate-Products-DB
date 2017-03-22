@@ -44,15 +44,20 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 //add_action( 'init', array( 'TablePress', 'run' ) );
 
 /**
- * APD Functions
+ * APD Constants
  */
-include_once( dirname( __FILE__ ) . '/ApdFunctions.php' );
+define('APD_BASE_FILE', __FILE__);
+define('APD_LIB_DIR', dirname(__FILE__) . '/lib/');
 
 /**
- * APD Classes
+ * User Constants
  */
-include_once( dirname( __FILE__ ) . '/ApdCore.php' );
-require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
+define('AMAZON_API_KEY', 'AKIAIN6P6NRW4F3AFUCQ');
+define('AMAZON_API_SECRET_KEY', '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');
+define('AMAZON_TRACKING_ID', 'wwwmeinrasenr-21');
+define('AMAZON_COUNTRY_CODE', 'DE');
+define('AMAZON_API_CONNECTION_TYPE', 'http');
+
 
 /**
  * Krumo
@@ -63,3 +68,17 @@ require dirname( __FILE__ ) . '/krumo_0.2.1a/class.krumo.php';
  * Debug
  */
 require dirname( __FILE__ ) . '/debug.php';
+
+/**
+ * APD Functions
+ */
+include_once( dirname( __FILE__ ) . '/ApdFunctions.php' );
+
+/**
+ * APD Classes
+ */
+include_once( dirname( __FILE__ ) . '/ApdCore.php' );
+require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
+
+
+

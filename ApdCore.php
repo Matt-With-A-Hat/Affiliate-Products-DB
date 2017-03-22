@@ -26,9 +26,48 @@ class ApdCore {
 	public $datatable = 'hxvct_products';
 
 	/**
+	 * user's Amazon Access Key ID
+	 */
+	protected $amazon_api_key;
+
+	/**
+	 * user's Amazon Access Key ID
+	 * @var string
+	 */
+	protected $amazon_api_secret_key = '';
+
+	/**
+	 * user's Amazon Tracking ID
+	 */
+	protected $amazon_tracking_id;
+
+	/**
+	 * selected country code
+	 */
+	protected $amazon_country_code = 'DE';
+
+	/**
+	 * @var
+	 */
+	protected $amazon_api_connection_type = 'http';
+
+	/**
+	 * the amazon webservice object
+	 */
+	protected $amazon;
+
+	/**
 	 * constructor
 	 */
 	public function __construct() {
+
+		//use the defined connection
+		//@todo make connection data be filled out via a form
+		$this->amazon_api_key             = AMAZON_API_KEY;
+		$this->amazon_api_secret_key      = AMAZON_API_SECRET_KEY;
+		$this->amazon_tracking_id         = AMAZON_TRACKING_ID;
+		$this->amazon_country_code        = AMAZON_COUNTRY_CODE;
+		$this->amazon_api_connection_type = AMAZON_API_CONNECTION_TYPE;
 
 		// register shortcode handlers
 		add_shortcode( 'apd-template', 'apd_shortcode_handler' );
@@ -113,6 +152,48 @@ class ApdCore {
 
 		}
 
+		$this->amazon = $this->connect();
+
+	}
+
+	/**
+	 * trys to connect to the amazon webservice
+	 */
+	protected function connect() {
+		require_once APD_LIB_DIR . 'Apd/Service/Amazon.php';
+
+		try {
+			$amazon = Apd_Service_Amazon::factory(
+				$this->amazon_api_key,
+				$this->amazon_api_secret_key,
+				$this->amazon_tracking_id,
+				$this->amazon_country_code,
+				$this->amazon_api_connection_type
+			);
+
+			return $amazon;
+
+		} catch ( Exception $e ) {
+
+			//@todo add debugging
+
+			return null;
+		}
+	}
+
+	/**
+	 * get item information from amazon webservice
+	 *
+	 * @param       string      ASIN
+	 *
+	 * @return      object      AsaZend_Service_Amazon_Item object
+	 */
+	public function getItemLookup( $asin ) {
+		$result = $this->amazon->itemLookup( $asin, array(
+			'ResponseGroup' => 'ItemAttributes,Images,Offers,OfferListings,Reviews,EditorialReview,Tracks'
+		) );
+
+		return $result;
 	}
 
 
@@ -193,18 +274,20 @@ class ApdCore {
 		return apply_filters( 'adp_tpl_locations', $tplLocations );
 	}
 
+	/**
+	 * @param $shortname
+	 * @param $tpl_src
+	 *
+	 * @return string
+	 */
 	public function parseTpl( $shortname, $tpl_src ) {
 
 		$apdDB = new ApdDatabase();
-		$item = $apdDB->getItem($shortname);
+		$item  = $apdDB->getItem( $shortname );
 
 		krumo( $item );
 
 		$html = '';
-
-//		krumo($shortname);
-
-//		krumo($tpl_src);
 
 		return $html;
 
@@ -214,32 +297,3 @@ class ApdCore {
 
 global $wpdb;
 $apd = new ApdCore( $wpdb );
-
-///**
-// * Tries to access the amazonsimpleadmin plugin for use of Amazon placeholders
-// * @return bool
-// */
-//function try_amazonsimpleadmin() {
-//	global $wpdb;
-//
-//	$active_plugins = get_option( 'active_plugins' );
-//
-//	if ( in_array( 'amazonsimpleadmin/amazonsimpleadmin.php', $active_plugins ) ) {
-//
-//		$path = plugin_dir_path(__DIR__).'amazonsimpleadmin/amazonsimpleadmin.php';
-//		$path = path_for_local($path);
-//		echo $path;
-//		include_once ($path);
-//		$asa = new AmazonSimpleAdmin( $wpdb );
-//		$item = $asa->getItemObject( 'B00GSMNIM6' );
-//
-//		krumo($item);
-//
-//	}else{
-//
-//		return false;
-//
-//	}
-//
-//}
-//add_action('plugins_loaded', 'try_amazonsimpleadmin');
