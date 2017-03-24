@@ -1,0 +1,33 @@
+/**
+* --------------------------------------------------------------
+* ====================Master Definitions====================
+* --------------------------------------------------------------
+*/
+
+/**
+* --------------------------------------------------------------
+* =Mixins
+* --------------------------------------------------------------
+*/
+
+@mixin box-shadow {
+  //box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.10);
+}
+
+@mixin thin-border {
+  border: 1px solid $gray-1;
+}
+
+@mixin font-awesome($content) {
+  content: $content;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  /*--adjust as necessary--*/
+  color: #000;
+  font-size: 18px;
+  padding-right: 0.5em;
+  position: relative;
+  left: 0;
+}

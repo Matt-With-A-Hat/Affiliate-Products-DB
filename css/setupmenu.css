@@ -1,0 +1,13 @@
+/**
+* --------------------------------------------------------------
+* ====================Setup Menu====================
+* --------------------------------------------------------------
+*/
+.apdsetupmenu label {
+  font-weight: 300; }
+.apdsetupmenu .apdsetupmenu {
+  margin-top: 30px; }
+.apdsetupmenu .form-description {
+  margin: 20px 0 10px 0; }
+
+/*# sourceMappingURL=setupmenu.css.map */

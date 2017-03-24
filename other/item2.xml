@@ -1,0 +1,180 @@
+<?xml version="1.0" ?>
+<ItemLookupResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2013-08-01">
+    <OperationRequest>
+        <HTTPHeaders>
+            <Header Name="UserAgent" Value="AsaZend_Http_Client"></Header>
+        </HTTPHeaders>
+        <RequestId>186cfb79-6502-41fb-a3db-78acbfabbeb9</RequestId>
+        <Arguments>
+            <Argument Name="Service" Value="AWSECommerceService"></Argument>
+            <Argument Name="AWSAccessKeyId" Value="AKIAIN6P6NRW4F3AFUCQ"></Argument>
+            <Argument Name="Version" Value="2013-08-01"></Argument>
+            <Argument Name="AssociateTag" Value="wwwmeinrasenr-21"></Argument>
+            <Argument Name="ItemId" Value="B00GSMNIM6"></Argument>
+            <Argument Name="Operation" Value="ItemLookup"></Argument>
+            <Argument Name="ResponseGroup" Value="ItemAttributes,Images,Offers,OfferListings,Reviews,EditorialReview,Tracks"></Argument>
+            <Argument Name="Timestamp" Value="2017-03-25T13:44:07.000Z"></Argument>
+            <Argument Name="Signature" Value="YR780wm2DsQfM1Wyvjj9Ia0AI2+JAM+ykpKuwqDttoE="></Argument>
+        </Arguments>
+        <RequestProcessingTime>0.0199259000000000</RequestProcessingTime>
+    </OperationRequest>
+    <Items>
+        <Request>
+            <IsValid>True</IsValid>
+            <ItemLookupRequest>
+                <IdType>ASIN</IdType>
+                <ItemId>B00GSMNIM6</ItemId>
+                <ResponseGroup>ItemAttributes</ResponseGroup>
+                <ResponseGroup>Images</ResponseGroup>
+                <ResponseGroup>Offers</ResponseGroup>
+                <ResponseGroup>OfferListings</ResponseGroup>
+                <ResponseGroup>Reviews</ResponseGroup>
+                <ResponseGroup>EditorialReview</ResponseGroup>
+                <ResponseGroup>Tracks</ResponseGroup>
+                <VariationPage>All</VariationPage>
+            </ItemLookupRequest>
+        </Request>
+        <Item>
+            <ASIN>B00GSMNIM6</ASIN>
+            <DetailPageURL>https://www.amazon.de/Husqvarna-Automower-320/dp/B00GSMNIM6%3FSubscriptionId%3DAKIAIN6P6NRW4F3AFUCQ%26tag%3Dwwwmeinrasenr-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3DB00GSMNIM6</DetailPageURL>
+            <ItemLinks>
+                <ItemLink>
+                    <Description>Add To Wishlist</Description>
+                    <URL>https://www.amazon.de/gp/registry/wishlist/add-item.html%3Fasin.0%3DB00GSMNIM6%26SubscriptionId%3DAKIAIN6P6NRW4F3AFUCQ%26tag%3Dwwwmeinrasenr-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12738%26creativeASIN%3DB00GSMNIM6</URL>
+                </ItemLink>
+                <ItemLink>
+                    <Description>Tell A Friend</Description>
+                    <URL>https://www.amazon.de/gp/pdp/taf/B00GSMNIM6%3FSubscriptionId%3DAKIAIN6P6NRW4F3AFUCQ%26tag%3Dwwwmeinrasenr-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12738%26creativeASIN%3DB00GSMNIM6</URL>
+                </ItemLink>
+                <ItemLink>
+                    <Description>All Customer Reviews</Description>
+                    <URL>https://www.amazon.de/review/product/B00GSMNIM6%3FSubscriptionId%3DAKIAIN6P6NRW4F3AFUCQ%26tag%3Dwwwmeinrasenr-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12738%26creativeASIN%3DB00GSMNIM6</URL>
+                </ItemLink>
+                <ItemLink>
+                    <Description>All Offers</Description>
+                    <URL>https://www.amazon.de/gp/offer-listing/B00GSMNIM6%3FSubscriptionId%3DAKIAIN6P6NRW4F3AFUCQ%26tag%3Dwwwmeinrasenr-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12738%26creativeASIN%3DB00GSMNIM6</URL>
+                </ItemLink>
+            </ItemLinks>
+            <SmallImage>
+                <URL>https://images-eu.ssl-images-amazon.com/images/I/411khv4smrL._SL75_.jpg</URL>
+                <Height Units="pixels">46</Height>
+                <Width Units="pixels">75</Width>
+            </SmallImage>
+            <MediumImage>
+                <URL>https://images-eu.ssl-images-amazon.com/images/I/411khv4smrL._SL160_.jpg</URL>
+                <Height Units="pixels">99</Height>
+                <Width Units="pixels">160</Width>
+            </MediumImage>
+            <LargeImage>
+                <URL>https://images-eu.ssl-images-amazon.com/images/I/411khv4smrL.jpg</URL>
+                <Height Units="pixels">309</Height>
+                <Width Units="pixels">500</Width>
+            </LargeImage>
+            <ImageSets>
+                <ImageSet Category="primary">
+                    <SwatchImage>
+                        <URL>https://images-eu.ssl-images-amazon.com/images/I/411khv4smrL._SL30_.jpg</URL>
+                        <Height Units="pixels">19</Height>
+                        <Width Units="pixels">30</Width>
+                    </SwatchImage>
+                    <SmallImage>
+                        <URL>https://images-eu.ssl-images-amazon.com/images/I/411khv4smrL._SL75_.jpg</URL>
+                        <Height Units="pixels">46</Height>
+                        <Width Units="pixels">75</Width>
+                    </SmallImage>
+                    <ThumbnailImage>
+                        <URL>https://images-eu.ssl-images-amazon.com/images/I/411khv4smrL._SL75_.jpg</URL>
+                        <Height Units="pixels">46</Height>
+                        <Width Units="pixels">75</Width>
+                    </ThumbnailImage>
+                    <TinyImage>
+                        <URL>https://images-eu.ssl-images-amazon.com/images/I/411khv4smrL._SL110_.jpg</URL>
+                        <Height Units="pixels">68</Height>
+                        <Width Units="pixels">110</Width>
+                    </TinyImage>
+                    <MediumImage>
+                        <URL>https://images-eu.ssl-images-amazon.com/images/I/411khv4smrL._SL160_.jpg</URL>
+                        <Height Units="pixels">99</Height>
+                        <Width Units="pixels">160</Width>
+                    </MediumImage>
+                    <LargeImage>
+                        <URL>https://images-eu.ssl-images-amazon.com/images/I/411khv4smrL.jpg</URL>
+                        <Height Units="pixels">309</Height>
+                        <Width Units="pixels">500</Width>
+                    </LargeImage>
+                </ImageSet>
+            </ImageSets>
+            <ItemAttributes>
+                <Binding>Haushaltswaren</Binding>
+                <Brand>Husqvarna</Brand>
+                <Color>Schwarz</Color>
+                <EAN>7393080386045</EAN>
+                <EANList>
+                    <EANListElement>7393080386045</EANListElement>
+                </EANList>
+                <Feature>Automower</Feature>
+                <Feature>Husqvarna Automower</Feature>
+                <Feature>Automower® 320</Feature>
+                <ListPrice>
+                    <Amount>226000</Amount>
+                    <CurrencyCode>EUR</CurrencyCode>
+                    <FormattedPrice>EUR 2.260,00</FormattedPrice>
+                </ListPrice>
+                <MPN>967 16 79-12</MPN>
+                <PackageQuantity>1</PackageQuantity>
+                <PartNumber>967 16 79-12</PartNumber>
+                <ProductGroup>Lawn &amp; Patio</ProductGroup>
+                <ProductTypeName>KITCHEN</ProductTypeName>
+                <Title>Husqvarna Automower 320</Title>
+            </ItemAttributes>
+            <OfferSummary>
+                <LowestNewPrice>
+                    <Amount>226000</Amount>
+                    <CurrencyCode>EUR</CurrencyCode>
+                    <FormattedPrice>EUR 2.260,00</FormattedPrice>
+                </LowestNewPrice>
+                <TotalNew>2</TotalNew>
+                <TotalUsed>0</TotalUsed>
+                <TotalCollectible>0</TotalCollectible>
+                <TotalRefurbished>0</TotalRefurbished>
+            </OfferSummary>
+            <Offers>
+                <TotalOffers>1</TotalOffers>
+                <TotalOfferPages>1</TotalOfferPages>
+                <MoreOffersUrl>https://www.amazon.de/gp/offer-listing/B00GSMNIM6%3FSubscriptionId%3DAKIAIN6P6NRW4F3AFUCQ%26tag%3Dwwwmeinrasenr-21%26linkCode%3Dxm2%26camp%3D2025%26creative%3D12738%26creativeASIN%3DB00GSMNIM6</MoreOffersUrl>
+                <Offer>
+                    <OfferAttributes>
+                        <Condition>New</Condition>
+                    </OfferAttributes>
+                    <OfferListing>
+                        <OfferListingId>ksqV3lbk3oPQnYX5%2BvHD23kFeuURUWNKYEC5FdmDiWKpvTyT8FKDheMzcDYVoG9rN1obywhIRWXG9BQy4z21CXAB3HG8yfuZ8sxzdxHCWSXmfi%2BGyPcjLmb1lnSi0TpTyEcswdpnUsZ8w4THbuwKJ26UsIdf%2FzBf</OfferListingId>
+                        <Price>
+                            <Amount>226000</Amount>
+                            <CurrencyCode>EUR</CurrencyCode>
+                            <FormattedPrice>EUR 2.260,00</FormattedPrice>
+                        </Price>
+                        <Availability>Versandfertig in 2 - 3 Werktagen</Availability>
+                        <AvailabilityAttributes>
+                            <AvailabilityType>now</AvailabilityType>
+                            <MinimumHours>48</MinimumHours>
+                            <MaximumHours>72</MaximumHours>
+                        </AvailabilityAttributes>
+                        <IsEligibleForSuperSaverShipping>0</IsEligibleForSuperSaverShipping>
+                        <IsEligibleForPrime>0</IsEligibleForPrime>
+                    </OfferListing>
+                </Offer>
+                https://github.com/davidjbradshaw/iframe-resizer
+            </Offers>
+            <CustomerReviews>
+                <IFrameURL>https://www.amazon.de/reviews/iframe?akid=AKIAIN6P6NRW4F3AFUCQ&amp;alinkCode=xm2&amp;asin=B00GSMNIM6&amp;atag=wwwmeinrasenr-21&amp;exp=2017-03-26T13%3A44%3A05Z&amp;v=2&amp;sig=bkRpHBmE%2B3ITmcq0FQsi870Cj2fp263XmpStPJqcvqw%3D</IFrameURL>
+                <HasReviews>true</HasReviews>
+            </CustomerReviews>
+            <EditorialReviews>
+                <EditorialReview>
+                    <Source>Product Description</Source>
+                    <Content>Der Husqvarna Automower® 320 ist ein leistungsstarker Mähroboter im mittleren Segment. Er meistert verlässlich alle Herausforderungen wie Steigungen und das Umfahren von Bäumen und Büschen. Seine Funktionen umfassen die automatische Passagenerkennung, die elektronische Höheneinstellung und einen Wetter-Timer. Flächenkapazität: 2200 m² plus/minus 20 Prozent Maximale Steigung: bis zu 45 Prozent Flächenkapazität pro Stunde: 90m² Schneidsystem: 3 rotierende, rasiermesserscharfe Klingen Schnittbreite/-höhe in cm: 24/2 bis 6 Akku-Typ: Li-Ion Geräuschpegel: 58db(A) Suchsystem: Triple-Suche Gewicht: 11,5kg Lieferumfang: Automower 320 inkl. Ladestation, 300 Haken, 9 Ersatzmesser und 250 m Begrenzungskabel Änderung der Aufzählungspunkte zu: Flächenkapazität plus/minus 20 Prozent: 2.200m² Maximale Steigung: bis zu 45 Prozent Schneidsystem: 3 rotierende, rasiermesserscharfe Klingen Gewicht: 11,5kg Inklusive 250m Begrenzungskabel, 300 Haken und 9 Zusatzklingen</Content>
+                    <IsLinkSuppressed>0</IsLinkSuppressed>
+                </EditorialReview>
+            </EditorialReviews>
+        </Item>
+    </Items>

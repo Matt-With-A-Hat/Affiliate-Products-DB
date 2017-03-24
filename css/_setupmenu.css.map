@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,KAAM;EACF,WAAW,EAAE,GAAG;;AAEpB,aAAc;EACV,UAAU,EAAE,IAAI;;AAEpB,iBAAkB;EACd,MAAM,EAAE,aAAa",
-"sources": ["setupmenu.scss"],
-"names": [],
-"file": "setupmenu.css"
-}

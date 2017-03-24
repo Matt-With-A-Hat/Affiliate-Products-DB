@@ -1,9 +1,19 @@
-label {
-    font-weight: 300;
-}
+/**
+* --------------------------------------------------------------
+* ====================Setup Menu====================
+* --------------------------------------------------------------
+*/
+
 .apdsetupmenu {
+  
+  label {
+    font-weight: 300;
+  }
+  .apdsetupmenu {
     margin-top: 30px;
-}
-.form-description {
+  }
+  .form-description {
     margin: 20px 0 10px 0;
+  }
+  
 }
