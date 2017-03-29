@@ -66,7 +66,7 @@ function apd_shortcode_handler( $atts, $content = null, $code = "" ) {
 
 	$item = $apd->getItemLookup('B00GSMNIM6');
 
-//	krumo($item);
+	krumo($item);
 
 //	echo "atts:";
 //	krumo( $atts );

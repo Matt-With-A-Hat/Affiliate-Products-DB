@@ -204,13 +204,6 @@ class Apd_Service_Amazon implements Apd_Service_Amazon_Interface
 
             $items = $xpath->query('//az:Items/az:Item');
 
-	        krumo($items);
-
-	        echo "<pre>";
-	        print_r($items);
-	        echo "</pre>";
-
-
 	        if ($items->length == 1) {
                 /**
                  * @see AsaZend_Service_Amazon_Item
