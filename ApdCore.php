@@ -29,73 +29,73 @@ class ApdCore {
 	 * available template placeholders
 	 */
 	protected $tpl_placeholder = array(
-		'ASIN',
-		'SmallImageUrl',
-		'SmallImageWidth',
-		'SmallImageHeight',
-		'MediumImageUrl',
-		'MediumImageWidth',
-		'MediumImageHeight',
-		'LargeImageUrl',
-		'LargeImageWidth',
-		'LargeImageHeight',
-		'Label',
-		'Manufacturer',
-		'Publisher',
-		'Studio',
-		'Title',
-		'AmazonUrl',
-		'TotalOffers',
-		'LowestOfferPrice',
-		'LowestOfferCurrency',
-		'LowestOfferFormattedPrice',
-		'LowestNewPrice',
-		'LowestNewOfferFormattedPrice',
-		'LowestUsedPrice',
-		'LowestUsedOfferFormattedPrice',
-		'AmazonPrice',
-		'AmazonPriceFormatted',
-		'ListPriceFormatted',
-		'AmazonCurrency',
-		'AmazonAvailability',
-		'AmazonLogoSmallUrl',
-		'AmazonLogoLargeUrl',
-		'DetailPageURL',
-		'Platform',
-		'ISBN',
-		'EAN',
-		'NumberOfPages',
-		'ReleaseDate',
-		'Binding',
-		'Author',
-		'Creator',
-		'Edition',
-		'AverageRating',
-		'TotalReviews',
-		'RatingStars',
-		'RatingStarsSrc',
-		'Director',
-		'Actors',
-		'RunningTime',
-		'Format',
-		'CustomRating',
-		'ProductDescription',
-		'AmazonDescription',
-		'Artist',
-		'Comment',
-		'PercentageSaved',
-		'Prime',
-		'PrimePic',
-		'ProductReviewsURL',
-		'TrackingId',
-		'AmazonShopURL',
-		'SalePriceAmount',
-		'SalePriceCurrencyCode',
-		'SalePriceFormatted',
-		'Class',
-		'OffersMainPriceAmount',
-		'OffersMainPriceCurrencyCode',
-		'OffersMainPriceFormattedPrice'
+		'asin',
+		'small_image_url',
+		'small_image_width',
+		'small_image_height',
+		'medium_image_url',
+		'medium_image_width',
+		'medium_image_height',
+		'large_image_url',
+		'large_image_width',
+		'large_image_height',
+		'label',
+		'manufacturer',
+		'publisher',
+		'studio',
+		'title',
+		'amazon_url',
+		'total_offers',
+		'lowest_offer_price',
+		'lowest_offer_currency',
+		'lowest_offer_formatted_price',
+		'lowest_new_price',
+		'lowest_new_offer_formatted_price',
+		'lowest_used_price',
+		'lowest_used_offer_formatted_price',
+		'amazon_price',
+		'amazon_price_formatted',
+		'list_price_formatted',
+		'amazon_currency',
+		'amazon_availability',
+		'amazon_logo_small_url',
+		'amazon_logo_large_url',
+		'detail_page_url',
+		'platform',
+		'ibsn',
+		'ean',
+		'number_of_pages',
+		'release_date',
+		'binding',
+		'author',
+		'creator',
+		'edition',
+		'average_rating',
+		'total_reviews',
+		'rating_stars',
+		'rating_stars_src',
+		'director',
+		'actors',
+		'running_time',
+		'format',
+		'custom_rating',
+		'product_description',
+		'amazon_description',
+		'artist',
+		'comment',
+		'percentage_saved',
+		'prime',
+		'prime_pic',
+		'product_reviews_url',
+		'tracking_id',
+		'amazon_shop_url',
+		'sale_price_amount',
+		'sale_price_currency_code',
+		'sale_price_formatted',
+		'class',
+		'offers_main_price_amount',
+		'offers_main_price_currency_code',
+		'offers_main_price_formatted_price'
 	);
 
 	/**
@@ -292,16 +292,38 @@ class ApdCore {
 		return $result;
 	}
 
+	/**
+	 * Gets a row out of the default database by the set unique database field
+	 *
+	 * @param $item
+	 *
+	 * @return array|null|object|void
+	 */
+	public function getItem($item){
+
+		//@todo #lastedit
+		global $wpdb;
+		$apdDB = new ApdDatabase();
+
+		$uniqeField = $apdDB->getUniqueColumn( $this->datatable );
+
+		$sql = "SELECT * FROM $this->datatable WHERE $uniqeField = %s";
+
+		$item = $wpdb->get_row( $wpdb->prepare( $sql, $item ), OBJECT );
+
+		return $item;
+
+	}
 
 	/**
 	 * return
 	 *
-	 * @param $shortname
+	 * @param $id
 	 * @param bool $tpl
 	 *
 	 * @return string
 	 */
-	public function getItem( $shortname, $tpl = false ) {
+	public function getItemTemplate( $id, $tpl = false ) {
 		$item_html = '';
 
 		if ( $tpl == false ) {
@@ -310,7 +332,7 @@ class ApdCore {
 
 		$tpl_src = $this->getTpl( $tpl );
 
-		$item_html .= $this->parseTpl( trim( $shortname ), $tpl_src );
+		$item_html .= $this->parseTpl( trim( $id ), $tpl_src );
 
 		$item_html = $tpl_src;
 

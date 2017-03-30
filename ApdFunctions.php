@@ -11,7 +11,7 @@ function isLocalInstallation() {
 		'::1'
 	);
 
-	if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
+	if ( ! in_array( $_SERVER['REMOTE_ADDR'], $whitelist ) ) {
 
 		return false;
 
@@ -24,11 +24,12 @@ function isLocalInstallation() {
 
 /**
  * Refines a path so it can be used on local installations
+ *
  * @param $path
  *
  * @return mixed
  */
-function path_for_local($path){
+function path_for_local( $path ) {
 
 	if ( isLocalInstallation() ) {
 		$path = str_replace( "\\", "/", $path );
@@ -48,7 +49,7 @@ function path_for_local($path){
 function apd_get_item( $shortname, $tpl = false ) {
 	global $apd;
 
-	return $apd->getItem( $shortname, $tpl );
+	return $apd->getItemTemplate( $shortname, $tpl );
 }
 
 /**
@@ -64,16 +65,11 @@ function apd_shortcode_handler( $atts, $content = null, $code = "" ) {
 
 	global $apd;
 
-	$item = $apd->getItemLookup('B00GSMNIM6');
+	$itemAmazon = $apd->getItemLookup($content);
+	$item = $apd->getItem($content);
 
+	krumo($itemAmazon);
 	krumo($item);
-
-//	echo "atts:";
-//	krumo( $atts );
-//	echo "<br>";
-//	echo "content:";
-//	krumo( $content );
-//	echo "<br>";
 
 	$tpl = false;
 	if ( ! empty( $atts[0] ) ) {

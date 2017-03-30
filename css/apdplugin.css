@@ -244,6 +244,8 @@ th {
     white-space: nowrap;
     vertical-align: baseline;
     border-radius: 0; }
+  .affiliate-product-db .label-promotion:empty {
+    display: none; }
   .affiliate-product-db .list-pro, .affiliate-product-db .list-con {
     margin-bottom: 25px;
     padding-left: 0;
@@ -316,6 +318,8 @@ th {
       margin-bottom: 30px; }
     .affiliate-product-db .infobox .infobox-top .amazon-area .amazon-view-offer i.fa-caret-right {
       margin-right: 10px; }
+      .affiliate-product-db .infobox .infobox-top .amazon-area .amazon-view-offer i.fa-caret-right span {
+        font-weight: 600; }
     .affiliate-product-db .infobox .infobox-top .amazon-area .amazon-view-offer i.fa-icon-eye {
       margin-left: 10px; }
     .affiliate-product-db .infobox .infobox-top .amazon-area .amazon-table-area {
@@ -339,6 +343,8 @@ th {
         padding: 5px 20px; }
     .affiliate-product-db .infobox .infobox-top .amazon-area .amazon-shopping-cart i.fa-caret-right {
       margin-right: 10px; }
+      .affiliate-product-db .infobox .infobox-top .amazon-area .amazon-shopping-cart i.fa-caret-right span {
+        font-weight: 600; }
     .affiliate-product-db .infobox .infobox-top .amazon-area .amazon-shopping-cart i.fa-shopping-cart {
       margin-left: 5px; }
   .affiliate-product-db .infobox .infobox-body > .row {
