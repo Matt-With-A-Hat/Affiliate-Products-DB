@@ -37,12 +37,6 @@
     border-radius: 0;
   }
   
-  //a.btn {
-  //  i, span{
-  //    color: #fff;
-  //  }
-  //}
-  
   .list-pro, .list-con {
     margin-bottom: 25px;
     padding-left: 0;
@@ -71,7 +65,7 @@
     li:before {
       @include font-awesome("\f0fe");
       font-size: 14px;
-      color: #3c763d
+      color: $success;
     }
   }
   
@@ -79,8 +73,34 @@
     li:before {
       @include font-awesome("\f0fe");
       font-size: 14px;
-      color: #a94442;
+      color: $danger;
     }
+  }
+  
+  .plus-check:before {
+    @include font-awesome("\f14a");
+    color: $success;
+    font-size: 130%;
+  }
+  
+  .minus-check:before {
+    @include font-awesome("\f146");
+    color: $danger;
+    font-size: 130%;
+  }
+  
+  .plus-factor:before {
+    @include font-awesome("\f055");
+    color: $success;
+    font-size: 130%;
+    padding-right: 4px;
+  }
+  
+  .minus-factor:before {
+    @include font-awesome("\f056");
+    color: $danger;
+    font-size: 130%;
+    padding-right: 4px;
   }
   
   /**
@@ -114,7 +134,7 @@
         
         .zoom {
           font-size: 14px;
-          color: #ddd;
+          color: $gray-2;
           display: block;
           position: absolute;
           bottom: 60px;
@@ -170,7 +190,7 @@
           @include box-shadow;
           
           .small-table {
-            background-color: #f5f5f5;
+            background-color: $gray-3;
             padding: 10px 5px;
             margin-top: 10px;
             margin-bottom: 20px;
@@ -252,7 +272,7 @@
                   }
                   
                   span.rating-stars {
-                    color: #ffc200;
+                    color: $amazon-1;
                     margin-right: 3px;
                   }
                   
@@ -260,7 +280,7 @@
                     margin: 2px 10px;
                     
                     span {
-                      color: #323232;
+                      color: $gray-1;
                     }
                   }
                 }
