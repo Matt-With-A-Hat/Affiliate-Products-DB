@@ -88,13 +88,13 @@
     }
   }
   
-  .plus-check:before {
+  .check-square:before {
     @include font-awesome("\f14a");
     color: $success;
     font-size: 130%;
   }
   
-  .minus-check:before {
+  .minus-square:before {
     @include font-awesome("\f146");
     color: $danger;
     font-size: 130%;
@@ -249,75 +249,13 @@
   */
   
   .infobox .infobox-body {
-    
     > .row {
       margin-top: 30px;
-      
       .tabs {
-        
         .nav-tabs {
-          
           li {
             i {
               margin-right: 5px;
-            }
-          }
-        }
-        
-        .tab-content {
-          
-          .overview {
-            
-            .general-rating-row {
-              
-              .row {
-                margin-top: 10px;
-                margin-bottom: 10px;
-                
-                .overall-rating {
-                  
-                }
-                
-                .amazon-rating {
-                  a {
-                    color: #000000;
-                    
-                  }
-                  
-                  i.fa.fa-caret-right {
-                    margin-right: 3px;
-                  }
-                  
-                  span.rating-stars {
-                    color: $amazon-1;
-                    margin-right: 3px;
-                  }
-                  
-                  .number-of-ratings {
-                    margin: 2px 10px;
-                    
-                    span {
-                      color: $gray-1;
-                    }
-                  }
-                }
-              }
-            }
-          }
-          
-          .details {
-            .row {
-              
-            }
-            
-          }
-          
-          .reviews {
-            .row {
-              iframe {
-                width: 100%;
-                height: 1000px;
-              }
             }
           }
         }
@@ -325,8 +263,69 @@
     }
   }
   
+  .tab-pane.overview {
+    .general-rating-row {
+      .row {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        
+        .overall-rating {
+        }
+        
+        .amazon-rating {
+          a {
+            color: #000000;
+          }
+          
+          i.fa.fa-caret-right {
+            margin-right: 3px;
+          }
+          
+          span.rating-stars {
+            color: $amazon-1;
+            margin-right: 3px;
+          }
+          
+          .number-of-ratings {
+            margin: 2px 10px;
+            
+            span {
+              color: $gray-1;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .tab-pane.details {
+    .row {
+      tr.category {
+        background: $gray-3;
+        font-weight: bold;
+        td:nth-child(3) {
+          font-family: inherit;
+        }
+      }
+      
+      tr {
+        td:nth-child(3) {
+          font-family: monospace;
+        }
+      }
+    }
+  }
+  
+  .tab-pane.reviews {
+    .row {
+      iframe {
+        width: 100%;
+        height: 1000px;
+      }
+    }
+  }
+  
   .detailed-rating-row {
-    
     .row {
       margin-top: 30px;
       .progress {
