@@ -168,7 +168,7 @@
                                                                 <p>
                                                                     <small>Gesamtnote</small>
                                                                     <br>
-                                                                    <b>SEHR GUT (1.46)</b>
+                                                                    <b>{overall_rating_text} ({overall_rating})</b>
                                                                 </p>
                                                             </span>
                                                         </div>
@@ -176,17 +176,17 @@
                                                     <div class="col-sm-offset-1 col-sm-4">
                                                         <div class="amazon-rating">
                                                             <div itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating">
-                                                                <a class="btn btn-default btn-xs btn-block" target="_blank" rel="nofollow" title="{title} - 4.2 von 5 Sternen (163 Kundenbewertungen auf amazon.de" href="http://xn--gartengertetest-8kb.de/information/bewertungen/B00GS5LROY/gartengeraete-test-sub2-21">
+                                                                <a class="btn btn-default btn-xs btn-block" target="_blank" rel="nofollow" title="{title} - {rating_stars} von 5 Sternen ({total_reviews} Kundenbewertungen auf amazon.de)" href="{amazon_url}">
                                                                     <i class="fa fa-caret-right"></i>
-                                                                    <span itemprop="ratingValue">4.2</span>
+                                                                    <span itemprop="ratingValue">{rating_stars}</span>
                                                                     <small> von <span itemprop="bestRating">5</span> Sternen</small>
                                                                     <br>
-                                                                    <span class="rating-stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></span>
+                                                                    <span class="rating-stars">{rating_stars_icons}</span>
                                                                     <br>
                                                                     <div class="number-of-ratings">
                                                                         <span class="btn btn-warning btn-xs btn-block">
                                                                             <span class="badge" itemprop="reviewCount">
-                                                                                <small> 163</small>
+                                                                                <small>{total_reviews}</small>
                                                                             </span>
                                                                             <span>Bewertungen</span>
                                                                         </span>
@@ -208,7 +208,7 @@
                                                             <div class="progress-bars">
 
                                                                 <div class="progress">
-                                                                    <div class="progress-bar" style="width:{handling}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">GUT (1.58)</span></div>
+                                                                    <div class="progress-bar" style="width:{handling_rating_percent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{handling_rating_text} ({handling_rating})</span></div>
                                                                 </div>
                                                                 <div class="progress-label">
                                                                     Bedienung
@@ -218,7 +218,7 @@
                                                                 </div>
 
                                                                 <div class="progress">
-                                                                    <div class="progress-bar" style="width:{cutting_result}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">SEHR GUT (1.33)</span></div>
+                                                                    <div class="progress-bar" style="width:{cutting_result_rating_percent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{cutting_result_text} ({cutting_result})</span></div>
                                                                 </div>
                                                                 <div class="progress-label">
                                                                     Mähergebnis
@@ -228,7 +228,7 @@
                                                                 </div>
 
                                                                 <div class="progress">
-                                                                    <div class="progress-bar" style="width:{quality}"><span class="progress-bar-tooltip my-progress-bar-tooltip">SEHR GUT (1.23)</span></div>
+                                                                    <div class="progress-bar" style="width:{quality_rating_percent}%"><span class="progress-bar-tooltip my-progress-bar-tooltip">{quality_rating_text} ({quality_rating})</span></div>
                                                                 </div>
                                                                 <div class="progress-label">
                                                                     Qualität
@@ -238,7 +238,7 @@
                                                                 </div>
 
                                                                 <div class="progress">
-                                                                    <div class="progress-bar" style="width:{loudness}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">GUT (1.70)</span></div>
+                                                                    <div class="progress-bar" style="width:{loudness_rating_percent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{loduness_rating_text} ({loudness_rating})</span></div>
                                                                 </div>
                                                                 <div class="progress-label">
                                                                     Lautstärke
@@ -248,7 +248,7 @@
                                                                 </div>
 
                                                                 <div class="progress">
-                                                                    <div class="progress-bar" style="width:{battery_power}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">GUT (1.80)</span></div>
+                                                                    <div class="progress-bar" style="width:{battery_power_rating_percent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{battery_power_rating_text} ({battery_power_rating})</span></div>
                                                                 </div>
                                                                 <div class="progress-label">
                                                                     Akku-Leistung
@@ -258,7 +258,7 @@
                                                                 </div>
 
                                                                 <div class="progress">
-                                                                    <div class="progress-bar" style="width:{price_performance_ratio}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">GUT (1.80)</span></div>
+                                                                    <div class="progress-bar" style="width:{price_performance_ratio_rating_percent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{price_performance_ratio_rating_text} ({price_performance_ratio_rating})</span></div>
                                                                 </div>
                                                                 <div class="progress-label">
                                                                     Preis-Leistungs-Verhältnis
@@ -277,18 +277,20 @@
                                                                 <div class="list-pro">
                                                                     <h4 class="text-success list-header">Pluspunkte</h4>
                                                                     <ul>
-                                                                        <li>Starker 1800 Watt Motor</li>
-                                                                        <li>Messer aus gehärtetem, geschliffenem Stahl</li>
-                                                                        <li>Ergoflex System (4 Griffe)</li>
-                                                                        <li>Zentrale Schnitthöhenverstellung</li>
-                                                                        <li>Geringe Lautstärke</li>
-                                                                        <li>Rasenkamm für Kanten</li>
+                                                                        {advantages}
+                                                                        <!--<li>Starker 1800 Watt Motor</li>-->
+                                                                        <!--<li>Messer aus gehärtetem, geschliffenem Stahl</li>-->
+                                                                        <!--<li>Ergoflex System (4 Griffe)</li>-->
+                                                                        <!--<li>Zentrale Schnitthöhenverstellung</li>-->
+                                                                        <!--<li>Geringe Lautstärke</li>-->
+                                                                        <!--<li>Rasenkamm für Kanten</li>-->
                                                                     </ul>
                                                                 </div>
                                                                 <div class="list-con">
                                                                     <h4 class="text-danger list-header">Minuspunkte</h4>
                                                                     <ul>
-                                                                        <li>Keine Fangkorb-Füllstandsanzeige</li>
+                                                                        {disadvantages}
+                                                                        <!--<li>Keine Fangkorb-Füllstandsanzeige</li>-->
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -314,7 +316,7 @@
                                                                     <tr>
                                                                         <th>Kategorie</th>
                                                                         <th>Anteil Gesamtnote</th>
-                                                                        <th>Note/Punkte</th>
+                                                                        <!--<th>Note/Punkte</th>-->
                                                                     </tr>
                                                                     </thead>
 
@@ -322,12 +324,12 @@
                                                                     <tr class="category">
                                                                         <td>Bedienung/Handhabung</td>
                                                                         <td>35%</td>
-                                                                        <td>Note 1.58</td>
+                                                                        <!--<td>Note 1.58</td>-->
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Gewicht (Kg)</td>
                                                                         <td>12,7 Kg</td>
-                                                                        <td>&nbsp;52.14</td>
+                                                                        <!--<td>&nbsp;52.14</td>-->
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Kabelzugentlastung</td>
@@ -479,9 +481,7 @@
                                         <div class="tab-pane reviews" id="reviews-350630241">
                                             <div class="row">
                                                 <div class="col-sm-12">
-
-                                                    <!--<iframe src="https://www.amazon.de/reviews/iframe?akid=AKIAIN6P6NRW4F3AFUCQ&amp;alinkCode=xm2&amp;asin=B00GSMNIM6&amp;atag=wwwmeinrasenr-21&amp;exp=2017-03-26T13%3A44%3A05Z&amp;v=2&amp;sig=bkRpHBmE%2B3ITmcq0FQsi870Cj2fp263XmpStPJqcvqw%3D" frameborder="0"></iframe>-->
-                                                    <iframe src="https://www.amazon.de/reviews/iframe?akid=AKIAIN6P6NRW4F3AFUCQ&alinkCode=xm2&asin=B00GSMNIM6&atag=wwwmeinrasenr-21&exp=2017-04-01T15%3A34%3A32Z&v=2&sig=xOxtLuXMRROtXzO11Fh3i%252F41sm3vqGNIA4%252FU9aC%252FG7Y%253D" frameborder="0"></iframe>
+                                                    <iframe src="{product_reviews_url}" frameborder="0"></iframe>
                                                 </div> <!-- col-sm-12 -->
                                             </div> <!-- row -->
                                         </div>
