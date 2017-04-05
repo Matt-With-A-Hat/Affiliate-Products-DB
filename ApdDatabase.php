@@ -15,6 +15,28 @@ class ApdDatabase {
 	}
 
 	/**
+	 * return all fields of a table with this info:
+	 * field, type, null, key, default, extra (auto increment etc.)
+	 *
+	 *
+	 * @param $tablename
+	 *
+	 * @return array
+	 */
+	public function getTableInfo( $tablename ) {
+
+		$wpdb      = $this->db;
+		$tablename = $this->addTablePrefix( $tablename );
+
+		$sql = "SHOW fields FROM $tablename";
+
+		$columns = $wpdb->get_results( $wpdb->prepare( $sql, $tablename ), ARRAY_A );
+
+		return $columns;
+
+	}
+
+	/**
 	 * return all fields of a table as an array
 	 *
 	 * @param $tablename
@@ -77,14 +99,15 @@ class ApdDatabase {
 
 	/**
 	 * Finds the first unique column specified with "unique" in a table
+	 *
 	 * @param $table
 	 *
 	 * @return bool|mixed
 	 */
 	public function getUniqueColumn( $tablename ) {
 
-		$tablename = $this->addTablePrefix($tablename);
-		$columns = $this->getTableColumns( $tablename );
+		$tablename = $this->addTablePrefix( $tablename );
+		$columns   = $this->getTableInfo( $tablename )['Field'];
 
 		foreach ( $columns as $column ) {
 			if ( preg_match( "/_unique/", $column ) ) {
@@ -104,7 +127,7 @@ class ApdDatabase {
 	 *
 	 * @param $item
 	 */
-	public function getItem($item){
+	public function getItem( $asin ) {
 
 		//@todo #lastedit
 		global $wpdb;
@@ -114,7 +137,7 @@ class ApdDatabase {
 
 		$sql = "SELECT * FROM $apd->datatable WHERE $uniqeField = %s";
 
-		$item = $wpdb->get_row( $wpdb->prepare( $sql, $item ), ARRAY_A );
+		$item = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), ARRAY_A );
 
 		return $item;
 
@@ -146,10 +169,13 @@ class ApdDatabase {
 
 		foreach ( $fields as $field ) {
 
-
 			if ( preg_match( "/_unique/", $field ) ) {
 
 				$sql .= ", $field VARCHAR(255) NOT NULL UNIQUE";
+
+			} else if ( ( preg_match( "/_bool/", $field ) ) ) {
+
+				$sql .= ", $field BOOLEAN DEFAULT NULL";
 
 			} else {
 
@@ -223,7 +249,7 @@ class ApdDatabase {
 
 	/**
 	 * Inserts csv content into the specified table
-	 * removes redundant values that are marked as unique via adding "_unique" in a field name
+	 * removes redundant values that are marked as unique via adding "_unique" in a csv-field name
 	 *
 	 * @param $csv
 	 * path to csv file or $_FILE array of csv file
@@ -241,6 +267,7 @@ class ApdDatabase {
 		$tablename   = $this->addTablePrefix( $tablename );
 		$csv         = new SplFileObject( $csv );
 		$tableFields = $this->getTableColumns( $tablename );
+		$tableInfo   = $this->getTableInfo( $tablename );
 
 		$csv->setFlags( SplFileObject::READ_CSV );
 		$csvArray = array();
@@ -255,6 +282,7 @@ class ApdDatabase {
 
 		foreach ( $tableFields as $key => $tableField ) {
 
+			//skip csv index?
 			if ( $key == 0 ) {
 				continue;
 			}
@@ -266,13 +294,29 @@ class ApdDatabase {
 		$sql .= ") ";
 		$sql .= "VALUES";
 
-		foreach ( $csvArray as $csvRow ) {
+		foreach ( $csvArray as $keyrow => $csvRow ) {
 
 			$values .= "(";
 
-			foreach ( $csvRow as $csvField ) {
+			foreach ( $csvRow as $key => $csvField ) {
 
-				$values .= "\"" . $csvField . "\",";
+				if ( field_is_boolean( $tableInfo[ $key ] ) ) {
+
+					if ( field_is_true( $csvField ) ) {
+						$csvField = true;
+					} else if ( field_is_false( $csvField ) ) {
+						$csvField = false;
+					} else {
+						$csvField = null;
+					}
+
+					$values .= $csvField . ",";
+
+				} else {
+
+					$values .= "\"" . $csvField . "\",";
+
+				}
 
 			}
 			$values = rtrim( $values, " ," );

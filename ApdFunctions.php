@@ -11,7 +11,7 @@ function isLocalInstallation() {
 		'::1'
 	);
 
-	if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
+	if ( ! in_array( $_SERVER['REMOTE_ADDR'], $whitelist ) ) {
 
 		return false;
 
@@ -24,11 +24,12 @@ function isLocalInstallation() {
 
 /**
  * Refines a path so it can be used on local installations
+ *
  * @param $path
  *
  * @return mixed
  */
-function path_for_local($path){
+function path_for_local( $path ) {
 
 	if ( isLocalInstallation() ) {
 		$path = str_replace( "\\", "/", $path );
@@ -52,6 +53,66 @@ function apd_get_item( $shortname, $tpl = false ) {
 }
 
 /**
+ * checks if field is boolean
+ *
+ * @param string $field
+ *
+ * @return bool
+ */
+function field_is_boolean( $field ) {
+	if ( in_array( $field, array_map( "strtolower", BOOLEAN_TYPES ) ) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * checks if field is true
+ *
+ * @param string $field
+ *
+ * @return bool
+ */
+function field_is_true( $field ) {
+	if ( in_array( $field, array_map( "strtolower", TRUE_TYPES ) ) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * checks if field is false
+ *
+ * @param string $field
+ *
+ * @return bool
+ */
+function field_is_false( $field ) {
+	if ( in_array( $field, array_map( "strtolower", FALSE_TYPES ) ) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * checks if field is null
+ *
+ * @param string $field
+ *
+ * @return bool
+ */
+function field_is_null( $field ) {
+	if ( in_array( $field, array_map( "strtolower", NULL_TYPES ) ) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
  * shortcode handler for [apd] tags
  *
  * @param array $atts
@@ -64,9 +125,13 @@ function apd_shortcode_handler( $atts, $content = null, $code = "" ) {
 
 	global $apd;
 
-	$item = $apd->getItemLookup('B00GSMNIM6');
+	$item = $apd->getItemLookup( 'B00GSMNIM6' );
 
-	krumo($item);
+	$db = new ApdDatabase();
+
+	echo $db->getUniqueColumn( 'products' );
+
+	krumo( $item );
 
 //	echo "atts:";
 //	krumo( $atts );
