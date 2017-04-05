@@ -41,15 +41,15 @@ function path_for_local( $path ) {
 /**
  * return the rendered product template
  *
- * @param string $shortname
+ * @param string $asin
  * @param bool $tpl
  *
  * @return string
  */
-function apd_get_item( $shortname, $tpl = false ) {
+function apd_get_item( $asin, $tpl = false ) {
 	global $apd;
 
-	return $apd->getItem( $shortname, $tpl );
+	return $apd->getItem( $asin, $tpl );
 }
 
 /**
@@ -116,12 +116,12 @@ function field_is_null( $field ) {
  * shortcode handler for [apd] tags
  *
  * @param array $atts
- * @param string $content
+ * @param string $asin
  * @param string $code
  *
  * @return string
  */
-function apd_shortcode_handler( $atts, $content = null, $code = "" ) {
+function apd_shortcode_handler( $atts, $asin = null, $code = "" ) {
 
 	global $apd;
 
@@ -131,19 +131,10 @@ function apd_shortcode_handler( $atts, $content = null, $code = "" ) {
 
 	echo $db->getUniqueColumn( 'products' );
 
-	krumo( $item );
-
-//	echo "atts:";
-//	krumo( $atts );
-//	echo "<br>";
-//	echo "content:";
-//	krumo( $content );
-//	echo "<br>";
-
 	$tpl = false;
 	if ( ! empty( $atts[0] ) ) {
 		$tpl = $atts[0];
 	}
 
-	return apd_get_item( $content, $tpl );
+	return apd_get_item( $asin, $tpl );
 }

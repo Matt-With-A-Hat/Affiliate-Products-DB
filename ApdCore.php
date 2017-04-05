@@ -296,12 +296,12 @@ class ApdCore {
 	/**
 	 * return
 	 *
-	 * @param $shortname
+	 * @param $asin
 	 * @param bool $tpl
 	 *
 	 * @return string
 	 */
-	public function getItem( $shortname, $tpl = false ) {
+	public function getItem( $asin, $tpl = false ) {
 		$item_html = '';
 
 		if ( $tpl == false ) {
@@ -310,7 +310,7 @@ class ApdCore {
 
 		$tpl_src = $this->getTpl( $tpl );
 
-		$item_html .= $this->parseTpl( trim( $shortname ), $tpl_src );
+		$item_html .= $this->parseTpl( trim( $asin ), $tpl_src );
 
 		$item_html = $tpl_src;
 
@@ -373,15 +373,15 @@ class ApdCore {
 	}
 
 	/**
-	 * @param $shortname
+	 * @param $asin
 	 * @param $tpl_src
 	 *
 	 * @return string
 	 */
-	public function parseTpl( $shortname, $tpl_src ) {
+	public function parseTpl( $asin, $tpl_src ) {
 
 		$apdDB = new ApdDatabase();
-		$item  = $apdDB->getItem( $shortname );
+		$item  = $apdDB->getItem( $asin );
 
 		$html = '';
 
