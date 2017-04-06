@@ -282,7 +282,7 @@ th {
     font-size: 14px;
     color: #3c763d; }
   .affiliate-product-db .list-con li:before {
-    content: "";
+    content: "";
     font-family: 'FontAwesome';
     font-style: normal;
     font-weight: normal;
@@ -356,7 +356,8 @@ th {
   .affiliate-product-db .infobox .infobox-top {
     margin-top: 15px;
     display: table;
-    border-collapse: separate; }
+    border-collapse: separate;
+    width: 100%; }
     .affiliate-product-db .infobox .infobox-top > .row {
       display: table-row; }
       .affiliate-product-db .infobox .infobox-top > .row > div {

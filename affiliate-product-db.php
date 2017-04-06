@@ -48,6 +48,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  */
 define('APD_BASE_FILE', __FILE__);
 define('APD_LIB_DIR', dirname(__FILE__) . '/lib/');
+define('DEBUG', true);
 
 /**
  * User Constants

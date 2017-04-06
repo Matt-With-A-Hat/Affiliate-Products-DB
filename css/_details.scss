@@ -82,7 +82,7 @@
   
   .list-con {
     li:before {
-      @include font-awesome("\f0fe");
+      @include font-awesome("\f146");
       font-size: 14px;
       color: $danger;
     }
@@ -124,6 +124,7 @@
     margin-top: 15px;
     display: table;
     border-collapse: separate;
+    width: 100%;
     //border-spacing: 5px;
     
     > .row {

@@ -6,7 +6,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading text-center infobox-header">
                         <!--<p class="panel-title">Infobox - <strong><span itemprop="name">Automower 305</span></strong></p>-->
-                        <h2>Automower 305</h2>
+                        <h2>{$Longname}</h2>
                     </div>
 
                     <div class="panel-body">
@@ -23,9 +23,9 @@
                                     <div class="image-area">
                                         <div class="row">
                                             <div class="infobox-thumbnail">
-                                                <a href="{amazon_url}" title="{Title}" target="_blank">
+                                                <a href="{$AmazonUrl}" title="{$Title}" target="_blank">
                                                     <!--<img class="img-responsive" src="{MediumImageUrl}">-->
-                                                    <img class="img-responsive" src="{medium_image_url}">
+                                                    <img class="img-responsive" src="{$LargeImageUrl}">
 
                                                     <span class="zoom">
                                                         <i class="fa fa-search-plus fa-2x"></i>
@@ -38,7 +38,7 @@
 
                                         <div class="row">
                                             <div class="center">
-                                                <span class="text-danger label-promotion">{promo}</span>
+                                                <span class="text-danger label-promotion">{$Promo}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -53,7 +53,7 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="img img-responsive">
-                                                        <a class="btn btn-apd-default btn-danger btn-lg btn-block" target="_blank" rel="nofollow" href="{amazon_url}" title="{title} - Angebot auf amazon.de ansehen">
+                                                        <a class="btn btn-apd-default btn-danger btn-lg btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Angebot auf amazon.de ansehen">
                                                             <i class="fa fa-caret-right"></i><span>Angebot ansehen</span><i class="fa fa-icon-eye"></i>
                                                         </a>
                                                     </div>
@@ -65,8 +65,8 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="img img-responsive">
-                                                        <a target="_blank" rel="nofollow" href="{amazon_url}" alt="{title} - Bestellung über amazon.de: 100% sicher, zuverlässig, blitzschnell!" title="{title} - Bestellung über amazon.de: 100% sicher, zuverlässig, blitzschnell!">
-                                                            <img src="{amazon_logo_small_url}">
+                                                        <a target="_blank" rel="nofollow" href="{$AmazonUrl}" alt="{$Title} - Bestellung über amazon.de: 100% sicher, zuverlässig, blitzschnell!" title="{$Title} - Bestellung über amazon.de: 100% sicher, zuverlässig, blitzschnell!">
+                                                            <img src="{$AmazonLogoLargeUrl}">
                                                         </a>
                                                     </div>
                                                 </div>
@@ -83,7 +83,7 @@
                                                                     <span>Listenpreis</span>
                                                                 </div>
                                                                 <div class="col-xs-7">
-                                                                    <span>{list_price_formatted}</span>
+                                                                    <span>{$ListPriceFormatted}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
@@ -91,7 +91,7 @@
                                                                     <span>Angebot</span>
                                                                 </div>
                                                                 <div class="col-xs-7">
-                                                                    <a rel="nofollow" target="_blank" title="{title} - Aktuelles Angebot: EUR {amazon_price} auf amazon.de" href="{amazon_url}"><span>EUR {amazon_price}</span></a>
+                                                                    <a rel="nofollow" target="_blank" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de" href="{$AmazonUrl}"><span>EUR {$AmazonPrice}</span></a>
                                                                 </div>
                                                             </div>
 
@@ -115,8 +115,8 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="img img-responsive">
-                                                        <a class="btn btn-apd-default btn-danger btn-lg btn-block" target="_blank" rel="nofollow" href="{amazon_url}" title="{title} - Aktuelles Angebot: EUR {amazon_price} auf amazon.de">
-                                                            <span class="badge">EUR {amazon_price}</span>
+                                                        <a class="btn btn-apd-default btn-danger btn-lg btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de">
+                                                            <span class="badge">EUR {$AmazonPrice}</span>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -129,7 +129,7 @@
                                                     <div class="img img-responsive">
                                                         <div class="row">
                                                             <div class="col-xs-12">
-                                                                <a class="btn btn-apd-default btn-danger btn-md btn-block" target="_blank" rel="nofollow" href="{amazon_url}" title="{title} - Produkt direkt in den Warenkorb auf amazon.de legen">
+                                                                <a class="btn btn-apd-default btn-danger btn-md btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Produkt direkt in den Warenkorb auf amazon.de legen">
                                                                     <i class="fa fa-caret-right"></i><span>In den Warenkorb legen</span><i class="fa fa-shopping-cart"></i>
                                                                 </a>
                                                             </div>
@@ -168,7 +168,7 @@
                                                                 <p>
                                                                     <small>Gesamtnote</small>
                                                                     <br>
-                                                                    <b>{overall_rating_text} ({overall_rating})</b>
+                                                                    <b>{$OverallRatingText} ({$OverallRating})</b>
                                                                 </p>
                                                             </span>
                                                         </div>
@@ -176,17 +176,17 @@
                                                     <div class="col-sm-offset-1 col-sm-4">
                                                         <div class="amazon-rating">
                                                             <div itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating">
-                                                                <a class="btn btn-default btn-xs btn-block" target="_blank" rel="nofollow" title="{title} - {rating_stars} von 5 Sternen ({total_reviews} Kundenbewertungen auf amazon.de)" href="{amazon_url}">
+                                                                <a class="btn btn-default btn-xs btn-block" target="_blank" rel="nofollow" title="{$Title} - {$AverageRating} von 5 Sternen ({$TotalReviews} Kundenbewertungen auf amazon.de)" href="{$AmazonUrl}">
                                                                     <i class="fa fa-caret-right"></i>
-                                                                    <span itemprop="ratingValue">{rating_stars}</span>
+                                                                    <span itemprop="ratingValue">{$AverageRating}</span>
                                                                     <small> von <span itemprop="bestRating">5</span> Sternen</small>
                                                                     <br>
-                                                                    <span class="rating-stars">{rating_stars_icons}</span>
+                                                                    <span class="rating-stars">{$RatingStars}</span>
                                                                     <br>
                                                                     <div class="number-of-ratings">
                                                                         <span class="btn btn-warning btn-xs btn-block">
                                                                             <span class="badge" itemprop="reviewCount">
-                                                                                <small>{total_reviews}</small>
+                                                                                <small>{$TotalReviews}</small>
                                                                             </span>
                                                                             <span>Bewertungen</span>
                                                                         </span>
@@ -208,47 +208,47 @@
                                                             <div class="progress-bars">
 
                                                                 <div class="progress">
-                                                                    <div class="progress-bar" style="width:{handling_rating_percent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{handling_rating_text} ({handling_rating})</span></div>
+                                                                    <div class="progress-bar" style="width:{$HandlingRatingPercent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{$HandlingRatingText} ({$HandlingRating})</span></div>
                                                                 </div>
                                                                 <div class="progress-label">
-                                                                    Bedienung
-                                                                    <strong>
-                                                                        <small>(35%)</small>
-                                                                    </strong>
-                                                                </div>
-
-                                                                <div class="progress">
-                                                                    <div class="progress-bar" style="width:{cutting_result_rating_percent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{cutting_result_text} ({cutting_result})</span></div>
-                                                                </div>
-                                                                <div class="progress-label">
-                                                                    Mähergebnis
-                                                                    <strong>
-                                                                        <small>(30%)</small>
-                                                                    </strong>
-                                                                </div>
-
-                                                                <div class="progress">
-                                                                    <div class="progress-bar" style="width:{quality_rating_percent}%"><span class="progress-bar-tooltip my-progress-bar-tooltip">{quality_rating_text} ({quality_rating})</span></div>
-                                                                </div>
-                                                                <div class="progress-label">
-                                                                    Qualität
+                                                                    Bedienung/Handhabung
                                                                     <strong>
                                                                         <small>(20%)</small>
                                                                     </strong>
                                                                 </div>
 
                                                                 <div class="progress">
-                                                                    <div class="progress-bar" style="width:{loudness_rating_percent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{loduness_rating_text} ({loudness_rating})</span></div>
+                                                                    <div class="progress-bar" style="width:{$RotaryMowerRatingPercent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{$RotaryMowerRatingText} ({$RotaryMowerRating})</span></div>
                                                                 </div>
                                                                 <div class="progress-label">
-                                                                    Lautstärke
+                                                                    Mäherwerk
                                                                     <strong>
-                                                                        <small>(5%)</small>
+                                                                        <small>(20%)</small>
                                                                     </strong>
                                                                 </div>
 
                                                                 <div class="progress">
-                                                                    <div class="progress-bar" style="width:{battery_power_rating_percent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{battery_power_rating_text} ({battery_power_rating})</span></div>
+                                                                    <div class="progress-bar" style="width:{$SecurityRatingPercent}%"><span class="progress-bar-tooltip my-progress-bar-tooltip">{$SecurityRatingText} ({$SecurityRating})</span></div>
+                                                                </div>
+                                                                <div class="progress-label">
+                                                                    Sicherheit
+                                                                    <strong>
+                                                                        <small>(20%)</small>
+                                                                    </strong>
+                                                                </div>
+
+                                                                <div class="progress">
+                                                                    <div class="progress-bar" style="width:{$LoudnessRatingPercent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{$LoudnessRatingText} ({$LoudnessRating})</span></div>
+                                                                </div>
+                                                                <div class="progress-label">
+                                                                    Lautstärke
+                                                                    <strong>
+                                                                        <small>(15%)</small>
+                                                                    </strong>
+                                                                </div>
+
+                                                                <div class="progress">
+                                                                    <div class="progress-bar" style="width:{$BatteryPowerRatingPercent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{$BatteryPowerRatingText} ({$BatteryPowerRating})</span></div>
                                                                 </div>
                                                                 <div class="progress-label">
                                                                     Akku-Leistung
@@ -258,12 +258,12 @@
                                                                 </div>
 
                                                                 <div class="progress">
-                                                                    <div class="progress-bar" style="width:{price_performance_ratio_rating_percent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{price_performance_ratio_rating_text} ({price_performance_ratio_rating})</span></div>
+                                                                    <div class="progress-bar" style="width:{$PricePerformanceRatioRatingPercent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{$PricePerformanceRatioRatingText} ({$PRicePerformanceRatioRating})</span></div>
                                                                 </div>
                                                                 <div class="progress-label">
                                                                     Preis-Leistungs-Verhältnis
                                                                     <strong>
-                                                                        <small>(10%)</small>
+                                                                        <small>(15%)</small>
                                                                     </strong>
                                                                 </div>
 
@@ -277,20 +277,13 @@
                                                                 <div class="list-pro">
                                                                     <h4 class="text-success list-header">Pluspunkte</h4>
                                                                     <ul>
-                                                                        {advantages}
-                                                                        <!--<li>Starker 1800 Watt Motor</li>-->
-                                                                        <!--<li>Messer aus gehärtetem, geschliffenem Stahl</li>-->
-                                                                        <!--<li>Ergoflex System (4 Griffe)</li>-->
-                                                                        <!--<li>Zentrale Schnitthöhenverstellung</li>-->
-                                                                        <!--<li>Geringe Lautstärke</li>-->
-                                                                        <!--<li>Rasenkamm für Kanten</li>-->
+                                                                        {$Advantages}
                                                                     </ul>
                                                                 </div>
                                                                 <div class="list-con">
                                                                     <h4 class="text-danger list-header">Minuspunkte</h4>
                                                                     <ul>
-                                                                        {disadvantages}
-                                                                        <!--<li>Keine Fangkorb-Füllstandsanzeige</li>-->
+                                                                        {$Disadvantages}
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -316,21 +309,79 @@
                                                                     <tr>
                                                                         <th>Kategorie</th>
                                                                         <th>Anteil Gesamtnote</th>
-                                                                        <!--<th>Note/Punkte</th>-->
+                                                                        <th>Note/Punkte</th>
                                                                     </tr>
                                                                     </thead>
 
                                                                     <tbody>
                                                                     <tr class="category">
                                                                         <td>Bedienung/Handhabung</td>
-                                                                        <td>35%</td>
-                                                                        <!--<td>Note 1.58</td>-->
+                                                                        <td>20%</td>
+                                                                        <td>Note {$HandlingRatingText}</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td>Gewicht (Kg)</td>
-                                                                        <td>12,7 Kg</td>
-                                                                        <!--<td>&nbsp;52.14</td>-->
+                                                                        <td>Mähwerk</td>
+                                                                        <td>{$RotaryMowerType}</td>
+                                                                        <td>{$RotaryMowerTypeRating}</td>
                                                                     </tr>
+                                                                    <tr>
+                                                                        <td>Schnittbreite</td>
+                                                                        <td>{$CuttingWidth}</td>
+                                                                        <td>{$CuttingWidthRating}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Schnitthöhe</td>
+                                                                        <td>{$CuttingHeight}</td>
+                                                                        <td>{$CuttingHeightRating}</td>
+                                                                    </tr>
+                                                                    <tr class="category">
+                                                                        <td>Lautstärke</td>
+                                                                        <td>15%</td>
+                                                                        <td>Note {$LoudnessRatingText}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Lautstärke</td>
+                                                                        <td>{$LoudnessDb}</td>
+                                                                        <td>{$LoudnessDbRating}</td>
+                                                                    </tr>
+                                                                    <tr class="category">
+                                                                        <td>Akku-Leistung</td>
+                                                                        <td>10%</td>
+                                                                        <td>Note {$BatteryPowerRatingText}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Akku</td>
+                                                                        <td>{$PowerSource}</td>
+                                                                        <td>{PowerSourceRating}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Ladezeit</td>
+                                                                        <td>{$ChargingTime}</td>
+                                                                        <td>{$ChargingTimeRating}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Laufzeit</td>
+                                                                        <td>{$RunTime}</td>
+                                                                        <td>{$RunTimeRating}</td>
+                                                                    </tr>
+                                                                    <tr class="category">
+                                                                        <td>Bedienung/Handhabung</td>
+                                                                        <td>20%</td>
+                                                                        <td>Note {$HanldingRatingText}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Gewicht</td>
+                                                                        <td>{$Weight}</td>
+                                                                        <td>{$WeightRating}</td>
+                                                                    </tr>
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+
+
+
                                                                     <tr>
                                                                         <td>Kabelzugentlastung</td>
                                                                         <td><i class="check-square"></i></td>
@@ -481,7 +532,7 @@
                                         <div class="tab-pane reviews" id="reviews-350630241">
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    <iframe src="{product_reviews_url}" frameborder="0"></iframe>
+                                                    <iframe src="{$IFrameUrl}" frameborder="0"></iframe>
                                                 </div> <!-- col-sm-12 -->
                                             </div> <!-- row -->
                                         </div>

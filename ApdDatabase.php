@@ -7,6 +7,20 @@ class ApdDatabase {
 	 */
 	protected $db;
 
+	/**
+	 * the returned item from database
+	 *
+	 * @var
+	 */
+	public $dbItem;
+
+	/**
+	 * the returned item from amazon
+	 *
+	 * @var
+	 */
+	public $amazonItem;
+
 	public function __construct() {
 
 		global $wpdb;
@@ -21,18 +35,26 @@ class ApdDatabase {
 	 *
 	 * @return array
 	 */
-	public function getTableColumns( $tablename ) {
+	public function getTableColumns( $tablename, $suffix = true ) {
 
 		$wpdb      = $this->db;
 		$tablename = $this->addTablePrefix( $tablename );
 
 		foreach ( $wpdb->get_col( "DESC " . $tablename, 0 ) as $columnname ) {
 
-			$columns[] = $columnname;
+			if ( $suffix ) {
+				$columns[] = $columnname;
+			} else {
+				$columns[] = explode( "_", $columnname )[0];
+			}
 
 		}
 
-		return $columns;
+		if ( empty( $columns ) ) {
+			return false;
+		} else {
+			return $columns;
+		}
 
 	}
 
@@ -77,14 +99,15 @@ class ApdDatabase {
 
 	/**
 	 * Finds the first unique column specified with "unique" in a table
+	 *
 	 * @param $table
 	 *
 	 * @return bool|mixed
 	 */
 	public function getUniqueColumn( $tablename ) {
 
-		$tablename = $this->addTablePrefix($tablename);
-		$columns = $this->getTableColumns( $tablename );
+		$tablename = $this->addTablePrefix( $tablename );
+		$columns   = $this->getTableColumns( $tablename );
 
 		foreach ( $columns as $column ) {
 			if ( preg_match( "/_unique/", $column ) ) {
@@ -100,23 +123,31 @@ class ApdDatabase {
 	}
 
 	/**
-	 * Gets a row out of the default database by the set unique database field
+	 * gets an item from the database
 	 *
 	 * @param $item
+	 *
+	 * @return $this|bool
 	 */
-	public function getItem($item){
+	public function getItem( $asin ) {
 
 		//@todo #lastedit
 		global $wpdb;
 		global $apd;
 
-		$uniqeField = $this->getUniqueColumn( $apd->datatable );
+		$uniqeField   = $this->getUniqueColumn( $apd->datatable );
+		$sql          = "SELECT * FROM $apd->datatable WHERE $uniqeField = %s";
+		$this->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), OBJECT );
 
-		$sql = "SELECT * FROM $apd->datatable WHERE $uniqeField = %s";
+		if ( empty( $this->dbItem ) ) {
 
-		$item = $wpdb->get_row( $wpdb->prepare( $sql, $item ), ARRAY_A );
+			echo "This item doesn't exist";
 
-		return $item;
+			return false;
+
+		}
+
+		return $this->dbItem;
 
 	}
 
@@ -165,6 +196,25 @@ class ApdDatabase {
 
 		return $result;
 
+	}
+
+	/**
+	 * drop a table from database
+	 *
+	 * @param $tablename
+	 *
+	 * @return false|int
+	 */
+	public function dropTable( $tablename ) {
+
+		$wpdb      = $this->db;
+		$tablename = $this->addTablePrefix( $tablename );
+
+		$sql = "DROP TABLE IF EXISTS $tablename";
+
+		$result = $wpdb->query( $sql );
+
+		return $result;
 	}
 
 	/**
@@ -363,6 +413,14 @@ class ApdDatabase {
 		$resultCreate = true;
 		if ( $this->tableExists( $tablename ) === false ) {
 
+			$fields       = $this->getCsvFields( $csv );
+			$resultCreate = $this->createTableFromFields( $tablename, $fields );
+
+		} else if ( DEBUG === true ) {
+
+			//in debug always delete existing table when uploading a new csv
+			$result = $this->dropTable( $tablename );
+			krumo( $result );
 			$fields       = $this->getCsvFields( $csv );
 			$resultCreate = $this->createTableFromFields( $tablename, $fields );
 
