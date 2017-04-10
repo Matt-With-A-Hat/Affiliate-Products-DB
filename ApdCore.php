@@ -379,12 +379,12 @@ class ApdCore {
 	/**
 	 * return
 	 *
-	 * @param $id
+	 * @param $asin
 	 * @param bool $tpl
 	 *
 	 * @return string
 	 */
-	public function getItemTpl( $id, $tpl = false ) {
+	public function getItem( $asin, $tpl = false ) {
 		$item_html = '';
 
 		if ( $tpl == false ) {
@@ -393,7 +393,7 @@ class ApdCore {
 
 		$tpl_src = $this->getTpl( $tpl );
 
-		$item_html .= $this->parseTpl( trim( $id ), $tpl_src );
+		$item_html .= $this->parseTpl( trim( $asin ), $tpl_src );
 
 //		$item_html = $tpl_src;
 
@@ -477,8 +477,6 @@ class ApdCore {
 
 		$amazonItem = $this->getAmazonItem( $asin );
 
-		krumo( $amazonItem );
-
 		if ( $amazonItem instanceof AsaZend_Service_Amazon_Item ) {
 
 			$search = $this->getTplPlaceholders( $amazonPlaceholders, true );
@@ -492,8 +490,6 @@ class ApdCore {
 
 			// get the customer rating object
 			$customerReviews = $this->getCustomerReviews( $amazonItem );
-
-			krumo( $customerReviews );
 
 			if ( isset( $amazonItem->Offers->LowestUsedPrice ) && isset( $amazonItem->Offers->LowestNewPrice ) ) {
 
@@ -678,7 +674,6 @@ class ApdCore {
 		}
 
 		$dbItem = $this->getDbItem( $asin );
-
 
 		//reformat advantage list
 		$advantagesArray = explode( "*", $dbItem->Advantages );

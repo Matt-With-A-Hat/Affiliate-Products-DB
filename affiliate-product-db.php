@@ -59,6 +59,12 @@ define('AMAZON_TRACKING_ID', 'wwwmeinrasenr-21');
 define('AMAZON_COUNTRY_CODE', 'DE');
 define('AMAZON_API_CONNECTION_TYPE', 'http');
 
+//csv import field types
+const BOOLEAN_TYPES = array('BOOLEAN', 'BOOL', 'TINYINT(1)');
+const TRUE_TYPES = array('JA', 'YES', 'TRUE', '1', 1);
+const FALSE_TYPES = array('NEIN', 'NO', 'FALSE', '0', 0);
+const NULL_TYPES = array('', 'NULL', NULL);
+
 
 /**
  * Krumo

@@ -41,27 +41,87 @@ function path_for_local( $path ) {
 /**
  * return the rendered product template
  *
- * @param string $shortname
+ * @param string $asin
  * @param bool $tpl
  *
  * @return string
  */
-function apd_get_item( $shortname, $tpl = false ) {
+function apd_get_item( $asin, $tpl = false ) {
 	global $apd;
 
-	return $apd->getItemTpl( $shortname, $tpl );
+	return $apd->getItem( $asin, $tpl );
+}
+
+/**
+ * checks if field is boolean
+ *
+ * @param string $field
+ *
+ * @return bool
+ */
+function field_is_boolean( $field ) {
+	if ( in_array( $field, array_map( "strtolower", BOOLEAN_TYPES ) ) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * checks if field is true
+ *
+ * @param string $field
+ *
+ * @return bool
+ */
+function field_is_true( $field ) {
+	if ( in_array( $field, array_map( "strtolower", TRUE_TYPES ) ) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * checks if field is false
+ *
+ * @param string $field
+ *
+ * @return bool
+ */
+function field_is_false( $field ) {
+	if ( in_array( $field, array_map( "strtolower", FALSE_TYPES ) ) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * checks if field is null
+ *
+ * @param string $field
+ *
+ * @return bool
+ */
+function field_is_null( $field ) {
+	if ( in_array( $field, array_map( "strtolower", NULL_TYPES ) ) ) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /**
  * shortcode handler for [apd] tags
  *
  * @param array $atts
- * @param string $content
+ * @param string $asin
  * @param string $code
  *
  * @return string
  */
-function apd_shortcode_handler( $atts, $content = null, $code = "" ) {
+function apd_shortcode_handler( $atts, $asin = null, $code = "" ) {
 
 	global $apd;
 
@@ -70,7 +130,7 @@ function apd_shortcode_handler( $atts, $content = null, $code = "" ) {
 		$tpl = $atts[0];
 	}
 
-	return apd_get_item( $content, $tpl );
+	return apd_get_item( $asin, $tpl );
 }
 
 /**

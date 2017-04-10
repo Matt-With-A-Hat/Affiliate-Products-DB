@@ -29,7 +29,30 @@ class ApdDatabase {
 	}
 
 	/**
+	 * return all fields of a table with this info:
+	 * field, type, null, key, default, extra (auto increment etc.)
+	 *
+	 *
+	 * @param $tablename
+	 *
+	 * @return array
+	 */
+	public function getTableInfo( $tablename ) {
+
+		$wpdb      = $this->db;
+		$tablename = $this->addTablePrefix( $tablename );
+
+		$sql = "SHOW fields FROM $tablename";
+
+		$columns = $wpdb->get_results( $wpdb->prepare( $sql, $tablename ), ARRAY_A );
+
+		return $columns;
+
+	}
+
+	/**
 	 * return all fields of a table as an array
+	 * if suffix is false, strip everything after first underscore of column name
 	 *
 	 * @param $tablename
 	 *
@@ -107,7 +130,7 @@ class ApdDatabase {
 	public function getUniqueColumn( $tablename ) {
 
 		$tablename = $this->addTablePrefix( $tablename );
-		$columns   = $this->getTableColumns( $tablename );
+		$columns   = $this->getTableColumns( $tablename, true );
 
 		foreach ( $columns as $column ) {
 			if ( preg_match( "/_unique/", $column ) ) {
@@ -125,9 +148,9 @@ class ApdDatabase {
 	/**
 	 * gets an item from the database
 	 *
-	 * @param $item
+	 * @param $asin
 	 *
-	 * @return $this|bool
+	 * @return array|bool|null|object|void
 	 */
 	public function getItem( $asin ) {
 
@@ -146,6 +169,7 @@ class ApdDatabase {
 			return false;
 
 		}
+
 
 		return $this->dbItem;
 
@@ -169,6 +193,13 @@ class ApdDatabase {
 
 		}
 
+		foreach ( $fields as $key => $field ) {
+
+			$field          = esc_sql( $field );
+			$fields[ $key ] = str_replace( ' ', '', $field );
+
+		}
+
 		//@todo make fields unique that have "_unique"
 		$wpdb      = $this->db;
 		$tablename = $this->addTablePrefix( $tablename );
@@ -181,6 +212,10 @@ class ApdDatabase {
 			if ( preg_match( "/_unique/", $field ) ) {
 
 				$sql .= ", $field VARCHAR(255) NOT NULL UNIQUE";
+
+			} else if ( ( preg_match( "/_bool/", $field ) ) ) {
+
+				$sql .= ", $field BOOLEAN DEFAULT NULL";
 
 			} else {
 
@@ -271,9 +306,10 @@ class ApdDatabase {
 
 	}
 
+
 	/**
 	 * Inserts csv content into the specified table
-	 * removes redundant values that are marked as unique via adding "_unique" in a field name
+	 * removes redundant values that are marked as unique via adding "_unique" in a csv-field name
 	 *
 	 * @param $csv
 	 * path to csv file or $_FILE array of csv file
@@ -291,6 +327,7 @@ class ApdDatabase {
 		$tablename   = $this->addTablePrefix( $tablename );
 		$csv         = new SplFileObject( $csv );
 		$tableFields = $this->getTableColumns( $tablename );
+		$tableInfo   = $this->getTableInfo( $tablename );
 
 		$csv->setFlags( SplFileObject::READ_CSV );
 		$csvArray = array();
@@ -305,6 +342,7 @@ class ApdDatabase {
 
 		foreach ( $tableFields as $key => $tableField ) {
 
+			//skip csv index?
 			if ( $key == 0 ) {
 				continue;
 			}
@@ -316,13 +354,29 @@ class ApdDatabase {
 		$sql .= ") ";
 		$sql .= "VALUES";
 
-		foreach ( $csvArray as $csvRow ) {
+		foreach ( $csvArray as $keyrow => $csvRow ) {
 
 			$values .= "(";
 
-			foreach ( $csvRow as $csvField ) {
+			foreach ( $csvRow as $key => $csvField ) {
 
-				$values .= "\"" . $csvField . "\",";
+				if ( field_is_boolean( $tableInfo[ $key ] ) ) {
+
+					if ( field_is_true( $csvField ) ) {
+						$csvField = true;
+					} else if ( field_is_false( $csvField ) ) {
+						$csvField = false;
+					} else {
+						$csvField = null;
+					}
+
+					$values .= $csvField . ",";
+
+				} else {
+
+					$values .= "\"" . $csvField . "\",";
+
+				}
 
 			}
 			$values = rtrim( $values, " ," );
@@ -398,7 +452,6 @@ class ApdDatabase {
 	public function addCsvToDatabase( $tablename, $csv ) {
 
 		//@TODO check $tablename for injection!
-		$result = true;
 
 		$tablename = $this->addTablePrefix( $tablename );
 
@@ -409,34 +462,25 @@ class ApdDatabase {
 		//@TODO also check if fields already exist in table
 
 		//create table if it doesn't exist yet
-
-		$resultCreate = true;
+		$result = true;
 		if ( $this->tableExists( $tablename ) === false ) {
 
-			$fields       = $this->getCsvFields( $csv );
-			$resultCreate = $this->createTableFromFields( $tablename, $fields );
+			$fields = $this->getCsvFields( $csv );
+			$result .= $this->createTableFromFields( $tablename, $fields );
 
 		} else if ( DEBUG === true ) {
 
 			//in debug always delete existing table when uploading a new csv
-			$result = $this->dropTable( $tablename );
-			krumo( $result );
-			$fields       = $this->getCsvFields( $csv );
-			$resultCreate = $this->createTableFromFields( $tablename, $fields );
+			$result .= $this->dropTable( $tablename );
+			$fields = $this->getCsvFields( $csv );
+			$result .= $this->createTableFromFields( $tablename, $fields );
 
 		}
 
-		$resultInsert = $this->insertCsv( $csv, $tablename );
-		$resultUpdate = $this->removeRedundantValues( $tablename );
+		$result .= $this->insertCsv( $csv, $tablename );
+		$result .= $this->removeRedundantValues( $tablename );
 
-		//refine result
-		$result = $resultCreate + $resultInsert + $resultUpdate;
-
-		if ( $result ) {
-
-			$result = true;
-
-		} else {
+		if ( $result === false ) {
 
 			echo "Something went wrong.";
 
