@@ -37,6 +37,17 @@
     border-radius: 0;
   }
   
+  //@todo this obviously doesn't work
+  .label-promotion:empty {
+    display: none;
+  }
+  
+  //a.btn {
+  //  i, span{
+  //    color: #fff;
+  //  }
+  //}
+  
   .list-pro, .list-con {
     margin-bottom: 25px;
     padding-left: 0;
@@ -71,19 +82,19 @@
   
   .list-con {
     li:before {
-      @include font-awesome("\f0fe");
+      @include font-awesome("\f146");
       font-size: 14px;
       color: $danger;
     }
   }
   
-  .plus-check:before {
+  .check-square:before {
     @include font-awesome("\f14a");
     color: $success;
     font-size: 130%;
   }
   
-  .minus-check:before {
+  .minus-square:before {
     @include font-awesome("\f146");
     color: $danger;
     font-size: 130%;
@@ -113,6 +124,7 @@
     margin-top: 15px;
     display: table;
     border-collapse: separate;
+    width: 100%;
     //border-spacing: 5px;
     
     > .row {
@@ -159,11 +171,13 @@
     }
     
     .amazon-area {
-      
       .amazon-view-offer {
-        
         i.fa-caret-right {
           margin-right: 10px;
+          
+          span {
+            font-weight: 600;
+          }
         }
         
         i.fa-icon-eye {
@@ -172,7 +186,6 @@
       }
       
       .amazon-image {
-        
         .img-responsive {
           @include box-shadow;
         }
@@ -217,7 +230,12 @@
         
         i.fa-caret-right {
           margin-right: 10px;
+          
+          span {
+            font-weight: 600;
+          }
         }
+        
         i.fa-shopping-cart {
           margin-left: 5px;
         }
@@ -232,75 +250,13 @@
   */
   
   .infobox .infobox-body {
-    
     > .row {
       margin-top: 30px;
-      
       .tabs {
-        
         .nav-tabs {
-          
           li {
             i {
               margin-right: 5px;
-            }
-          }
-        }
-        
-        .tab-content {
-          
-          .overview {
-            
-            .general-rating-row {
-              
-              .row {
-                margin-top: 10px;
-                margin-bottom: 10px;
-                
-                .overall-rating {
-                  
-                }
-                
-                .amazon-rating {
-                  a {
-                    color: #000000;
-                    
-                  }
-                  
-                  i.fa.fa-caret-right {
-                    margin-right: 3px;
-                  }
-                  
-                  span.rating-stars {
-                    color: $amazon-1;
-                    margin-right: 3px;
-                  }
-                  
-                  .number-of-ratings {
-                    margin: 2px 10px;
-                    
-                    span {
-                      color: $gray-1;
-                    }
-                  }
-                }
-              }
-            }
-          }
-          
-          .details {
-            .row {
-              
-            }
-            
-          }
-          
-          .reviews {
-            .row {
-              iframe {
-                width: 100%;
-                height: 1000px;
-              }
             }
           }
         }
@@ -308,8 +264,69 @@
     }
   }
   
+  .tab-pane.overview {
+    .general-rating-row {
+      .row {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        
+        .overall-rating {
+        }
+        
+        .amazon-rating {
+          a {
+            color: #000000;
+          }
+          
+          i.fa.fa-caret-right {
+            margin-right: 3px;
+          }
+          
+          span.rating-stars {
+            color: $amazon-1;
+            margin-right: 3px;
+          }
+          
+          .number-of-ratings {
+            margin: 2px 10px;
+            
+            span {
+              color: $gray-1;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .tab-pane.details {
+    .row {
+      tr.category {
+        background: $gray-3;
+        font-weight: bold;
+        td:nth-child(3) {
+          font-family: inherit;
+        }
+      }
+      
+      tr {
+        td:nth-child(3) {
+          font-family: monospace;
+        }
+      }
+    }
+  }
+  
+  .tab-pane.reviews {
+    .row {
+      iframe {
+        width: 100%;
+        height: 1000px;
+      }
+    }
+  }
+  
   .detailed-rating-row {
-    
     .row {
       margin-top: 30px;
       .progress {

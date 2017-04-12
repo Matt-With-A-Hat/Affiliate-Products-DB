@@ -125,16 +125,64 @@ function apd_shortcode_handler( $atts, $asin = null, $code = "" ) {
 
 	global $apd;
 
-	$item = $apd->getItemLookup( 'B00GSMNIM6' );
-
-	$db = new ApdDatabase();
-
-	echo $db->getUniqueColumn( 'products' );
-
 	$tpl = false;
 	if ( ! empty( $atts[0] ) ) {
 		$tpl = $atts[0];
 	}
 
 	return apd_get_item( $asin, $tpl );
+}
+
+/**
+ * checks if an array has duplicates
+ *
+ * @param array $array
+ *
+ * @return array
+ */
+function array_duplicates( array $array ) {
+	$duplicates = array();
+	natcasesort( $array );
+	reset( $array );
+
+	$old_key   = null;
+	$old_value = null;
+	foreach ( $array as $key => $value ) {
+		if ( $value === null ) {
+			continue;
+		}
+		if ( strcasecmp( $old_value, $value ) === 0 ) {
+			$duplicates[ $old_key ] = $old_value;
+			$duplicates[ $key ]     = $value;
+		}
+		$old_value = $value;
+		$old_key   = $key;
+	}
+
+	return $duplicates;
+}
+
+/**
+ * removes duplicates from array (case insensitive)
+ *
+ * @param array $array
+ */
+function array_remove_duplicates(array $array){
+	$uniqueArrayUpper = array_unique(array_map("strtoupper", $array));
+
+	$uniqueArray = array_intersect_key($array, $uniqueArrayUpper);
+
+	return $uniqueArray;
+}
+
+/**
+ * @param string $path
+ * @param string $plugin
+ * @return string
+ */
+function apd_plugins_url($path = '', $plugin = '') {
+	if (getenv('APD_APPLICATION_ENV') == 'development') {
+		return get_bloginfo('wpurl') . '/wp-content/plugins/affiliate-product-db/' . $path;
+	}
+	return plugins_url($path, $plugin);
 }

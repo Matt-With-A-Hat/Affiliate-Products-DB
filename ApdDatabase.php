@@ -7,6 +7,20 @@ class ApdDatabase {
 	 */
 	protected $db;
 
+	/**
+	 * the returned item from database
+	 *
+	 * @var
+	 */
+	public $dbItem;
+
+	/**
+	 * the returned item from amazon
+	 *
+	 * @var
+	 */
+	public $amazonItem;
+
 	public function __construct() {
 
 		global $wpdb;
@@ -38,23 +52,32 @@ class ApdDatabase {
 
 	/**
 	 * return all fields of a table as an array
+	 * if suffix is false, strip everything after first underscore of column name
 	 *
 	 * @param $tablename
 	 *
 	 * @return array
 	 */
-	public function getTableColumns( $tablename ) {
+	public function getTableColumns( $tablename, $suffix = true ) {
 
 		$wpdb      = $this->db;
 		$tablename = $this->addTablePrefix( $tablename );
 
 		foreach ( $wpdb->get_col( "DESC " . $tablename, 0 ) as $columnname ) {
 
-			$columns[] = $columnname;
+			if ( $suffix ) {
+				$columns[] = $columnname;
+			} else {
+				$columns[] = explode( "_", $columnname )[0];
+			}
 
 		}
 
-		return $columns;
+		if ( empty( $columns ) ) {
+			return false;
+		} else {
+			return $columns;
+		}
 
 	}
 
@@ -107,7 +130,7 @@ class ApdDatabase {
 	public function getUniqueColumn( $tablename ) {
 
 		$tablename = $this->addTablePrefix( $tablename );
-		$columns   = $this->getTableInfo( $tablename )['Field'];
+		$columns   = $this->getTableColumns( $tablename, true );
 
 		foreach ( $columns as $column ) {
 			if ( preg_match( "/_unique/", $column ) ) {
@@ -123,9 +146,11 @@ class ApdDatabase {
 	}
 
 	/**
-	 * Gets a row out of the default database by the set unique database field
+	 * gets an item from the database
 	 *
-	 * @param $item
+	 * @param $asin
+	 *
+	 * @return array|bool|null|object|void
 	 */
 	public function getItem( $asin ) {
 
@@ -133,13 +158,20 @@ class ApdDatabase {
 		global $wpdb;
 		global $apd;
 
-		$uniqeField = $this->getUniqueColumn( $apd->datatable );
+		$uniqeField   = $this->getUniqueColumn( $apd->datatable );
+		$sql          = "SELECT * FROM $apd->datatable WHERE $uniqeField = %s";
+		$this->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), OBJECT );
 
-		$sql = "SELECT * FROM $apd->datatable WHERE $uniqeField = %s";
+		if ( empty( $this->dbItem ) ) {
 
-		$item = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), ARRAY_A );
+			echo "This item doesn't exist";
 
-		return $item;
+			return false;
+
+		}
+
+
+		return $this->dbItem;
 
 	}
 
@@ -158,6 +190,13 @@ class ApdDatabase {
 			echo '$fields is not an array';
 
 			return false;
+
+		}
+
+		foreach ( $fields as $key => $field ) {
+
+			$field          = esc_sql( $field );
+			$fields[ $key ] = str_replace( ' ', '', $field );
 
 		}
 
@@ -191,6 +230,25 @@ class ApdDatabase {
 
 		return $result;
 
+	}
+
+	/**
+	 * drop a table from database
+	 *
+	 * @param $tablename
+	 *
+	 * @return false|int
+	 */
+	public function dropTable( $tablename ) {
+
+		$wpdb      = $this->db;
+		$tablename = $this->addTablePrefix( $tablename );
+
+		$sql = "DROP TABLE IF EXISTS $tablename";
+
+		$result = $wpdb->query( $sql );
+
+		return $result;
 	}
 
 	/**
@@ -246,6 +304,7 @@ class ApdDatabase {
 		return false;
 
 	}
+
 
 	/**
 	 * Inserts csv content into the specified table
@@ -392,7 +451,6 @@ class ApdDatabase {
 	public function addCsvToDatabase( $tablename, $csv ) {
 
 		//@TODO check $tablename for injection!
-		$result = true;
 
 		$tablename = $this->addTablePrefix( $tablename );
 
@@ -403,26 +461,25 @@ class ApdDatabase {
 		//@TODO also check if fields already exist in table
 
 		//create table if it doesn't exist yet
-
-		$resultCreate = true;
+		$result = true;
 		if ( $this->tableExists( $tablename ) === false ) {
 
-			$fields       = $this->getCsvFields( $csv );
-			$resultCreate = $this->createTableFromFields( $tablename, $fields );
+			$fields = $this->getCsvFields( $csv );
+			$result .= $this->createTableFromFields( $tablename, $fields );
+
+		} else if ( DEBUG === true ) {
+
+			//in debug always delete existing table when uploading a new csv
+			$result .= $this->dropTable( $tablename );
+			$fields = $this->getCsvFields( $csv );
+			$result .= $this->createTableFromFields( $tablename, $fields );
 
 		}
 
-		$resultInsert = $this->insertCsv( $csv, $tablename );
-		$resultUpdate = $this->removeRedundantValues( $tablename );
+		$result .= $this->insertCsv( $csv, $tablename );
+		$result .= $this->removeRedundantValues( $tablename );
 
-		//refine result
-		$result = $resultCreate + $resultInsert + $resultUpdate;
-
-		if ( $result ) {
-
-			$result = true;
-
-		} else {
+		if ( $result === false ) {
 
 			echo "Something went wrong.";
 
