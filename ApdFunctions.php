@@ -60,7 +60,7 @@ function apd_get_item( $asin, $tpl = false ) {
  * @return bool
  */
 function type_is_boolean( $type ) {
-	if ( in_array( $type, array_map( "strtolower", BOOLEAN_TYPES ) ) ) {
+	if ( in_array( strtolower($type), array_map( "strtolower", BOOLEAN_TYPES ) ) ) {
 		return true;
 	} else {
 		return false;
@@ -90,7 +90,7 @@ function field_is_true( $field ) {
  * @return bool
  */
 function field_is_false( $field ) {
-	if ( in_array( $field, array_map( "strtolower", FALSE_TYPES ) ) ) {
+	if ( in_array( strtolower($field), array_map( "strtolower", FALSE_TYPES ) ) ) {
 		return true;
 	} else {
 		return false;
@@ -105,7 +105,7 @@ function field_is_false( $field ) {
  * @return bool
  */
 function field_is_null( $field ) {
-	if ( in_array( $field, array_map( "strtolower", NULL_TYPES ) ) ) {
+	if ( in_array( strtolower($field), array_map( "strtolower", NULL_TYPES ) ) ) {
 		return true;
 	} else {
 		return false;
