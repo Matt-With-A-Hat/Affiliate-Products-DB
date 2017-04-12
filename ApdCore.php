@@ -668,6 +668,7 @@ class ApdCore {
 		$apdDb = new ApdDatabase();
 
 		$dbPlaceholders = $apdDb->getTableColumns( $this->datatable, false );
+		$tableInfo      = $apdDb->getTableInfo( $this->datatable );
 
 		if ( ! empty( array_duplicates( $dbPlaceholders ) ) ) {
 			$dbPlaceholders = array_remove_duplicates( $dbPlaceholders );
@@ -677,11 +678,11 @@ class ApdCore {
 
 		//reformat advantage list
 		$advantagesArray = explode( "*", $dbItem->Advantages );
-		$advantagesHtml = '';
+		$advantagesHtml  = '';
 
 		foreach ( $advantagesArray as $advantage ) {
 
-			$advantagesHtml .= "<li>".$advantage."</li>";
+			$advantagesHtml .= "<li>" . $advantage . "</li>";
 
 		}
 		$dbItem->Advantages = $advantagesHtml;
@@ -689,25 +690,29 @@ class ApdCore {
 
 		//reformat disadvantage list
 		$disadvantagesArray = explode( "*", $dbItem->Disadvantages );
-		$disadvantagesHtml = '';
+		$disadvantagesHtml  = '';
 
 		foreach ( $disadvantagesArray as $disadvantage ) {
 
-			$disadvantagesHtml .= "<li>".$disadvantage."</li>";
+			$disadvantagesHtml .= "<li>" . $disadvantage . "</li>";
 
 		}
 		$dbItem->Disadvantages = $disadvantagesHtml;
 
+		krumo( $tableInfo );
 
 		//convert bool values to checkbox
+		$i = 0;
 		foreach ( $dbItem as $key => $item ) {
 
-			if ( preg_match( "/_bool/i", $key ) ) {
+			$fieldType = $tableInfo[ $i ++ ]['Type'];
 
-				if(field_is_true($item)){
+			if ( type_is_boolean( $fieldType ) ) {
+
+				if ( field_is_true( $item ) ) {
 					$dbItem->$key = '<i class="check-square"></i>';
-				}else if(field_is_false($item)){
-					$dbItem->$key = '<i class="minus-square"></i>';
+				} else if ( field_is_false( $item ) ) {
+					 $dbItem->$key = '<i class="minus-square"></i>';
 				}
 
 			}

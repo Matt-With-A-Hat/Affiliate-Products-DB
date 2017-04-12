@@ -55,12 +55,12 @@ function apd_get_item( $asin, $tpl = false ) {
 /**
  * checks if field is boolean
  *
- * @param string $field
+ * @param string $type
  *
  * @return bool
  */
-function field_is_boolean( $field ) {
-	if ( in_array( $field, array_map( "strtolower", BOOLEAN_TYPES ) ) ) {
+function type_is_boolean( $type ) {
+	if ( in_array( $type, array_map( "strtolower", BOOLEAN_TYPES ) ) ) {
 		return true;
 	} else {
 		return false;
@@ -75,7 +75,7 @@ function field_is_boolean( $field ) {
  * @return bool
  */
 function field_is_true( $field ) {
-	if ( in_array( $field, array_map( "strtolower", TRUE_TYPES ) ) ) {
+	if ( in_array( strtolower($field), array_map( "strtolower", TRUE_TYPES ) ) ) {
 		return true;
 	} else {
 		return false;

@@ -359,14 +359,18 @@ class ApdDatabase {
 
 			foreach ( $csvRow as $key => $csvField ) {
 
-				if ( field_is_boolean( $tableInfo[ $key ] ) ) {
+				$fieldType = $tableInfo[$key]['Type'];
+
+				if ( type_is_boolean( $fieldType ) ) {
+
+					krumo(field_is_true( $csvField ));
 
 					if ( field_is_true( $csvField ) ) {
-						$csvField = true;
+						$csvField = 'TRUE';
 					} else if ( field_is_false( $csvField ) ) {
-						$csvField = false;
+						$csvField = 'FALSE';
 					} else {
-						$csvField = null;
+						$csvField = 'NULL';
 					}
 
 					$values .= $csvField . ",";
@@ -388,6 +392,7 @@ class ApdDatabase {
 		$sql .= $values;
 
 		//@todo make it work with prepare
+		echo $sql;
 
 		$result = $wpdb->query( $sql );
 
