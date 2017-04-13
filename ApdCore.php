@@ -210,7 +210,7 @@ class ApdCore {
 		$this->amazon_api_connection_type = AMAZON_API_CONNECTION_TYPE;
 
 		// register shortcode handlers
-		add_shortcode( 'apd-template', 'apd_shortcode_handler' );
+		add_shortcode( 'apd-tpl', 'apd_shortcode_handler' );
 		add_shortcode( 'apd-data', 'apd_shortcode_handler' );
 
 		/**

@@ -353,9 +353,6 @@ class ApdDatabase {
 		$sql .= ") ";
 		$sql .= "VALUES";
 
-		krumo( $csvArray );
-		krumo( $tableInfo );
-
 		foreach ( $csvArray as $keyrow => $csvRow ) {
 
 			$values .= "(";
@@ -364,13 +361,6 @@ class ApdDatabase {
 
 				//$key + 1 because array skips first column which is "id" in excel
 				$fieldType = $tableInfo[ $key + 1 ]['Type'];
-
-				if ( $tableInfo[ $key + 1 ]['Field'] == 'Weight' ) {
-					echo "<br>";
-					echo $csvField;
-					echo "<br>";
-
-				}
 
 				if ( type_is_boolean( $fieldType ) ) {
 
@@ -401,8 +391,6 @@ class ApdDatabase {
 		$sql .= $values;
 
 		//@todo make it work with prepare
-
-		echo $sql;
 
 		$result = $wpdb->query( $sql );
 
