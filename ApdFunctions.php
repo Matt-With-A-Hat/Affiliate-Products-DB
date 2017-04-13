@@ -60,7 +60,7 @@ function apd_get_item( $asin, $tpl = false ) {
  * @return bool
  */
 function type_is_boolean( $type ) {
-	if ( in_array( strtolower($type), array_map( "strtolower", BOOLEAN_TYPES ) ) ) {
+	if ( in_array( strtolower( $type ), array_map( "strtolower", BOOLEAN_TYPES ) ) ) {
 		return true;
 	} else {
 		return false;
@@ -75,7 +75,7 @@ function type_is_boolean( $type ) {
  * @return bool
  */
 function field_is_true( $field ) {
-	if ( in_array( strtolower($field), array_map( "strtolower", TRUE_TYPES ) ) ) {
+	if ( in_array( strtolower( $field ), array_map( "strtolower", TRUE_TYPES ) ) ) {
 		return true;
 	} else {
 		return false;
@@ -90,7 +90,7 @@ function field_is_true( $field ) {
  * @return bool
  */
 function field_is_false( $field ) {
-	if ( in_array( strtolower($field), array_map( "strtolower", FALSE_TYPES ) ) ) {
+	if ( in_array( strtolower( $field ), array_map( "strtolower", FALSE_TYPES ) ) ) {
 		return true;
 	} else {
 		return false;
@@ -105,7 +105,7 @@ function field_is_false( $field ) {
  * @return bool
  */
 function field_is_null( $field ) {
-	if ( in_array( strtolower($field), array_map( "strtolower", NULL_TYPES ) ) ) {
+	if ( in_array( strtolower( $field ), array_map( "strtolower", NULL_TYPES ) ) ) {
 		return true;
 	} else {
 		return false;
@@ -167,10 +167,10 @@ function array_duplicates( array $array ) {
  *
  * @param array $array
  */
-function array_remove_duplicates(array $array){
-	$uniqueArrayUpper = array_unique(array_map("strtoupper", $array));
+function array_remove_duplicates( array $array ) {
+	$uniqueArrayUpper = array_unique( array_map( "strtoupper", $array ) );
 
-	$uniqueArray = array_intersect_key($array, $uniqueArrayUpper);
+	$uniqueArray = array_intersect_key( $array, $uniqueArrayUpper );
 
 	return $uniqueArray;
 }
@@ -178,11 +178,38 @@ function array_remove_duplicates(array $array){
 /**
  * @param string $path
  * @param string $plugin
+ *
  * @return string
  */
-function apd_plugins_url($path = '', $plugin = '') {
-	if (getenv('APD_APPLICATION_ENV') == 'development') {
-		return get_bloginfo('wpurl') . '/wp-content/plugins/affiliate-product-db/' . $path;
+function apd_plugins_url( $path = '', $plugin = '' ) {
+	if ( getenv( 'APD_APPLICATION_ENV' ) == 'development' ) {
+		return get_bloginfo( 'wpurl' ) . '/wp-content/plugins/affiliate-product-db/' . $path;
 	}
-	return plugins_url($path, $plugin);
+
+	return plugins_url( $path, $plugin );
+}
+
+/**
+ * add WP table prefix if it's missing
+ *
+ * @param $tablename
+ *
+ * @return string
+ */
+function add_table_prefix( $tablename ) {
+
+	global $wpdb;
+
+	$tablenameArray = explode( "_", $tablename );
+
+	if ( $tablenameArray[0] . "_" == $wpdb->prefix ) {
+
+		return $tablename;
+
+	} else {
+
+		return $wpdb->prefix . $tablename;
+
+	}
+
 }

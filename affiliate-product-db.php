@@ -44,11 +44,14 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 //add_action( 'init', array( 'TablePress', 'run' ) );
 
 /**
- * APD Constants
+ * APD Constants & Options
  */
 define('APD_BASE_FILE', __FILE__);
 define('APD_LIB_DIR', dirname(__FILE__) . '/lib/');
 define('DEBUG', true);
+
+add_option('PRODUCTS_TABLE', 'products');
+
 
 /**
  * User Constants

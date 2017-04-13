@@ -21,6 +21,11 @@ class ApdDatabase {
 	 */
 	public $amazonItem;
 
+	/**
+	 * @var
+	 */
+	protected $tablename;
+
 	public function __construct() {
 
 		global $wpdb;
@@ -40,7 +45,7 @@ class ApdDatabase {
 	public function getTableInfo( $tablename ) {
 
 		$wpdb      = $this->db;
-		$tablename = $this->addTablePrefix( $tablename );
+		$tablename = add_table_prefix( $tablename );
 
 		$sql = "SHOW fields FROM $tablename";
 
@@ -61,7 +66,19 @@ class ApdDatabase {
 	public function getTableColumns( $tablename, $suffix = true ) {
 
 		$wpdb      = $this->db;
-		$tablename = $this->addTablePrefix( $tablename );
+		$tablename = add_table_prefix( $tablename );
+
+		$sql = "SELECT * FROM $tablename";
+
+
+//		$sql = "SELECT * FROM $tablename";
+//		if($wpdb->query($sql)){
+//			echo "Connection works";
+//		}else{
+//			krumo($wpdb->query($sql));
+//			exit( krumo( $wpdb->last_query ) );
+//
+//		}
 
 		foreach ( $wpdb->get_col( "DESC " . $tablename, 0 ) as $columnname ) {
 
@@ -74,6 +91,9 @@ class ApdDatabase {
 		}
 
 		if ( empty( $columns ) ) {
+
+			echo "Query didn't return any columns";
+
 			return false;
 		} else {
 			return $columns;
@@ -129,7 +149,7 @@ class ApdDatabase {
 	 */
 	public function getUniqueColumn( $tablename ) {
 
-		$tablename = $this->addTablePrefix( $tablename );
+		$tablename = add_table_prefix( $tablename );
 		$columns   = $this->getTableColumns( $tablename, true );
 
 		foreach ( $columns as $column ) {
@@ -157,9 +177,9 @@ class ApdDatabase {
 		//@todo #lastedit
 		global $wpdb;
 		global $apd;
-
-		$uniqeField   = $this->getUniqueColumn( $apd->datatable );
-		$sql          = "SELECT * FROM $apd->datatable WHERE $uniqeField = %s";
+		
+		$uniqeField   = $this->getUniqueColumn( $apd->tablename );
+		$sql          = "SELECT * FROM $apd->tablename WHERE $uniqeField = %s";
 		$this->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), OBJECT );
 
 		if ( empty( $this->dbItem ) ) {
@@ -202,7 +222,7 @@ class ApdDatabase {
 
 		//@todo make fields unique that have "_unique"
 		$wpdb      = $this->db;
-		$tablename = $this->addTablePrefix( $tablename );
+		$tablename = add_table_prefix( $tablename );
 
 		$sql = 'CREATE TABLE IF NOT EXISTS ' . $tablename . ' (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY';
 
@@ -242,7 +262,7 @@ class ApdDatabase {
 	public function dropTable( $tablename ) {
 
 		$wpdb      = $this->db;
-		$tablename = $this->addTablePrefix( $tablename );
+		$tablename = add_table_prefix( $tablename );
 
 		$sql = "DROP TABLE IF EXISTS $tablename";
 
@@ -258,7 +278,7 @@ class ApdDatabase {
 	 *
 	 * @return mixed
 	 */
-	public function addTablePrefix( $tablename ) {
+	public function add_table_prefix( $tablename ) {
 
 		$wpdb = $this->db;
 
@@ -286,7 +306,7 @@ class ApdDatabase {
 	public function tableExists( $tablename ) {
 
 		$wpdb      = $this->db;
-		$tablename = $this->addTablePrefix( $tablename );
+		$tablename = add_table_prefix( $tablename );
 
 		$sql            = "SHOW TABLES LIKE '%'";
 		$existingTables = $wpdb->get_results( $sql, ARRAY_N );
@@ -323,7 +343,7 @@ class ApdDatabase {
 
 		$csvPath     = $csv;
 		$wpdb        = $this->db;
-		$tablename   = $this->addTablePrefix( $tablename );
+		$tablename   = add_table_prefix( $tablename );
 		$csv         = new SplFileObject( $csv );
 		$tableFields = $this->getTableColumns( $tablename );
 		$tableInfo   = $this->getTableInfo( $tablename );
@@ -408,7 +428,7 @@ class ApdDatabase {
 	public function removeRedundantValues( $tablename ) {
 
 		$wpdb      = $this->db;
-		$tablename = $this->addTablePrefix( $tablename );
+		$tablename = add_table_prefix( $tablename );
 
 		$uniqueFieldExists = false;
 
@@ -455,7 +475,7 @@ class ApdDatabase {
 
 		//@TODO check $tablename for injection!
 
-		$tablename = $this->addTablePrefix( $tablename );
+		$tablename = add_table_prefix( $tablename );
 
 		if ( is_array( $csv ) ) {
 			$csv = $csv['tmp_name'];

@@ -23,7 +23,7 @@ class ApdCore {
 	 * table in database with product details
 	 */
 	//@todo get this dynamically from db
-	public $datatable = 'hxvct_products';
+	public $tablename;
 
 	/**
 	 * available template placeholders
@@ -188,6 +188,8 @@ class ApdCore {
 	 */
 	public function __construct() {
 
+		global $wbpd;
+
 		require_once APD_LIB_DIR . 'AsaZend/Uri/Http.php';
 		require_once APD_LIB_DIR . 'AsaZend/Service/Amazon.php';
 		require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/Accessories.php';
@@ -286,9 +288,13 @@ class ApdCore {
 					return false;
 				}
 
-				$apdDB = new ApdDatabase();
+				$apdDB = new ApdDatabase( $tablename );
 
 				$result = $apdDB->addCsvToDatabase( $tablename, $csv );
+
+				if ( $result ) {
+					update_option( 'PRODUCTS_TABLE', $tablename );
+				}
 
 				return $result;
 
@@ -302,9 +308,27 @@ class ApdCore {
 
 		}
 
+		$this->setTablename(get_option('PRODUCTS_TABLE'));
 		$this->apdOptions();
 		$this->amazon = $this->connect();
 
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTablename() {
+		return $this->tablename;
+	}
+
+	/**
+	 * @param mixed $tablename
+	 */
+	public function setTablename( $tablename ) {
+
+		global $wpdb;
+
+		$this->tablename = add_table_prefix( $tablename );;
 	}
 
 	protected function apdOptions() {
@@ -667,10 +691,11 @@ class ApdCore {
 
 		$apdDb = new ApdDatabase();
 
-		$dbPlaceholders = $apdDb->getTableColumns( $this->datatable, false );
-		$tableInfo      = $apdDb->getTableInfo( $this->datatable );
+		$dbPlaceholders = $apdDb->getTableColumns( $this->tablename, false );
+		$tableInfo      = $apdDb->getTableInfo( $this->tablename );
 
 		if ( ! empty( array_duplicates( $dbPlaceholders ) ) ) {
+			echo "IN";
 			$dbPlaceholders = array_remove_duplicates( $dbPlaceholders );
 		}
 
@@ -699,8 +724,6 @@ class ApdCore {
 		}
 		$dbItem->Disadvantages = $disadvantagesHtml;
 
-		krumo( $tableInfo );
-
 		//convert bool values to checkbox
 		$i = 0;
 		foreach ( $dbItem as $key => $item ) {
@@ -712,7 +735,7 @@ class ApdCore {
 				if ( field_is_true( $item ) ) {
 					$dbItem->$key = '<i class="check-square"></i>';
 				} else if ( field_is_false( $item ) ) {
-					 $dbItem->$key = '<i class="minus-square"></i>';
+					$dbItem->$key = '<i class="minus-square"></i>';
 				}
 
 			}
@@ -973,5 +996,4 @@ class ApdCore {
 
 }
 
-global $wpdb;
-$apd = new ApdCore( $wpdb );
+$apd = new ApdCore();
