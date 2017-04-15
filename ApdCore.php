@@ -245,15 +245,13 @@ class ApdCore {
 		add_action( 'admin_enqueue_scripts', 'add_apd_admin_stylesheets' );
 
 		/**
-		 * include stylesheets for plugin
+		 * include backend scripts
 		 */
-		function add_apd_scripts() {
-//			wp_enqueue_script( 'apd-jquery', plugins_url( '/js/jquery-3.1.1.min.js', __FILE__ ), array(), '3.1.1', true );
-//			wp_enqueue_script( 'bootstrap', plugins_url( '/js/bootstrap.min.js', __FILE__ ) );
+		function add_apd_admin_scripts() {
 			wp_enqueue_script( 'apd-functions', plugins_url( '/js/functions.js', __FILE__ ) );
 		}
 
-		add_action( 'admin_enqueue_scripts', 'add_apd_scripts' );
+		add_action( 'admin_enqueue_scripts', 'add_apd_admin_scripts' );
 
 		/**
 		 * Create the setup menupage
