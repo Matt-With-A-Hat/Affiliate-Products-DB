@@ -150,14 +150,14 @@
                             <div class="row">
                                 <div class="tabs">
                                     <ul class="nav nav-tabs">
-                                        <li class="active"><a data-toggle="tab" href="#overview-350630241"><i class="fa fa-list"></i> Übersicht</a></li>
-                                        <li class=""><a data-toggle="tab" href="#details-350630241"><i class="fa fa-bar-chart-o"></i> Details</a></li>
-                                        <li class=""><a data-toggle="tab" href="#reviews-350630241"><i class="fa fa-star-half-full"></i>Rezensionen</a></li>
+                                        <li class="active"><a data-toggle="tab" href="#overview-{$Asin}"><i class="fa fa-list"></i> Übersicht</a></li>
+                                        <li class=""><a data-toggle="tab" href="#details-{$Asin}"><i class="fa fa-bar-chart-o"></i> Details</a></li>
+                                        <li class=""><a data-toggle="tab" href="#reviews-{$Asin}"><i class="fa fa-star-half-full"></i>Rezensionen</a></li>
                                     </ul>
                                     <div class="tab-content">
 
                                         <!--Übersicht-->
-                                        <div class="tab-pane active overview" id="overview-350630241">
+                                        <div class="tab-pane active overview" id="overview-{$Asin}">
 
                                             <!--General rating-->
                                             <div class="general-rating-row">
@@ -297,7 +297,7 @@
                                         <!--Übersicht End-->
 
                                         <!--Details-->
-                                        <div class="tab-pane details" id="details-350630241">
+                                        <div class="tab-pane details" id="details-{$Asin}">
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="row">
@@ -574,7 +574,7 @@
                                         <!--Details End-->
 
                                         <!--Rezensionen-->
-                                        <div class="tab-pane reviews" id="reviews-350630241">
+                                        <div class="tab-pane reviews" id="reviews-{$Asin}">
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <iframe src="{$IFrameUrl}" frameborder="0"></iframe>

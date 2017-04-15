@@ -143,9 +143,11 @@ class ApdDatabase {
 	/**
 	 * Finds the first unique column specified with "unique" in a table
 	 *
-	 * @param $table
+	 * @param $tablename
 	 *
 	 * @return bool|mixed
+	 * @internal param $table
+	 *
 	 */
 	public function getUniqueColumn( $tablename ) {
 
