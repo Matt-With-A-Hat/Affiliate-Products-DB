@@ -219,7 +219,7 @@ class ApdCore {
 		 * Hook for adding admin menus
 		 */
 		function setupBackendMenu() {
-			add_options_page( 'Affiliate Product DB Setup Menu', 'Affiliate Products', 'manage_options', 'affiliate-product-db', 'setupMenuPage' );
+			add_options_page( 'Affiliate Products DB Setup Menu', 'Affiliate Products', 'manage_options', MENU_SLUG, 'setupMenuPage' );
 		}
 
 		add_action( 'admin_menu', 'setupBackendMenu' );
@@ -238,8 +238,10 @@ class ApdCore {
 		 * include backend stylesheets
 		 */
 		function add_apd_admin_stylesheets() {
-			wp_enqueue_style( 'bootstrap', plugins_url( '/css/bootstrap.min.css', __FILE__ ) );
-			wp_enqueue_style( 'setupmenu', plugins_url( '/css/setupmenu.css', __FILE__ ) );
+			if($_GET['page'] == MENU_SLUG){
+				wp_enqueue_style( 'bootstrap', plugins_url( '/css/bootstrap.min.css', __FILE__ ) );
+				wp_enqueue_style( 'setupmenu', plugins_url( '/css/setupmenu.css', __FILE__ ) );
+			}
 		}
 
 		add_action( 'admin_enqueue_scripts', 'add_apd_admin_stylesheets' );
