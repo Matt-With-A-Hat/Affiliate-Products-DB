@@ -83,12 +83,33 @@ require dirname( __FILE__ ) . '/debug.php';
 /**
  * APD Functions
  */
-include_once( dirname( __FILE__ ) . '/ApdFunctions.php' );
+require ( dirname( __FILE__ ) . '/ApdFunctions.php' );
+
+/**
+ * functions fpr initializing plugin
+ */
+require dirname( __FILE__ ) . '/apd-init.php';
+
+/**
+ * AsaZend library
+ */
+require_once APD_LIB_DIR . 'AsaZend/Uri/Http.php';
+require_once APD_LIB_DIR . 'AsaZend/Service/Amazon.php';
+require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/Accessories.php';
+require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/EditorialReview.php';
+require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/Image.php';
+require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/Item.php';
+require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/ListmaniaList.php';
+require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/Offer.php';
+require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/OfferSet.php';
+require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/Query.php';
+require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/ResultSet.php';
+require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/SimilarProduct.php';
 
 /**
  * APD Classes
  */
-include_once( dirname( __FILE__ ) . '/ApdCore.php' );
+require_once( dirname( __FILE__ ) . '/ApdCore.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
 
 
