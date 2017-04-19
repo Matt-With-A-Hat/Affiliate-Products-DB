@@ -39,7 +39,6 @@ Donate URI: https://#
 
 // Prohibit direct script loading.
 defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
-
 // Start up TablePress on WordPress's "init" action hook.
 //add_action( 'init', array( 'TablePress', 'run' ) );
 
@@ -48,10 +47,8 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  */
 define('APD_BASE_FILE', __FILE__);
 define('APD_LIB_DIR', dirname(__FILE__) . '/lib/');
-define('MENU_SLUG', 'affiliate-products-db');
-define('DEBUG', true);
-
-add_option('PRODUCTS_TABLE', 'products');
+define('APD_MENU_SLUG', 'affiliate-products-db');
+define('APD_DEBUG', true);
 
 
 /**
@@ -68,7 +65,6 @@ const BOOLEAN_TYPES = array('BOOLEAN', 'BOOL', 'TINYINT(1)');
 const TRUE_TYPES = array('JA', 'YES', 'TRUE', '1', 1);
 const FALSE_TYPES = array('NEIN', 'NO', 'FALSE', '0', 0);
 const NULL_TYPES = array('', 'NULL', NULL);
-
 
 /**
  * Krumo
@@ -111,6 +107,4 @@ require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/SimilarProduct.php';
  */
 require_once( dirname( __FILE__ ) . '/ApdCore.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
-
-
-
+require_once( dirname( __FILE__ ) . '/ApdItem.php' );

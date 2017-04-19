@@ -20,12 +20,6 @@ class ApdCore {
 	protected $tpl_postfix = '}';
 
 	/**
-	 * table in database with product details
-	 */
-	//@todo get this dynamically from db
-	public $tablename;
-
-	/**
 	 * available template placeholders
 	 */
 	protected $tpl_placeholder = array(
@@ -196,33 +190,14 @@ class ApdCore {
 		$this->amazon_country_code        = AMAZON_COUNTRY_CODE;
 		$this->amazon_api_connection_type = AMAZON_API_CONNECTION_TYPE;
 
-		// register shortcode handlers
-		add_shortcode( 'apd-tpl', 'apd_shortcode_handler' );
-		add_shortcode( 'apd-data', 'apd_shortcode_handler' );
-
-		$this->setTablename(get_option('PRODUCTS_TABLE'));
 		$this->apdOptions();
 		$this->amazon = $this->connect();
 
 	}
 
 	/**
-	 * @return mixed
+	 * set APD options
 	 */
-	public function getTablename() {
-		return $this->tablename;
-	}
-
-	/**
-	 * @param mixed $tablename
-	 */
-	public function setTablename( $tablename ) {
-
-		global $wpdb;
-
-		$this->tablename = add_table_prefix( $tablename );;
-	}
-
 	protected function apdOptions() {
 
 		update_option( 'apd_use_short_amazon_links', $this->asa_use_short_amazon_links );
@@ -277,22 +252,6 @@ class ApdCore {
 	}
 
 	/**
-	 * get item information from database
-	 *
-	 * @param       string      ASIN
-	 *
-	 * @return      object      AsaZend_Service_Amazon_Item object
-	 */
-	public function getDbItem( $asin ) {
-
-		$apdDB = new ApdDatabase();
-
-		$item = $apdDB->getItem( $asin );
-
-		return $item;
-	}
-
-	/**
 	 * return
 	 *
 	 * @param $asin
@@ -300,7 +259,7 @@ class ApdCore {
 	 *
 	 * @return string
 	 */
-	public function getItem( $asin, $tpl = false ) {
+	public function getElement( $asin, $tpl = false, $tablename ) {
 		$item_html = '';
 
 		if ( $tpl == false ) {
@@ -309,7 +268,7 @@ class ApdCore {
 
 		$tpl_src = $this->getTpl( $tpl );
 
-		$item_html .= $this->parseTpl( trim( $asin ), $tpl_src );
+		$item_html .= $this->parseTpl( trim( $asin ), $tpl_src, $tablename );
 
 //		$item_html = $tpl_src;
 
@@ -377,10 +336,10 @@ class ApdCore {
 	 *
 	 * @return string
 	 */
-	public function parseTpl( $asin, $tpl ) {
+	public function parseTpl( $asin, $tpl, $tablename ) {
 
 		$html = '';
-
+		//@todo #lastedit tablename in parseTpl einbauen (oder in getElement?)
 		//--------------------------------------------------------------
 		//=replace with Amazon information
 		//--------------------------------------------------------------
@@ -581,71 +540,74 @@ class ApdCore {
 
 		$tpl = $html;
 
-		$apdDb = new ApdDatabase();
+		$apdDb   = new ApdDatabase();
+		$apdItem = new ApdItem( $tablename );
 
-		$dbPlaceholders = $apdDb->getTableColumns( $this->tablename, false );
-		$tableInfo      = $apdDb->getTableInfo( $this->tablename );
+		$dbPlaceholders = $apdDb->getTableColumns( $tablename, false );
+		$tableInfo      = $apdDb->getTableInfo( $tablename );
+
+		if($dbPlaceholders === false OR $tableInfo === false){
+			return false;
+		}
 
 		if ( ! empty( array_duplicates( $dbPlaceholders ) ) ) {
-			echo "IN";
 			$dbPlaceholders = array_remove_duplicates( $dbPlaceholders );
 		}
 
-		$dbItem = $this->getDbItem( $asin );
+		$dbItem = $apdItem->getItem( $asin );
 
-		//reformat advantage list
-		$advantagesArray = explode( "*", $dbItem->Advantages );
-		$advantagesHtml  = '';
+		if ( ! empty( $dbItem ) ) {
+			//reformat advantage list
+			$advantagesArray = explode( "*", $dbItem->Advantages );
+			$advantagesHtml  = '';
 
-		foreach ( $advantagesArray as $advantage ) {
+			foreach ( $advantagesArray as $advantage ) {
 
-			$advantagesHtml .= "<li>" . $advantage . "</li>";
+				$advantagesHtml .= "<li>" . $advantage . "</li>";
 
-		}
-		$dbItem->Advantages = $advantagesHtml;
+			}
+			$dbItem->Advantages = $advantagesHtml;
 
 
-		//reformat disadvantage list
-		$disadvantagesArray = explode( "*", $dbItem->Disadvantages );
-		$disadvantagesHtml  = '';
+			//reformat disadvantage list
+			$disadvantagesArray = explode( "*", $dbItem->Disadvantages );
+			$disadvantagesHtml  = '';
 
-		foreach ( $disadvantagesArray as $disadvantage ) {
+			foreach ( $disadvantagesArray as $disadvantage ) {
 
-			$disadvantagesHtml .= "<li>" . $disadvantage . "</li>";
+				$disadvantagesHtml .= "<li>" . $disadvantage . "</li>";
 
-		}
-		$dbItem->Disadvantages = $disadvantagesHtml;
+			}
+			$dbItem->Disadvantages = $disadvantagesHtml;
 
-		//convert bool values to checkbox
-		$i = 0;
-		foreach ( $dbItem as $key => $item ) {
+			//convert bool values to checkbox
+			$i = 0;
+			foreach ( $dbItem as $key => $item ) {
 
-			$fieldType = $tableInfo[ $i ++ ]['Type'];
+				$fieldType = $tableInfo[ $i ++ ]['Type'];
 
-			if ( type_is_boolean( $fieldType ) ) {
+				if ( type_is_boolean( $fieldType ) ) {
 
-				if ( field_is_true( $item ) ) {
-					$dbItem->$key = '<i class="check-square"></i>';
-				} else if ( field_is_false( $item ) ) {
-					$dbItem->$key = '<i class="minus-square"></i>';
+					if ( field_is_true( $item ) ) {
+						$dbItem->$key = '<i class="check-square"></i>';
+					} else if ( field_is_false( $item ) ) {
+						$dbItem->$key = '<i class="minus-square"></i>';
+					}
+
 				}
 
 			}
 
-		}
+			//convert decimal percent values to percent numbers
+			foreach ( $dbItem as $key => $item ) {
 
-		//convert decimal percent values to percent numbers
-		foreach ( $dbItem as $key => $item ) {
+				if ( preg_match( "/percent/i", $key ) ) {
 
-			if ( preg_match( "/percent/i", $key ) ) {
+					$dbItem->$key = $item * 100;
 
-				$dbItem->$key = $item * 100;
+				}
 
 			}
-
-		}
-
-		if ( ! empty( $dbItem ) ) {
 
 			$search = $this->getTplPlaceholders( $dbPlaceholders, true );
 

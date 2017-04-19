@@ -46,10 +46,10 @@ function path_for_local( $path ) {
  *
  * @return string
  */
-function apd_get_item( $asin, $tpl = false ) {
+function apd_get_item( $asin, $tpl = false, $tablename ) {
 	global $apd;
 
-	return $apd->getItem( $asin, $tpl );
+	return $apd->getElement( $asin, $tpl, $tablename );
 }
 
 /**
@@ -125,12 +125,21 @@ function apd_shortcode_handler( $atts, $asin = null, $code = "" ) {
 
 	global $apd;
 
+
 	$tpl = false;
-	if ( ! empty( $atts[0] ) ) {
-		$tpl = $atts[0];
+
+	if ( count( $atts )< 2 ) {
+		if ( APD_DEBUG ) {
+			echo "Missing attribute in shortcode: $asin<br>";
+		}
+
+		return false;
+	} else {
+		$tablename = $atts[0];
+		$tpl       = $atts[1];
 	}
 
-	return apd_get_item( $asin, $tpl );
+	return apd_get_item( $asin, $tpl, $tablename );
 }
 
 /**

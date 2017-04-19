@@ -1,10 +1,14 @@
 <?php
 
+// register shortcode handlers
+add_shortcode( 'apd-tpl', 'apd_shortcode_handler' );
+add_shortcode( 'apd-data', 'apd_shortcode_handler' );
+
 /**
  * Hook for adding admin menus
  */
 function setupBackendMenu() {
-	add_options_page( 'Affiliate Products DB Setup Menu', 'Affiliate Products', 'manage_options', MENU_SLUG, 'setupMenuPage' );
+	add_options_page( 'Affiliate Products DB Setup Menu', 'Affiliate Products', 'manage_options', APD_MENU_SLUG, 'setupMenuPage' );
 }
 
 add_action( 'admin_menu', 'setupBackendMenu' );
@@ -23,7 +27,7 @@ add_action( 'wp_enqueue_scripts', 'add_apd_stylesheets' );
  * include backend stylesheets
  */
 function add_apd_admin_stylesheets() {
-	if ( $_GET['page'] == MENU_SLUG ) {
+	if ( $_GET['page'] == APD_MENU_SLUG ) {
 		wp_enqueue_style( 'bootstrap', plugins_url( '/css/bootstrap.min.css', __FILE__ ) );
 		wp_enqueue_style( 'setupmenu', plugins_url( '/css/setupmenu.css', __FILE__ ) );
 	}
@@ -92,3 +96,24 @@ function handleUploadForm() {
 	}
 
 }
+
+/**
+ * Add settings link on plugin page
+ *
+ * @param $links
+ *
+ * @return mixed
+ */
+function apd_settings_link( $links ) {
+	krumo(APD_MENU_SLUG);
+	$url           = get_admin_url() . "options-general.php?page=".APD_MENU_SLUG;
+	$settings_link = '<a href="' . $url . '">' . __('Settings', 'textdomain') . '</a>';
+	array_unshift( $links, $settings_link );
+	return $links;
+}
+
+function apd_after_setup_theme() {
+	add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'apd_settings_link');
+}
+add_action ('after_setup_theme', 'apd_after_setup_theme');
+
