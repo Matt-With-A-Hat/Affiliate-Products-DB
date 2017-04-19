@@ -1,1 +1,0 @@
-=(N2*weighting!$B$2+Z2*weighting!$D$2+AG2*weighting!$E$2+AU2*weighting!$A$2+BT2*weighting!$C$2+CQ2*weighting!$G$2)
