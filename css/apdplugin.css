@@ -411,10 +411,16 @@ th {
         font-weight: 600; }
     .affiliate-product-db .infobox .infobox-top .amazon-area .amazon-shopping-cart i.fa-shopping-cart {
       margin-left: 5px; }
-  .affiliate-product-db .infobox .infobox-body > .row {
-    margin-top: 30px; }
-    .affiliate-product-db .infobox .infobox-body > .row .tabs .nav-tabs li i {
-      margin-right: 5px; }
+  .affiliate-product-db .infobox {
+    margin-bottom: 30px; }
+    .affiliate-product-db .infobox .infobox-body > .row {
+      margin-top: 30px; }
+      .affiliate-product-db .infobox .infobox-body > .row .tabs .nav-tabs li a {
+        border-left: none; }
+      .affiliate-product-db .infobox .infobox-body > .row .tabs .nav-tabs li i {
+        margin-right: 5px; }
+      .affiliate-product-db .infobox .infobox-body > .row .tabs .tab-content {
+        border: none; }
   .affiliate-product-db .tab-pane.overview .general-rating-row .row {
     margin-top: 10px;
     margin-bottom: 10px; }

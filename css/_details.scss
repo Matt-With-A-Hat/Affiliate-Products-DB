@@ -249,15 +249,24 @@
   * --------------------------------------------------------------
   */
   
-  .infobox .infobox-body {
-    > .row {
-      margin-top: 30px;
-      .tabs {
-        .nav-tabs {
-          li {
-            i {
-              margin-right: 5px;
+  .infobox {
+    margin-bottom: 30px;
+    .infobox-body {
+      > .row {
+        margin-top: 30px;
+        .tabs {
+          .nav-tabs {
+            li {
+              a {
+                border-left: none;
+              }
+              i {
+                margin-right: 5px;
+              }
             }
+          }
+          .tab-content {
+            border: none;
           }
         }
       }
