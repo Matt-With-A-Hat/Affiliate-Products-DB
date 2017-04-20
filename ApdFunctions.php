@@ -125,6 +125,9 @@ function apd_shortcode_handler( $atts, $asin = null, $code = "" ) {
 
 	global $apd;
 
+	if($atts[2] === 'disabled'){
+		return false;
+	}
 
 	$tpl = false;
 
