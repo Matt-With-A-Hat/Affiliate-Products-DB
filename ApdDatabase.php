@@ -51,7 +51,16 @@ class ApdDatabase {
 
 		$columns = $wpdb->get_results( $wpdb->prepare( $sql, $tablename ), ARRAY_A );
 
-		return $columns;
+		if ( empty( $columns ) ) {
+
+			if ( APD_DEBUG ) {
+				echo "Query didn't return any columns";
+			}
+
+			return false;
+		} else {
+			return $columns;
+		}
 
 	}
 
@@ -92,7 +101,9 @@ class ApdDatabase {
 
 		if ( empty( $columns ) ) {
 
-			echo "Query didn't return any columns";
+			if ( DEBUG ) {
+				echo "Query didn't return any columns";
+			}
 
 			return false;
 		} else {
@@ -168,25 +179,26 @@ class ApdDatabase {
 	}
 
 	/**
-	 * gets an item from the database
+	 * gets a row from the database
 	 *
 	 * @param $asin
 	 *
 	 * @return array|bool|null|object|void
 	 */
-	public function getItem( $asin ) {
+	public function getRow( $asin, $tablename, $type = OBJECT ) {
 
 		//@todo #lastedit
 		global $wpdb;
-		global $apd;
-		
-		$uniqeField   = $this->getUniqueColumn( $apd->tablename );
-		$sql          = "SELECT * FROM $apd->tablename WHERE $uniqeField = %s";
-		$this->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), OBJECT );
+
+		$uniqeField   = $this->getUniqueColumn( $tablename );
+		$sql          = "SELECT * FROM $tablename WHERE $uniqeField = %s";
+		$this->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), $type );
 
 		if ( empty( $this->dbItem ) ) {
 
-			echo "This item doesn't exist";
+			if ( APD_DEBUG ) {
+				echo "Entry does not exist: $asin<br>";
+			}
 
 			return false;
 
@@ -209,7 +221,9 @@ class ApdDatabase {
 
 		if ( ! is_array( $fields ) ) {
 
-			echo '$fields is not an array';
+			if ( APD_DEBUG ) {
+				echo '$fields is not an array<br>';
+			}
 
 			return false;
 
@@ -492,7 +506,7 @@ class ApdDatabase {
 			$fields = $this->getCsvFields( $csv );
 			$result .= $this->createTableFromFields( $tablename, $fields );
 
-		} else if ( DEBUG === true ) {
+		} else if ( APD_DEBUG === true ) {
 
 			//in debug always delete existing table when uploading a new csv
 			$result .= $this->dropTable( $tablename );
