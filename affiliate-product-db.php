@@ -42,6 +42,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 // Start up TablePress on WordPress's "init" action hook.
 //add_action( 'init', array( 'TablePress', 'run' ) );
 
+
 /**
  * APD Constants & Options
  */
@@ -108,3 +109,12 @@ require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/SimilarProduct.php';
 require_once( dirname( __FILE__ ) . '/ApdCore.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
 require_once( dirname( __FILE__ ) . '/ApdItem.php' );
+
+
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'apd_settings_link' );
+function apd_settings_link( array $links ) {
+	$url = get_admin_url() . "options-general.php?page=".APD_MENU_SLUG;
+	$settings_link = '<a href="' . $url . '">' . __('Settings', 'textdomain') . '</a>';
+	$links[] = $settings_link;
+	return $links;
+}
