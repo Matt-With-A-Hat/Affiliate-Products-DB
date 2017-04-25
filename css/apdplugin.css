@@ -26,8 +26,13 @@ Text Domain: apd
 /**
 * ----------------------- [ =Elements ] -----------------------
 */
-.btn .fa {
+.btn > .fa {
   margin-right: 10px; }
+
+span.amazon-stars {
+  color: #ffc200;
+  margin-right: 3px;
+  font-size: 18px; }
 
 /* =Base Rules */
 /**
@@ -413,33 +418,22 @@ th {
         font-weight: 600; }
     .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-shopping-cart i.fa-shopping-cart {
       margin-left: 5px; }
-<<<<<<< HEAD
-  .affiliate-product-db .infobox {
+  .affiliate-products-db .infobox {
     margin-bottom: 30px; }
-    .affiliate-product-db .infobox .infobox-body > .row {
+    .affiliate-products-db .infobox .infobox-body > .row {
       margin-top: 30px; }
-      .affiliate-product-db .infobox .infobox-body > .row .tabs .nav-tabs li a {
+      .affiliate-products-db .infobox .infobox-body > .row .tabs .nav-tabs li a {
         border-left: none; }
-      .affiliate-product-db .infobox .infobox-body > .row .tabs .nav-tabs li i {
+      .affiliate-products-db .infobox .infobox-body > .row .tabs .nav-tabs li i {
         margin-right: 5px; }
-      .affiliate-product-db .infobox .infobox-body > .row .tabs .tab-content {
+      .affiliate-products-db .infobox .infobox-body > .row .tabs .tab-content {
         border: none; }
-  .affiliate-product-db .tab-pane.overview .general-rating-row .row {
-=======
-  .affiliate-products-db .infobox .infobox-body > .row {
-    margin-top: 30px; }
-    .affiliate-products-db .infobox .infobox-body > .row .tabs .nav-tabs li i {
-      margin-right: 5px; }
   .affiliate-products-db .tab-pane.overview .general-rating-row .row {
->>>>>>> class-redesign
     margin-top: 10px;
     margin-bottom: 10px; }
     .affiliate-products-db .tab-pane.overview .general-rating-row .row .amazon-rating a {
       color: #000000; }
     .affiliate-products-db .tab-pane.overview .general-rating-row .row .amazon-rating i.fa.fa-caret-right {
-      margin-right: 3px; }
-    .affiliate-products-db .tab-pane.overview .general-rating-row .row .amazon-rating span.rating-stars {
-      color: #ffc200;
       margin-right: 3px; }
     .affiliate-products-db .tab-pane.overview .general-rating-row .row .amazon-rating .number-of-ratings {
       margin: 2px 10px; }
@@ -463,72 +457,6 @@ th {
         background-color: #2b7a00; }
     .affiliate-products-db .detailed-rating-row .row .progress-label {
       margin-bottom: 35px; }
-
-/**
-* --------------------------------------------------------------
-* ====================== [ =Small Item Template ] ======================
-* --------------------------------------------------------------
-*/
-.affiliate-products-db .infobox-thumbnail {
-  min-height: 170px; }
-* ====================== [ =Master Defintiions ] ======================
-* ----------------------- [ =Colors ] -----------------------
-* ----------------------- [ =Mixins ] -----------------------
-/**
-* ----------------------- [ =Elements ] -----------------------
-*/
-.btn .fa {
-  margin-right: 10px; }
-
-.affiliate-products-db {
-  .affiliate-products-db h2 {
-  .affiliate-products-db h3 {
-  .affiliate-products-db .vcenter {
-  .affiliate-products-db .label-promotion {
-  .affiliate-products-db .label-promotion:empty {
-  .affiliate-products-db .list-pro, .affiliate-products-db .list-con {
-    .affiliate-products-db .list-pro ul, .affiliate-products-db .list-con ul {
-      .affiliate-products-db .list-pro ul li, .affiliate-products-db .list-con ul li {
-  .affiliate-products-db .list-header {
-  .affiliate-products-db .list-pro li:before {
-  .affiliate-products-db .list-con li:before {
-  .affiliate-products-db .check-square:before {
-  .affiliate-products-db .minus-square:before {
-  .affiliate-products-db .plus-factor:before {
-  .affiliate-products-db .minus-factor:before {
-  .affiliate-products-db .infobox .infobox-top {
-    .affiliate-products-db .infobox .infobox-top > .row {
-      .affiliate-products-db .infobox .infobox-top > .row > div {
-    .affiliate-products-db .infobox .infobox-top .image-area .row {
-    .affiliate-products-db .infobox .infobox-top .image-area .infobox-thumbnail {
-      .affiliate-products-db .infobox .infobox-top .image-area .infobox-thumbnail .zoom {
-      .affiliate-products-db .infobox .infobox-top .image-area .infobox-thumbnail a {
-    .affiliate-products-db .infobox .infobox-top .image-area img.img-responsive {
-    .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-view-offer i.fa-caret-right {
-      .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-view-offer i.fa-caret-right span {
-    .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-view-offer i.fa-icon-eye {
-    .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-table-area {
-      .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-table-area i.fa .fa-thumbs-o-up {
-      .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-table-area .img-responsive .small-table {
-        .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-table-area .img-responsive .small-table i.fa-thumbs-o-up {
-    .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-price {
-      .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-price span.badge {
-    .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-shopping-cart i.fa-caret-right {
-      .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-shopping-cart i.fa-caret-right span {
-    .affiliate-products-db .infobox .infobox-top .amazon-area .amazon-shopping-cart i.fa-shopping-cart {
-    .affiliate-products-db .tab-pane.overview .general-rating-row .row .amazon-rating a {
-    .affiliate-products-db .tab-pane.overview .general-rating-row .row .amazon-rating i.fa.fa-caret-right {
-    .affiliate-products-db .tab-pane.overview .general-rating-row .row .amazon-rating span.rating-stars {
-    .affiliate-products-db .tab-pane.overview .general-rating-row .row .amazon-rating .number-of-ratings {
-      .affiliate-products-db .tab-pane.overview .general-rating-row .row .amazon-rating .number-of-ratings span {
-  .affiliate-products-db .tab-pane.details .row tr.category {
-    .affiliate-products-db .tab-pane.details .row tr.category td:nth-child(3) {
-  .affiliate-products-db .tab-pane.details .row tr td:nth-child(3) {
-  .affiliate-products-db .tab-pane.reviews .row iframe {
-  .affiliate-products-db .detailed-rating-row .row {
-    .affiliate-products-db .detailed-rating-row .row .progress {
-      .affiliate-products-db .detailed-rating-row .row .progress .progress-bar {
-    .affiliate-products-db .detailed-rating-row .row .progress-label {
 
 /**
 * --------------------------------------------------------------

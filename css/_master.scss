@@ -15,6 +15,7 @@ $gray-1: #323232;
 $gray-2: #ddd;
 $gray-3: #f5f5f5;
 $amazon-1: #ffc200;
+$amazon-2: #febd69;
 
 /**
 * ----------------------- [ =Mixins ] -----------------------
@@ -47,7 +48,13 @@ $amazon-1: #ffc200;
 */
 
 .btn {
-  .fa {
+  > .fa {
     margin-right: 10px;
   }
+}
+
+span.amazon-stars {
+  color: $amazon-1;
+  margin-right: 3px;
+  font-size: 18px;
 }

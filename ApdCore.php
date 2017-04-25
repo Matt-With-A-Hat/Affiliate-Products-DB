@@ -352,6 +352,7 @@ class ApdCore {
 
 		$amazonItem = $this->getAmazonItem( $asin );
 
+
 		if ( $amazonItem instanceof AsaZend_Service_Amazon_Item ) {
 
 			$search = $this->getTplPlaceholders( $amazonPlaceholders, true );
@@ -445,6 +446,30 @@ class ApdCore {
 
 			}
 
+			//make Amazon Stars prettier with font awesome
+			$ratingStarsHtml = '<span class="amazon-stars">';
+			$numberStars     = $customerReviews->averageRating;
+			$fullStar        = '<i class="fa fa-star"></i>';
+			$halfStar        = '<i class="fa fa-star-half-o"></i>';
+			$emptyStar       = '<i class="fa fa-star-o"></i>';
+
+
+			$nFullStars  = floor( $numberStars );
+			$nHalfStars  = $numberStars - $nFullStars;
+			$nEmptyStars = floor( 5 - $numberStars );
+
+			for ( $i = 0; $i < $nFullStars; $i ++ ) {
+				$ratingStarsHtml .= $fullStar;
+			}
+			if ( $nHalfStars != 0 ) {
+				$ratingStarsHtml .= $halfStar;
+			}
+			for ( $i = 0; $i < $nEmptyStars; $i ++ ) {
+				$ratingStarsHtml .= $emptyStar;
+			}
+
+			$ratingStarsHtml .= "</span>";
+
 
 			$totalOffers = $amazonItem->Offers->TotalNew + $amazonItem->Offers->TotalUsed +
 			               $amazonItem->Offers->TotalCollectible + $amazonItem->Offers->TotalRefurbished;
@@ -502,7 +527,8 @@ class ApdCore {
 				$amazonItem->Edition,
 				$customerReviews->averageRating,
 				( $customerReviews->totalReviews != null ) ? $customerReviews->totalReviews : 0,
-				( $customerReviews->imgTag != null ) ? $customerReviews->imgTag : '<img src="' . apd_plugins_url( 'img/stars-0.gif', __FILE__ ) . '" class="asa_rating_stars" />',
+//				( $customerReviews->imgTag != null ) ? $customerReviews->imgTag : '<img src="' . apd_plugins_url( 'img/stars-0.gif', __FILE__ ) . '" class="asa_rating_stars" />',
+				$ratingStarsHtml,
 				( $customerReviews->imgSrc != null ) ? $customerReviews->imgSrc : apd_plugins_url( 'img/stars-0.gif', __FILE__ ),
 				is_array( $amazonItem->Director ) ? implode( ', ', $amazonItem->Director ) : $amazonItem->Director,
 				is_array( $amazonItem->Actor ) ? implode( ', ', $amazonItem->Actor ) : $amazonItem->Actor,
@@ -533,7 +559,6 @@ class ApdCore {
 
 		}
 
-
 		//--------------------------------------------------------------
 		// =replace with database information
 		//--------------------------------------------------------------
@@ -546,7 +571,7 @@ class ApdCore {
 		$dbPlaceholders = $apdDb->getTableColumns( $tablename, false );
 		$tableInfo      = $apdDb->getTableInfo( $tablename );
 
-		if($dbPlaceholders === false OR $tableInfo === false){
+		if ( $dbPlaceholders === false OR $tableInfo === false ) {
 			return false;
 		}
 
@@ -841,7 +866,7 @@ class ApdCore {
 
 		$reviews = new ApdCustomerReviews( $item->ASIN, $iframeUrl, $cache );
 		if ( get_option( '_asa_get_rating_alternative' ) ) {
-			$reviews->setFindMethod( AsaCustomerReviews::FIND_METHOD_DOM );
+			$reviews->setFindMethod( ApdCustomerReviews::FIND_METHOD_DOM );
 		}
 		$reviews->load();
 
