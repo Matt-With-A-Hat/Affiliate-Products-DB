@@ -1,4 +1,7 @@
 <?php
+// set options
+update_option('_asa_get_rating_alternative', 2);
+
 
 // register shortcode handlers
 add_shortcode( 'apd-tpl', 'apd_shortcode_handler' );
