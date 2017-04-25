@@ -46,26 +46,28 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 /**
  * APD Constants & Options
  */
-define('APD_BASE_FILE', __FILE__);
-define('APD_LIB_DIR', dirname(__FILE__) . '/lib/');
-define('APD_MENU_SLUG', 'affiliate-products-db');
-define('APD_DEBUG', true);
+define( 'APD_BASE_FILE', __FILE__ );
+define( 'APD_LIB_DIR', dirname( __FILE__ ) . '/lib/' );
+define( 'APD_MENU_SLUG', 'affiliate-products-db' );
+define( 'APD_DEBUG', true );
+define( 'APD_ABSPATH', plugin_dir_path( __FILE__ ) );
+define( 'APD_BASENAME', plugin_basename( __FILE__ ) );
 
 
 /**
  * User Constants
  */
-define('AMAZON_API_KEY', 'AKIAIN6P6NRW4F3AFUCQ');
-define('AMAZON_API_SECRET_KEY', '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');
-define('AMAZON_TRACKING_ID', 'wwwmeinrasenr-21');
-define('AMAZON_COUNTRY_CODE', 'DE');
-define('AMAZON_API_CONNECTION_TYPE', 'http');
+define( 'AMAZON_API_KEY', 'AKIAIN6P6NRW4F3AFUCQ' );
+define( 'AMAZON_API_SECRET_KEY', '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' );
+define( 'AMAZON_TRACKING_ID', 'wwwmeinrasenr-21' );
+define( 'AMAZON_COUNTRY_CODE', 'DE' );
+define( 'AMAZON_API_CONNECTION_TYPE', 'http' );
 
 //csv import field types
-const BOOLEAN_TYPES = array('BOOLEAN', 'BOOL', 'TINYINT(1)');
-const TRUE_TYPES = array('JA', 'YES', 'TRUE', '1', 1);
-const FALSE_TYPES = array('NEIN', 'NO', 'FALSE', '0', 0);
-const NULL_TYPES = array('', 'NULL', NULL);
+const BOOLEAN_TYPES = array( 'BOOLEAN', 'BOOL', 'TINYINT(1)' );
+const TRUE_TYPES    = array( 'JA', 'YES', 'TRUE', '1', 1 );
+const FALSE_TYPES   = array( 'NEIN', 'NO', 'FALSE', '0', 0 );
+const NULL_TYPES    = array( '', 'NULL', null );
 
 /**
  * Krumo
@@ -80,7 +82,7 @@ require dirname( __FILE__ ) . '/debug.php';
 /**
  * APD Functions
  */
-require ( dirname( __FILE__ ) . '/ApdFunctions.php' );
+require( dirname( __FILE__ ) . '/ApdFunctions.php' );
 
 /**
  * functions fpr initializing plugin
@@ -111,10 +113,4 @@ require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
 require_once( dirname( __FILE__ ) . '/ApdItem.php' );
 
 
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'apd_settings_link' );
-function apd_settings_link( array $links ) {
-	$url = get_admin_url() . "options-general.php?page=".APD_MENU_SLUG;
-	$settings_link = '<a href="' . $url . '">' . __('Settings', 'textdomain') . '</a>';
-	$links[] = $settings_link;
-	return $links;
-}
+

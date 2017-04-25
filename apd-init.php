@@ -104,17 +104,13 @@ function handleUploadForm() {
  *
  * @return mixed
  */
-//function apd_settings_link( $links ) {
-//	krumo(APD_MENU_SLUG);
-//	$url           = get_admin_url() . "options-general.php?page=".APD_MENU_SLUG;
-//	$settings_link = '<a href="' . $url . '">' . __('Settings', 'textdomain') . '</a>';
-//	array_unshift( $links, $settings_link );
-//	return $links;
-//}
-//
-//function apd_after_setup_theme() {
-//	add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'apd_settings_link');
-//}
-//add_action ('after_setup_theme', 'apd_after_setup_theme');
 
+function apd_settings_link( array $links ) {
+	$url           = get_admin_url() . "options-general.php?page=" . APD_MENU_SLUG;
+	$settings_link = '<a href="' . $url . '">' . __( 'Settings', 'textdomain' ) . '</a>';
+	$links[]       = $settings_link;
 
+	return $links;
+}
+
+add_filter( 'plugin_action_links_' . APD_BASENAME, 'apd_settings_link' );
