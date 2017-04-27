@@ -3,123 +3,30 @@
 class ApdCore {
 
 	/**
-	 * this plugins home directory
-	 */
-	protected $plugin_dir = '/wp-content/plugins/affiliate-product-db';
-
-	protected $plugin_url = 'options-general.php?page=/affiliate-product-db.php';
-
-	/**
-	 * template placeholder prefix
-	 */
-	protected $tpl_prefix = '{$';
-
-	/**
-	 * template placeholder postfix
-	 */
-	protected $tpl_postfix = '}';
-
-	/**
-	 * available template placeholders
-	 */
-	protected $tpl_placeholder = array(
-		'ASIN',
-		'SmallImageUrl',
-		'SmallImageWidth',
-		'SmallImageHeight',
-		'MediumImageUrl',
-		'MediumImageWidth',
-		'MediumImageHeight',
-		'LargeImageUrl',
-		'LargeImageWidth',
-		'LargeImageHeight',
-		'Label',
-		'Manufacturer',
-		'Publisher',
-		'Studio',
-		'Title',
-		'AmazonUrl',
-		'TotalOffers',
-		'LowestOfferPrice',
-		'LowestOfferCurrency',
-		'LowestOfferFormattedPrice',
-		'LowestNewPrice',
-		'LowestNewOfferFormattedPrice',
-		'LowestUsedPrice',
-		'LowestUsedOfferFormattedPrice',
-		'AmazonPrice',
-		'AmazonPriceFormatted',
-		'ListPriceFormatted',
-		'AmazonCurrency',
-		'AmazonAvailability',
-		'AmazonLogoSmallUrl',
-		'AmazonLogoLargeUrl',
-		'DetailPageURL',
-		'Platform',
-		'ISBN',
-		'EAN',
-		'NumberOfPages',
-		'ReleaseDate',
-		'Binding',
-		'Author',
-		'Creator',
-		'Edition',
-		'AverageRating',
-		'TotalReviews',
-		'RatingStars',
-		'RatingStarsSrc',
-		'Director',
-		'Actors',
-		'RunningTime',
-		'Format',
-		'CustomRating',
-		'ProductDescription',
-		'AmazonDescription',
-		'Artist',
-		'Comment',
-		'PercentageSaved',
-		'Prime',
-		'PrimePic',
-		'ProductReviewsURL',
-		'IFrameUrl',
-		'TrackingId',
-		'AmazonShopURL',
-		'SalePriceAmount',
-		'SalePriceCurrencyCode',
-		'SalePriceFormatted',
-		'Class',
-		'OffersMainPriceAmount',
-		'OffersMainPriceCurrencyCode',
-		'OffersMainPriceFormattedPrice'
-	);
-
-	protected $amazon_tpl_placeholder;
-
-	/**
 	 * user's Amazon Access Key ID
 	 */
-	protected $amazon_api_key;
+	protected $amazonApiKey;
 
 	/**
 	 * user's Amazon Access Key ID
 	 * @var string
 	 */
-	protected $amazon_api_secret_key = '';
+	protected $amazonApiSecretKey = '';
 
 	/**
 	 * user's Amazon Tracking ID
 	 */
-	protected $amazon_tracking_id;
+	protected $amazonTrackingId;
 
 	/**
 	 * selected country code
 	 */
-	protected $amazon_country_code = 'DE';
+	protected $amazonCountryCode = 'DE';
 
 	/**
 	 * supported amazon country IDs
 	 */
-	protected $_amazon_valid_country_codes = array(
+	protected $amazonValidCountryCodes = array(
 		'BR',
 		'CA',
 		'DE',
@@ -137,7 +44,7 @@ class ApdCore {
 	/**
 	 * the international amazon product page urls
 	 */
-	protected $amazon_url = array(
+	protected $amazonUrl = array(
 		'BR' => 'http://www.amazon.com.br/exec/obidos/ASIN/%s/%s',
 		'CA' => 'http://www.amazon.ca/exec/obidos/ASIN/%s/%s',
 		'DE' => 'http://www.amazon.de/exec/obidos/ASIN/%s/%s',
@@ -155,43 +62,38 @@ class ApdCore {
 	/**
 	 * @var string
 	 */
-	protected $amazon_shop_url;
+	protected $amazonShopUrl;
 
 	/**
 	 * @var
 	 */
-	protected $amazon_api_connection_type = 'http';
+	protected $amazonApiConnectionType = 'http';
 
 	/**
 	 * the amazon webservice object
 	 */
-	protected $amazon;
-
-	/**
-	 * the cache object
-	 */
-	protected $cache;
+	protected $amazonWbs;
 
 	/**
 	 * APD Options
 	 */
-	protected $asa_use_short_amazon_links = true;
+	protected $asaUseShortAmazonLinks = true;
 
 	/**
-	 * constructor
+	 * ApdCore constructor.
 	 */
 	public function __construct() {
 
 		//use the defined connection
 		//@todo make connection data be filled out via a form
-		$this->amazon_api_key             = AMAZON_API_KEY;
-		$this->amazon_api_secret_key      = AMAZON_API_SECRET_KEY;
-		$this->amazon_tracking_id         = AMAZON_TRACKING_ID;
-		$this->amazon_country_code        = AMAZON_COUNTRY_CODE;
-		$this->amazon_api_connection_type = AMAZON_API_CONNECTION_TYPE;
+		$this->amazonApiKey            = AMAZON_API_KEY;
+		$this->amazonApiSecretKey      = AMAZON_API_SECRET_KEY;
+		$this->amazonTrackingId        = AMAZON_TRACKING_ID;
+		$this->amazonCountryCode       = AMAZON_COUNTRY_CODE;
+		$this->amazonApiConnectionType = AMAZON_API_CONNECTION_TYPE;
 
 		$this->apdOptions();
-		$this->amazon = $this->connect();
+		$this->amazonWbs = $this->connect();
 
 	}
 
@@ -200,7 +102,7 @@ class ApdCore {
 	 */
 	protected function apdOptions() {
 
-		update_option( 'apd_use_short_amazon_links', $this->asa_use_short_amazon_links );
+		update_option( 'apd_use_short_amazon_links', $this->asaUseShortAmazonLinks );
 
 	}
 
@@ -219,11 +121,11 @@ class ApdCore {
 
 		try {
 			$amazon = Apd_Service_Amazon::factory(
-				$this->amazon_api_key,
-				$this->amazon_api_secret_key,
-				$this->amazon_tracking_id,
-				$this->amazon_country_code,
-				$this->amazon_api_connection_type
+				$this->amazonApiKey,
+				$this->amazonApiSecretKey,
+				$this->amazonTrackingId,
+				$this->amazonCountryCode,
+				$this->amazonApiConnectionType
 			);
 
 			return $amazon;
@@ -237,22 +139,7 @@ class ApdCore {
 	}
 
 	/**
-	 * get item information from amazon webservice
-	 *
-	 * @param       string      ASIN
-	 *
-	 * @return      object      AsaZend_Service_Amazon_Item object
-	 */
-	public function getAmazonItem( $asin ) {
-		$result = $this->amazon->itemLookup( $asin, array(
-			'ResponseGroup' => 'ItemAttributes,Images,Offers,OfferListings,Reviews,EditorialReview,Tracks'
-		) );
-
-		return $result;
-	}
-
-	/**
-	 * return
+	 * Gets an element specified by the supplied asin, template and tablename.
 	 *
 	 * @param $asin
 	 * @param bool $tpl
@@ -344,24 +231,25 @@ class ApdCore {
 		//=replace with Amazon information
 		//--------------------------------------------------------------
 
-		$amazonPlaceholders = $this->tpl_placeholder;
+		$apdAmazonItem = new ApdAmazonItem($this->amazonWbs);
+
+		$amazonPlaceholders = $apdAmazonItem->tplPlaceholder;
 
 		if ( ! empty( array_duplicates( $amazonPlaceholders ) ) ) {
 			$amazonPlaceholders = array_remove_duplicates( $amazonPlaceholders );
 		}
 
-		$amazonItem = $this->getAmazonItem( $asin );
-
+		$amazonItem = $apdAmazonItem->getAmazonItem( $asin );
 
 		if ( $amazonItem instanceof AsaZend_Service_Amazon_Item ) {
 
-			$search = $this->getTplPlaceholders( $amazonPlaceholders, true );
+			$search = $apdAmazonItem->getTplPlaceholders( $amazonPlaceholders, true );
 
 			$trackingId = '';
 
-			if ( ! empty( $this->amazon_tracking_id ) ) {
+			if ( ! empty( $this->amazonTrackingId ) ) {
 				// set the user's tracking id
-				$trackingId = $this->amazon_tracking_id;
+				$trackingId = $this->amazonTrackingId;
 			}
 
 			// get the customer rating object
@@ -427,12 +315,12 @@ class ApdCore {
 			$listPriceFormatted = $amazonItem->ListPriceFormatted;
 
 			//Amazon logo URLs
-			if ( empty( $this->amazon_country_code ) ) {
+			if ( empty( $this->amazonCountryCode ) ) {
 
 				$amazonItem->AmazonLogoSmallUrl = apd_plugins_url( 'img/amazon_US_small.gif', __FILE__ );
 				$amazonItem->AmazonLogoLargeUrl = apd_plugins_url( 'img/amazon_US.gif', __FILE__ );
 
-			} else if ( $this->amazon_country_code == 'DE' ) {
+			} else if ( $this->amazonCountryCode == 'DE' ) {
 
 				$amazonItem->AmazonLogoSmallUrl = apd_plugins_url( 'img/amazon_DE_small.png', __FILE__ );
 				$amazonItem->AmazonLogoLargeUrl = apd_plugins_url( 'img/amazon_DE.png', __FILE__ );
@@ -634,7 +522,7 @@ class ApdCore {
 
 			}
 
-			$search = $this->getTplPlaceholders( $dbPlaceholders, true );
+			$search = $apdAmazonItem->getTplPlaceholders( $dbPlaceholders, true );
 
 			$replace = (array) $dbItem;
 
@@ -658,7 +546,7 @@ class ApdCore {
 			return $price;
 		}
 
-		if ( $this->amazon_country_code != 'JP' ) {
+		if ( $this->amazonCountryCode != 'JP' ) {
 			$price = (float) substr_replace( $price, '.', ( strlen( $price ) - 2 ), - 2 );
 		} else {
 			$price = intval( $price );
@@ -667,15 +555,15 @@ class ApdCore {
 		$dec_point     = '.';
 		$thousands_sep = ',';
 
-		if ( $this->amazon_country_code == 'DE' ||
-		     $this->amazon_country_code == 'FR'
+		if ( $this->amazonCountryCode == 'DE' ||
+		     $this->amazonCountryCode == 'FR'
 		) {
 			// taken the amazon websites as example
 			$dec_point     = ',';
 			$thousands_sep = '.';
 		}
 
-		if ( $this->amazon_country_code != 'JP' ) {
+		if ( $this->amazonCountryCode != 'JP' ) {
 			$price = number_format( $price, 2, $dec_point, $thousands_sep );
 		} else {
 			$price = number_format( $price, 0, $dec_point, $thousands_sep );
@@ -691,8 +579,8 @@ class ApdCore {
 	 */
 	public function getItemUrl( $item ) {
 		if ( get_option( 'apd_use_short_amazon_links' ) ) {
-			$url = sprintf( $this->amazon_url[ $this->amazon_country_code ],
-				$item->ASIN, $this->amazon_tracking_id );
+			$url = sprintf( $this->amazonUrl[ $this->amazonCountryCode ],
+				$item->ASIN, $this->amazonTrackingId );
 		} else {
 			$url = $item->DetailPageURL;
 		}
@@ -736,75 +624,26 @@ class ApdCore {
 	 * @return string
 	 */
 	public function getCountryCode() {
-		return $this->amazon_country_code;
+		return $this->amazonCountryCode;
 	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getAmazonShopUrl() {
-		if ( $this->amazon_shop_url == null ) {
-			$url                   = $this->amazon_url[ $this->getCountryCode() ];
-			$this->amazon_shop_url = current( explode( 'exec', $url ) );
+		if ( $this->amazonShopUrl == null ) {
+			$url                 = $this->amazonUrl[ $this->getCountryCode() ];
+			$this->amazonShopUrl = current( explode( 'exec', $url ) );
 		}
 
-		return $this->amazon_shop_url;
+		return $this->amazonShopUrl;
 	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getTrackingId() {
-		return $this->amazon_tracking_id;
-	}
-
-	/**
-	 * generates right placeholder format and returns them as array
-	 * optionally prepared for use as regex
-	 *
-	 * @param bool true for regex prepared
-	 *
-	 * @return array
-	 */
-	protected function getTplPlaceholders( $placeholders, $regex = false ) {
-		$result = array();
-		foreach ( $placeholders as $ph ) {
-			$result[] = $this->tpl_prefix . $ph . $this->tpl_postfix;
-		}
-		if ( $regex == true ) {
-			return array_map( array( $this, 'TplPlaceholderToRegex' ), $result );
-		}
-
-		return $result;
-	}
-
-	/**
-	 * excapes placeholder for regex usage
-	 *
-	 * @param string placehoder
-	 *
-	 * @return string escaped placeholder
-	 */
-	public function TplPlaceholderToRegex( $ph ) {
-		$search = array(
-			'{',
-			'}',
-			'$',
-			'-',
-			'>'
-		);
-
-		$replace = array(
-			'\{',
-			'\}',
-			'\$',
-			'\-',
-			'\>'
-		);
-
-		$ph = str_replace( $search, $replace, $ph );
-
-		return '/' . $ph . '/';
+		return $this->amazonTrackingId;
 	}
 
 	/**
@@ -875,4 +714,3 @@ class ApdCore {
 
 }
 
-$apd = new ApdCore();

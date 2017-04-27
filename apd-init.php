@@ -1,6 +1,6 @@
 <?php
 // set options
-update_option('_asa_get_rating_alternative', 2);
+update_option( '_asa_get_rating_alternative', 2 );
 
 
 // register shortcode handlers
@@ -52,16 +52,31 @@ add_action( 'admin_enqueue_scripts', 'add_apd_admin_scripts' );
  */
 function setupMenuPage() {
 
-	handleUploadForm();
+	handle_upload_form();
 
 	include( 'apd-setupmenu-tpl.php' );
 
 }
 
+// function to create the DB / Options / Defaults
+function apd_options_install() {
+	global $wpdb;
+	$apdDatabase    = new ApdDatabase();
+	$apdAmazonCache = new ApdAmazonCache();
+
+	$tablename = $apdDatabase->addTablePrefix( APD_AMAZON_ITEMS_TABLE );
+
+	$apdDatabase->createTableFromFields( APD_AMAZON_ITEMS_TABLE, $apdAmazonCache->getAmazonFields() );
+
+}
+
+// run the install scripts upon plugin activation
+register_activation_hook( APD_BASE_FILE, 'apd_options_install' );
+
 /**
  * Handles the form content
  */
-function handleUploadForm() {
+function handle_upload_form() {
 
 // First check if the file appears in the _FILES array
 	if ( isset( $_FILES['csv-file'] ) AND $_POST['table-name'] ) {
@@ -107,7 +122,6 @@ function handleUploadForm() {
  *
  * @return mixed
  */
-
 function apd_settings_link( array $links ) {
 	$url           = get_admin_url() . "options-general.php?page=" . APD_MENU_SLUG;
 	$settings_link = '<a href="' . $url . '">' . __( 'Settings', 'textdomain' ) . '</a>';

@@ -219,30 +219,33 @@ class ApdDatabase {
 	 */
 	public function createTableFromFields( $tablename, $fields ) {
 
-		if ( ! is_array( $fields ) ) {
+		$wpdb      = $this->db;
+		$tablename = add_table_prefix( $tablename );
 
+		if ( ! is_array( $fields ) ) {
 			if ( APD_DEBUG ) {
 				echo '$fields is not an array<br>';
 			}
-
 			return false;
+		}
 
+		if($this->tableExists($tablename)){
+			if(APD_DEBUG){
+				echo 'Can not create table, which already exists.';
+			}
+			return false;
 		}
 
 		foreach ( $fields as $key => $field ) {
-
 			$field          = esc_sql( $field );
 			$fields[ $key ] = str_replace( ' ', '', $field );
-
 		}
-
-		//@todo make fields unique that have "_unique"
-		$wpdb      = $this->db;
-		$tablename = add_table_prefix( $tablename );
 
 		$sql = 'CREATE TABLE IF NOT EXISTS ' . $tablename . ' (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY';
 
 		foreach ( $fields as $field ) {
+
+			$field = "`".esc_sql($field)."`";
 
 			if ( preg_match( "/_unique/", $field ) ) {
 
@@ -263,6 +266,10 @@ class ApdDatabase {
 		$sql .= ')';
 
 		$result = $wpdb->query( $sql );
+
+		//@todo use this instead of wpdb->query and test whether it works
+//		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+//		dbDelta( $sql );
 
 		return $result;
 
@@ -294,7 +301,7 @@ class ApdDatabase {
 	 *
 	 * @return mixed
 	 */
-	public function add_table_prefix( $tablename ) {
+	public function addTablePrefix( $tablename ) {
 
 		$wpdb = $this->db;
 

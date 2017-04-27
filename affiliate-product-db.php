@@ -46,13 +46,29 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 /**
  * APD Constants & Options
  */
-define( 'APD_BASE_FILE', __FILE__ );
-define( 'APD_LIB_DIR', dirname( __FILE__ ) . '/lib/' );
-define( 'APD_MENU_SLUG', 'affiliate-products-db' );
-define( 'APD_DEBUG', true );
-define( 'APD_ABSPATH', plugin_dir_path( __FILE__ ) );
+//D:\xampp\htdocs\mein_rasenroboter\wp-content\plugins\affiliate-product-db/
+define( 'APD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+
+//options-general.php?page=affiliate-product-db.php
+define( 'APD_PLUGIN_URL', 'options-general.php?page=affiliate-product-db.php' );
+
+//affiliate-product-db/affiliate-product-db.php
 define( 'APD_BASENAME', plugin_basename( __FILE__ ) );
 
+//D:\xampp\htdocs\mein_rasenroboter\wp-content\plugins\affiliate-product-db\affiliate-product-db.php
+define( 'APD_BASE_FILE', __FILE__ );
+
+//D:\xampp\htdocs\mein_rasenroboter\wp-content\plugins\affiliate-product-db/lib/
+define( 'APD_LIB_DIR', dirname( __FILE__ ) . '/lib/' );
+
+//affiliate-products-db
+define( 'APD_MENU_SLUG', 'affiliate-products-db' );
+
+//TRUE
+define( 'APD_DEBUG', true );
+
+//amazon_items
+define( 'APD_AMAZON_ITEMS_TABLE', 'amazon_items' );
 
 /**
  * User Constants
@@ -110,7 +126,8 @@ require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/SimilarProduct.php';
  */
 require_once( dirname( __FILE__ ) . '/ApdCore.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
+require_once( dirname( __FILE__ ) . '/ApdAmazonItem.php' );
+require_once( dirname( __FILE__ ) . '/ApdAmazonCache.php' );
 require_once( dirname( __FILE__ ) . '/ApdItem.php' );
 
-
-
+$apd = new ApdCore();
