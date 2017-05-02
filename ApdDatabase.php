@@ -102,7 +102,8 @@ class ApdDatabase {
 		if ( empty( $columns ) ) {
 
 			if ( DEBUG ) {
-				echo "Query didn't return any columns";
+				$error = "Query didn't return any columns";
+				print_error($error, __METHOD__, __LINE__);
 			}
 
 			return false;
@@ -151,6 +152,16 @@ class ApdDatabase {
 
 	}
 
+	public function getColumns( $tablename, $id, $array ) {
+		global $wpdb;
+
+		$sql = "SELECT * FROM $tablename WHERE $id = %s";
+
+		$result = $wpdb->get_results( $wpdb->prepare( $sql, $id ), ARRAY_A );
+
+		krumo( $result );
+	}
+
 	/**
 	 * Finds the first unique column specified with "unique" in a table
 	 *
@@ -179,60 +190,97 @@ class ApdDatabase {
 	}
 
 	/**
+	 * @param $tablename
+	 * @param $id
+	 * @param array|null $fields if provided, function will only return given fields. Must be set like $key => $field.
+	 * @param string $type
+	 *
+	 * @return array|null|object|void
+	 */
+	public function getRow( $tablename, $id, array $fields = null, $type = OBJECT ) {
+
+		global $wpdb;
+
+		if ( $fields !== null ) {
+			$type = ARRAY_A;
+		}
+
+		$sql = "SELECT * FROM $tablename WHERE id = %s";
+
+		$result = $wpdb->get_row( $wpdb->prepare( $sql, $id ), $type );
+
+		if ( $fields !== null AND is_array($result)) {
+			$fields = array_flip($fields);
+			$result = array_intersect_key( $result, $fields );
+		}
+
+		return $result;
+	}
+
+	/**
 	 * gets a row from the database
 	 *
-	 * @param $asin
+	 * @param $id
 	 *
 	 * @return array|bool|null|object|void
 	 */
-	public function getRow( $asin, $tablename, $type = OBJECT ) {
+	//old get row which didn't make sense here
+	/*public function getRow( $tablename, $id, $type = OBJECT ) {
 
-		//@todo #lastedit
 		global $wpdb;
 
 		$uniqeField   = $this->getUniqueColumn( $tablename );
 		$sql          = "SELECT * FROM $tablename WHERE $uniqeField = %s";
-		$this->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), $type );
+		$this->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $id ), $type );
 
 		if ( empty( $this->dbItem ) ) {
 
 			if ( APD_DEBUG ) {
-				echo "Entry does not exist: $asin<br>";
+				echo "Entry does not exist: $id<br>";
 			}
 
 			return false;
 
 		}
 
-
 		return $this->dbItem;
-
-	}
+	}*/
 
 	/**
 	 * create a table with the supplied tablename and an array of fields
+	 * _unique in field name will create a unique column
+	 * _bool in field name will create a boolean column
 	 *
 	 * @param $tablename
 	 * @param $fields
 	 *
 	 * @return bool
 	 */
-	public function createTableFromFields( $tablename, $fields ) {
+	public function createTableFromCsvFields( $tablename, $fields ) {
 
 		$wpdb      = $this->db;
 		$tablename = add_table_prefix( $tablename );
 
 		if ( ! is_array( $fields ) ) {
 			if ( APD_DEBUG ) {
-				echo '$fields is not an array<br>';
+				$error = '$fields is not an array<br>';
+				print_error( $error , __METHOD__, __LINE__);
 			}
+
 			return false;
 		}
 
-		if($this->tableExists($tablename)){
-			if(APD_DEBUG){
-				echo 'Can not create table, which already exists.';
+		if ( $this->tableExists( $tablename ) ) {
+			if ( APD_DEBUG_DEV ) {
+				$this->dropTable( $tablename );
+
+				return true;
 			}
+			if ( APD_DEBUG ) {
+				$error = "Can not create table $tablename, which already exists.";
+				print_error( $error , __METHOD__, __LINE__);
+			}
+
 			return false;
 		}
 
@@ -245,7 +293,7 @@ class ApdDatabase {
 
 		foreach ( $fields as $field ) {
 
-			$field = "`".esc_sql($field)."`";
+			$field = "`" . esc_sql( $field ) . "`";
 
 			if ( preg_match( "/_unique/", $field ) ) {
 
@@ -273,6 +321,62 @@ class ApdDatabase {
 
 		return $result;
 
+	}
+
+	/**
+	 * @param $tablename
+	 * @param $array
+	 *
+	 * @return bool|false|int
+	 */
+	public function createTableFromArray( $tablename, $array ) {
+		$wpdb      = $this->db;
+		$tablename = add_table_prefix( $tablename );
+
+		if ( ! is_array( $array ) ) {
+			if ( APD_DEBUG ) {
+				$error = '$fields is not an array<br>';
+				print_error( $error , __METHOD__, __LINE__);
+			}
+
+			return false;
+		}
+
+		if ( $this->tableExists( $tablename ) ) {
+			if ( APD_DEBUG_DEV ) {
+				$this->dropTable( $tablename );
+
+				return true;
+			}
+			if ( APD_DEBUG ) {
+				$error = "Can not create table $tablename, which already exists.";
+				print_error( $error, __METHOD__, __LINE__ );
+			}
+
+			return false;
+		}
+
+		foreach ( $array as $key => $field ) {
+			$field          = esc_sql( $field );
+			$fields[ $key ] = str_replace( ' ', '', $field );
+		}
+
+		$sql = 'CREATE TABLE IF NOT EXISTS ' . $tablename . ' (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY';
+
+		foreach ( $array as $field ) {
+			$field = "`" . esc_sql( $field ) . "`";
+			$sql .= ", $field TEXT";
+		}
+
+		$sql .= ')';
+
+		$result = $wpdb->query( $sql );
+
+		//@todo use this instead of wpdb->query and test whether it works
+//		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+//		dbDelta( $sql );
+
+		return $result;
 	}
 
 	/**
@@ -511,14 +615,14 @@ class ApdDatabase {
 		if ( $this->tableExists( $tablename ) === false ) {
 
 			$fields = $this->getCsvFields( $csv );
-			$result .= $this->createTableFromFields( $tablename, $fields );
+			$result .= $this->createTableFromCsvFields( $tablename, $fields );
 
-		} else if ( APD_DEBUG === true ) {
+		} else if ( APD_DEBUG_DEV === true ) {
 
 			//in debug always delete existing table when uploading a new csv
 			$result .= $this->dropTable( $tablename );
 			$fields = $this->getCsvFields( $csv );
-			$result .= $this->createTableFromFields( $tablename, $fields );
+			$result .= $this->createTableFromCsvFields( $tablename, $fields );
 
 		}
 

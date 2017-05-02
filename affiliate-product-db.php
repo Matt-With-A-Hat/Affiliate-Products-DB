@@ -64,11 +64,13 @@ define( 'APD_LIB_DIR', dirname( __FILE__ ) . '/lib/' );
 //affiliate-products-db
 define( 'APD_MENU_SLUG', 'affiliate-products-db' );
 
-//TRUE
 define( 'APD_DEBUG', true );
 
-//amazon_items
+//WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
+define( 'APD_DEBUG_DEV', true );
+
 define( 'APD_AMAZON_ITEMS_TABLE', 'amazon_items' );
+define( 'APD_CACHE_OPTIONS_TABLE', 'cache_options' );
 
 /**
  * User Constants
@@ -101,9 +103,10 @@ require dirname( __FILE__ ) . '/debug.php';
 require( dirname( __FILE__ ) . '/ApdFunctions.php' );
 
 /**
- * functions fpr initializing plugin
+ * functions for initializing plugin
  */
 require dirname( __FILE__ ) . '/apd-init.php';
+
 
 /**
  * AsaZend library
@@ -129,5 +132,10 @@ require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonItem.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonCache.php' );
 require_once( dirname( __FILE__ ) . '/ApdItem.php' );
+
+/**
+ * cronjob functions
+ */
+require dirname( __FILE__ ) . '/apd-cronjobs.php';
 
 $apd = new ApdCore();

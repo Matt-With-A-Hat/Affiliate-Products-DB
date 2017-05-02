@@ -2,7 +2,6 @@
 // set options
 update_option( '_asa_get_rating_alternative', 2 );
 
-
 // register shortcode handlers
 add_shortcode( 'apd-tpl', 'apd_shortcode_handler' );
 add_shortcode( 'apd-data', 'apd_shortcode_handler' );
@@ -58,33 +57,18 @@ function setupMenuPage() {
 
 }
 
-// function to create the DB / Options / Defaults
-function apd_options_install() {
-	global $wpdb;
-	$apdDatabase    = new ApdDatabase();
-	$apdAmazonCache = new ApdAmazonCache();
-
-	$tablename = $apdDatabase->addTablePrefix( APD_AMAZON_ITEMS_TABLE );
-
-	$apdDatabase->createTableFromFields( APD_AMAZON_ITEMS_TABLE, $apdAmazonCache->getAmazonFields() );
-
-}
-
-// run the install scripts upon plugin activation
-register_activation_hook( APD_BASE_FILE, 'apd_options_install' );
-
 /**
  * Handles the form content
  */
 function handle_upload_form() {
 
-// First check if the file appears in the _FILES array
+	// First check if the file appears in the _FILES array
 	if ( isset( $_FILES['csv-file'] ) AND $_POST['table-name'] ) {
 
 		$csv       = $_FILES['csv-file'];
 		$tablename = $_POST['table-name'];
 
-//check if file is csv an abort if not
+		//check if file is csv an abort if not
 		$csv_name = explode( ".", $csv['name'] );
 		$csv_name = $csv_name[1];
 
@@ -131,3 +115,28 @@ function apd_settings_link( array $links ) {
 }
 
 add_filter( 'plugin_action_links_' . APD_BASENAME, 'apd_settings_link' );
+
+
+/**
+ * installations routines triggered on plugin activation
+ */
+function apd_options_install() {
+	global $wpdb;
+
+	//create amazon items table
+	$apdDatabase    = new ApdDatabase();
+	$apdAmazonCache = new ApdAmazonCache();
+	$tablename      = APD_AMAZON_ITEMS_TABLE;
+
+	$apdDatabase->createTableFromArray( $tablename, $apdAmazonCache->getAmazonFields() );
+
+	//create amazon cache options table
+	$tablename = APD_CACHE_OPTIONS_TABLE;
+
+	$apdDatabase->createTableFromArray( $tablename, $apdAmazonCache->getOptionFields() );
+
+}
+
+register_activation_hook( APD_BASE_FILE, 'apd_options_install' );
+
+//add_action('wp', 'apd_options_install');

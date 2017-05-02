@@ -3,7 +3,7 @@
 /**
  * Class ApdItem
  */
-class ApdItem{
+class ApdItem {
 
 	/**
 	 * the tablename where the item can be found
@@ -12,9 +12,9 @@ class ApdItem{
 	 */
 	protected $tablename;
 
-	function __construct($tablename){
+	function __construct( $tablename ) {
 
-		$this->setTablename(($tablename));
+		$this->setTablename( ( $tablename ) );
 
 	}
 
@@ -29,7 +29,7 @@ class ApdItem{
 	 * @param mixed $tablename
 	 */
 	public function setTablename( $tablename ) {
-		$this->tablename = add_table_prefix($tablename);
+		$this->tablename = add_table_prefix( $tablename );
 	}
 
 	/**
@@ -41,9 +41,25 @@ class ApdItem{
 	 */
 	public function getItem( $asin ) {
 
-		$apdDB = new ApdDatabase();
+		global $wpdb;
+		$apdDatabase = new ApdDatabase();
 
-		$item = $apdDB->getRow( $asin, $this->tablename );
+		$uniqeField   = $apdDatabase->getUniqueColumn( $this->tablename );
+		$sql          = "SELECT * FROM $this->tablename WHERE $uniqeField = %s";
+		$apdDatabase->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), OBJECT );
+
+		if ( empty( $apdDatabase->dbItem ) ) {
+
+			if ( APD_DEBUG ) {
+				$error = "Entry does not exist: $asin";
+				print_error($error, __METHOD__, __LINE__);
+			}
+
+			return false;
+
+		}
+
+		return $apdDatabase->dbItem;
 
 		return $item;
 	}

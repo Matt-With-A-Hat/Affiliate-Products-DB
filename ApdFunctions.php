@@ -125,13 +125,13 @@ function apd_shortcode_handler( $atts, $asin = null, $code = "" ) {
 
 	global $apd;
 
-	if($atts[2] === 'disabled'){
+	if ( $atts[2] === 'disabled' ) {
 		return false;
 	}
 
 	$tpl = false;
 
-	if ( count( $atts )< 2 ) {
+	if ( count( $atts ) < 2 ) {
 		if ( APD_DEBUG ) {
 			echo "Missing attribute in shortcode: $asin<br>";
 		}
@@ -223,5 +223,11 @@ function add_table_prefix( $tablename ) {
 		return $wpdb->prefix . $tablename;
 
 	}
+
+}
+
+function print_error( $error, $function, $line ) {
+
+	echo "Error in " . $function . " line " . $line . ": " . $error . "<br>\n";
 
 }
