@@ -103,7 +103,7 @@ class ApdDatabase {
 
 			if ( DEBUG ) {
 				$error = "Query didn't return any columns";
-				print_error($error, __METHOD__, __LINE__);
+				print_error( $error, __METHOD__, __LINE__ );
 			}
 
 			return false;
@@ -207,10 +207,12 @@ class ApdDatabase {
 
 		$sql = "SELECT * FROM $tablename WHERE id = %s";
 
+//		krumo($wpdb->prepare($sql,$id));
+
 		$result = $wpdb->get_row( $wpdb->prepare( $sql, $id ), $type );
 
-		if ( $fields !== null AND is_array($result)) {
-			$fields = array_flip($fields);
+		if ( $fields !== null AND is_array( $result ) ) {
+			$fields = array_flip( $fields );
 			$result = array_intersect_key( $result, $fields );
 		}
 
@@ -264,7 +266,7 @@ class ApdDatabase {
 		if ( ! is_array( $fields ) ) {
 			if ( APD_DEBUG ) {
 				$error = '$fields is not an array<br>';
-				print_error( $error , __METHOD__, __LINE__);
+				print_error( $error, __METHOD__, __LINE__ );
 			}
 
 			return false;
@@ -278,7 +280,7 @@ class ApdDatabase {
 			}
 			if ( APD_DEBUG ) {
 				$error = "Can not create table $tablename, which already exists.";
-				print_error( $error , __METHOD__, __LINE__);
+				print_error( $error, __METHOD__, __LINE__ );
 			}
 
 			return false;
@@ -336,7 +338,7 @@ class ApdDatabase {
 		if ( ! is_array( $array ) ) {
 			if ( APD_DEBUG ) {
 				$error = '$fields is not an array<br>';
-				print_error( $error , __METHOD__, __LINE__);
+				print_error( $error, __METHOD__, __LINE__ );
 			}
 
 			return false;
@@ -346,14 +348,17 @@ class ApdDatabase {
 			if ( APD_DEBUG_DEV ) {
 				$this->dropTable( $tablename );
 
-				return true;
-			}
-			if ( APD_DEBUG ) {
+			} else if ( APD_DEBUG ) {
 				$error = "Can not create table $tablename, which already exists.";
 				print_error( $error, __METHOD__, __LINE__ );
+
+				return false;
+
+			} else {
+				return false;
+
 			}
 
-			return false;
 		}
 
 		foreach ( $array as $key => $field ) {

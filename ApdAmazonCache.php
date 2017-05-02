@@ -169,14 +169,12 @@ class ApdAmazonCache {
 		}
 
 		global $wpdb;
-		$data = $options;
+		$data              = $options;
 		$data['last_edit'] = current_time( 'mysql' );
-		$result = $wpdb->update( $this->tablenameOptions, $data, array( 'ID' => 0 ) );
 
-		//if no row was updated table is probably still empty
-		if ( $result == 0 ) {
-			$result = $wpdb->insert( $this->tablenameOptions, $data );
-		}
+		krumo( $data );
+
+		$result = $wpdb->update( $this->tablenameOptions, $data, array( 'ID' => 1 ) );
 
 		//error handling if database update didn't work
 		if ( $result == false ) {
@@ -194,14 +192,30 @@ class ApdAmazonCache {
 	public function getOptions() {
 
 		$apdDatabase = new ApdDatabase();
-		$result      = $apdDatabase->getRow( $this->tablenameOptions, 0, $this->getOptionFields() );
+		$result      = $apdDatabase->getRow( $this->tablenameOptions, 1, $this->getOptionFields() );
 
+		return $result;
 	}
 
-	public function getOption() {
+	public function getOption( $option ) {
 
+		$apdDatabase  = new ApdDatabase();
+		$optionsArray = array( 0 => $option );
+		$resultArray  = $apdDatabase->getRow( $this->tablenameOptions, 1, $optionsArray );
+		$result       = reset( $resultArray );
+
+		return $result;
 	}
 
+	/**
+	 * Creates a new apdcronjob and kills the old one, if the supplied interval is different from
+	 * the current one in options.
+	 *
+	 * If the supplied interval equals the current interval in options, a new apdcronjob will be
+	 * created, if there is no apdcronjob yet.
+	 *
+	 * @param $interval
+	 */
 	public function setCronjob( $interval ) {
 
 		$currentInterval = $this->getOption( 'interval_minutes' );
@@ -217,7 +231,8 @@ class ApdAmazonCache {
 			}
 
 		} else if ( APD_DEBUG ) {
-			echo "Cronjob couldn't be created";
+			$error = "Cronjob couldn't be created";
+			print_error( $error, __METHOD__, __LINE__ );
 		}
 	}
 

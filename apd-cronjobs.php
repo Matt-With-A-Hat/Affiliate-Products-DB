@@ -19,6 +19,25 @@ $apd_ac_options = array(
 );
 
 /**
+ * set up options for the apdcronjob
+ */
+function apdcronjob_bootstrap(){
+
+	global $apd_ac_options;
+	$amazonCache = new ApdAmazonCache();
+	$amazonCache->setOptions( $apd_ac_options );
+
+	//insert first row in cache options table
+	global $wpdb;
+	$data              = $apd_ac_options;
+	$data['last_edit'] = current_time( 'mysql' );
+	$result = $wpdb->insert( $amazonCache->getTablenameOptions(), $data );
+
+}
+
+register_activation_hook( APD_BASE_FILE, 'apdcronjob_bootstrap' );
+
+/**
  * creates custom cronjob intervals for every x minutes
  *
  * @param $schedules
@@ -39,9 +58,9 @@ function cron_add_minute( $schedules ) {
 add_filter( 'cron_schedules', 'cron_add_minute' );
 
 /**
- * schedule event for cronjobs
+ * schedule a cronjob if none is set on every pageload
  */
-function cronstarter_activation() {
+function apdcronjob_trigger() {
 
 	//----------------------- for testing -----------------------
 //	$interval = 1;
@@ -51,27 +70,24 @@ function cronstarter_activation() {
 //	}
 
 	//----------------------- deployment -----------------------
-	global $apd_ac_options;
 	$amazonCache = new ApdAmazonCache();
-	$amazonCache->setOptions( $apd_ac_options );
-
 	$amazonCache->setCronjob( $amazonCache->getOption( 'interval_minutes' ) );
 
 }
 
-add_action( 'wp', 'cronstarter_activation' );
+add_action( 'wp', 'apdcronjob_trigger' );
 
 /**
  * unschedule cronjobs upon plugin deactivation
  */
-function cronstarter_deactivate() {
+function apdcronjob_deactivate() {
 
 	$timestamp = wp_next_scheduled( 'apdcronjob' );
 	wp_unschedule_event( $timestamp, 'apdcronjob' );
 
 }
 
-register_deactivation_hook( APD_BASE_FILE, 'cronstarter_deactivate' );
+register_deactivation_hook( APD_BASE_FILE, 'apdcronjob_deactivate' );
 
 /**
  * cronjob trigger function
@@ -103,8 +119,9 @@ echo "<br>";
 echo "<br>";
 echo "<br>";
 $amazonCache = new ApdAmazonCache();
-$amazonCache->getOptions();
+$options = array( 'interval_minutes' => 42);
 
+$amazonCache->setOptions($options);
 
 //
 //krumo( wp_get_schedules() );
