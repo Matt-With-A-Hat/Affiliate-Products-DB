@@ -71,6 +71,10 @@ class ApdAmazonCache {
 		'CustomerReviewsIFrameUrl2'
 	);
 
+	protected $uniqueAmazonFields = array(
+		'ASIN'
+	);
+
 	protected $optionFields = array(
 		'interval_minutes',
 		'inc_interval_rate_minutes',
@@ -89,7 +93,7 @@ class ApdAmazonCache {
 
 	public function __construct() {
 
-		$this->setTablenameCache( APD_AMAZON_ITEMS_TABLE );
+		$this->setTablenameCache( APD_AMAZON_CACHE_TABLE );
 		$this->setTablenameOptions( APD_CACHE_OPTIONS_TABLE );
 
 	}
@@ -124,7 +128,6 @@ class ApdAmazonCache {
 		$this->tablenameOptions = $apdDatabase->addTablePrefix( $tablenameOptions );
 	}
 
-
 	/**
 	 * @return array
 	 */
@@ -132,6 +135,16 @@ class ApdAmazonCache {
 		return $this->amazonFields;
 	}
 
+	/**
+	 * @return array
+	 */
+	public function getUniqueAmazonFields() {
+		return $this->uniqueAmazonFields;
+	}
+
+	/**
+	 * @return array
+	 */
 	public function getOptionFields() {
 		return $this->optionFields;
 	}
@@ -171,10 +184,7 @@ class ApdAmazonCache {
 		global $wpdb;
 		$data              = $options;
 		$data['last_edit'] = current_time( 'mysql' );
-
-		krumo( $data );
-
-		$result = $wpdb->update( $this->tablenameOptions, $data, array( 'ID' => 1 ) );
+		$result            = $wpdb->update( $this->tablenameOptions, $data, array( 'ID' => 1 ) );
 
 		//error handling if database update didn't work
 		if ( $result == false ) {
@@ -189,6 +199,11 @@ class ApdAmazonCache {
 		return true;
 	}
 
+	/**
+	 * get all options
+	 *
+	 * @return array|null|object|void
+	 */
 	public function getOptions() {
 
 		$apdDatabase = new ApdDatabase();
@@ -197,6 +212,13 @@ class ApdAmazonCache {
 		return $result;
 	}
 
+	/**
+	 * get a single option
+	 *
+	 * @param $option
+	 *
+	 * @return mixed
+	 */
 	public function getOption( $option ) {
 
 		$apdDatabase  = new ApdDatabase();
@@ -236,20 +258,94 @@ class ApdAmazonCache {
 		}
 	}
 
+
+	/**
+	 * collect all Asins from product tables
+	 */
+	public function getAsinsFromTables() {
+
+	}
+
+	public function getNextItems() {
+
+	}
+
+	/**
+	 * get a number of items from Amazon API starting from last checked item
+	 *
+	 * @param $numberOfRows
+	 *
+	 * @return array|bool|string
+	 */
+	public function getAmazonItems( $numberOfRows ) {
+
+		global $wpdb;
+		$apdCore         = new ApdCore();
+		$amazonWbs       = $apdCore->amazonWbs;
+		$tablename       = $wpdb->prefix . 'products';                                       //@todo Fill amazonCache with ASINs from other tables. Check for new ASINs on every update
+		$lastCheckedItem = $this->getOption( 'last_checked_id' );
+		$lastCheckedItem = ( $lastCheckedItem === null ? 0 : $lastCheckedItem );
+
+		$sql = "SELECT Asin_unique FROM $tablename LIMIT $lastCheckedItem, $numberOfRows";   //@todo make this "ASIN". Remove underscores from DB
+
+		$asins = $wpdb->get_results( $sql, ARRAY_A );
+
+		if ( empty( $asins ) ) {
+			$error = "Query didn't return any results";
+			print_error( $error, __METHOD__, __LINE__ );
+
+			return false;
+		}
+
+		foreach ( $asins as $asin ) {
+			$asinArray[] = $asin['Asin_unique'];
+		}
+
+		foreach ( $asinArray as $asin ) {
+			$amazonItem    = new ApdAmazonItem( $amazonWbs );
+			$amazonItems[] = $amazonItem->getAmazonItem( $asin );
+
+			if ( "Amazon returns throttle error" === true ) {                                   //@todo catch if request throttle error occurs
+				return "throttle";
+			}
+		}
+
+		return $amazonItems;
+	}
+
 	public function updateCache() {
 
-		// request info from Amazon API
+		//methods updateCacheItems oder getAmazonItems
+
+		$numberPerUpdate = $this->getOption( 'items_per_update' );
+
+		// request info for x items from Amazon API
+		$amazonItems = $this->getAmazonItems( $numberPerUpdate );
 
 		// if something went wrong with the request
-		// create a new cronjob with increased interval
-		// set number of successful requests to 0
+		if ( $amazonItems == 'throttle' ) {
+			// create a new cronjob with increased interval
+			$currentInterval = $this->getOption( 'interval_minutes' );
+			$incInterval     = $this->getOption( 'inc_interval_rate_minutes' );
+			$this->setCronjob( $currentInterval + $incInterval );
 
-		// else if request contains amazon item
-		// get the last updated item and update the next x items
-		// set new last updated item
-		// increase number of successful attempts by 1
-		// if x request attempts were successful, decrease the interval by x
+			// set number of successful requests to 0
+			$options = array( 'successful_requests' => 0 );
+			$this->setOptions( $options );
 
+			//@todo #lastedit
+
+			// else
+		} else {
+			// get the last updated item and update the next x items
+
+			// set new last updated item
+			// increase number of successful attempts by 1
+			// if x request attempts were successful, decrease the interval by x
+		}
+
+
+		krumo( $amazonItems );
 	}
 }
 

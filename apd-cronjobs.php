@@ -6,24 +6,19 @@
  */
 
 /**
- * APD Amazon Cache Cronjob Constants
- *
- * These are options for the initial startup of the Amazon Cache cronjob
- */
-$apd_ac_options = array(
-	'interval_minutes'          => 1,                    //the initial interval to update the cache
-	'inc_interval_rate_minutes' => 5,           //the amount of minutes to add to the interval, if Amazon API returns throttle error
-	'dec_interval_rate_minutes' => 1,           //the amount of minutes to subtract  from the interval, to recover from a throtteling event
-	'dec_interval_every_nth'    => 20,             //the number of intervals after which an attempt to decrease the interval is made
-	'items_per_update'          => 10,                   //the number of Amazon items that are updated with each request
-);
-
-/**
  * set up options for the apdcronjob
  */
-function apdcronjob_bootstrap(){
+function apdcronjob_bootstrap() {
 
-	global $apd_ac_options;
+	//These are options for the initial startup of the Amazon Cache cronjob
+	$apd_ac_options = array(
+		'interval_minutes'          => 1,                    //the initial interval to update the cache
+		'inc_interval_rate_minutes' => 5,           //the amount of minutes to add to the interval, if Amazon API returns throttle error
+		'dec_interval_rate_minutes' => 1,           //the amount of minutes to subtract  from the interval, to recover from a throtteling event
+		'dec_interval_every_nth'    => 20,             //the number of intervals after which an attempt to decrease the interval is made
+		'items_per_update'          => 10,                   //the number of Amazon items that are updated with each request
+	);
+
 	$amazonCache = new ApdAmazonCache();
 	$amazonCache->setOptions( $apd_ac_options );
 
@@ -31,7 +26,7 @@ function apdcronjob_bootstrap(){
 	global $wpdb;
 	$data              = $apd_ac_options;
 	$data['last_edit'] = current_time( 'mysql' );
-	$result = $wpdb->insert( $amazonCache->getTablenameOptions(), $data );
+	$result            = $wpdb->insert( $amazonCache->getTablenameOptions(), $data );
 
 }
 
@@ -99,7 +94,7 @@ function update_amazon_items_cache() {
 	global $wpdb;
 
 	$time      = current_time( 'mysql' );
-	$tablename = $wpdb->prefix . APD_AMAZON_ITEMS_TABLE;
+	$tablename = $wpdb->prefix . APD_AMAZON_CACHE_TABLE;
 
 	$sql = "INSERT " . $tablename . " SET ASIN = \"" . $time . "\"";
 	$wpdb->query( $sql );
@@ -118,10 +113,14 @@ echo "<br>";
 echo "<br>";
 echo "<br>";
 echo "<br>";
+global $wpdb;
+$tablename   = $wpdb->prefix . APD_AMAZON_CACHE_TABLE;
 $amazonCache = new ApdAmazonCache();
-$options = array( 'interval_minutes' => 42);
+$database    = new ApdDatabase();
 
+$options = array( 'items_per_update' => 5 );
 $amazonCache->setOptions($options);
+$amazonCache->updateCache();
 
 //
 //krumo( wp_get_schedules() );

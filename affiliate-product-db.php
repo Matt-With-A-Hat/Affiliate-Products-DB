@@ -69,7 +69,11 @@ define( 'APD_DEBUG', true );
 //WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
 define( 'APD_DEBUG_DEV', true );
 
-define( 'APD_AMAZON_ITEMS_TABLE', 'amazon_items' );
+/**
+ * Table Names
+ */
+//define( 'APD_ITEMS_TABLE', 'amazon_items' );
+define( 'APD_AMAZON_CACHE_TABLE', 'amazon_cache' );
 define( 'APD_CACHE_OPTIONS_TABLE', 'cache_options' );
 
 /**

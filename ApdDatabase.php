@@ -65,7 +65,7 @@ class ApdDatabase {
 	}
 
 	/**
-	 * return all fields of a table as an array
+	 * return all columns of a table as an array
 	 * if suffix is false, strip everything after first underscore of column name
 	 *
 	 * @param $tablename
@@ -380,6 +380,58 @@ class ApdDatabase {
 		//@todo use this instead of wpdb->query and test whether it works
 //		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 //		dbDelta( $sql );
+
+		return $result;
+	}
+
+	public function setUniqueColumns( $tablename, array $uniqueColumns ) {
+
+		$tablename = $this->addTablePrefix( $tablename );
+
+		$tableColumns = $this->getTableColumns( $tablename );
+
+		if ( empty( $tableColumns ) ) {
+			if ( APD_DEBUG ) {
+				$error = "Tablecolumns $tablename couldn't be loaded";
+				print_error( $error, __METHOD__, __LINE__ );
+			}
+
+			return false;
+		}
+
+		if ( $errorColumns = array_diff( $uniqueColumns, $tableColumns ) ) {
+			if ( APD_DEBUG ) {
+				$errorColumn = reset( $errorColumns );
+				$error       = "$errorColumn is not a column of $tablename";
+				print_error( $error, __METHOD__, __LINE__ );
+			}
+
+			return false;
+		}
+
+		global $wpdb;
+
+		//change columns data type to varchar, so unique can be applied to columns
+		$sql = "ALTER TABLE $tablename ";
+		foreach ( $uniqueColumns as $uniqueColumn ) {
+			$sql .= "MODIFY COLUMN $uniqueColumn VARCHAR(255), ";
+		}
+		$sql = rtrim( $sql, " ," );
+
+		$sql .= ";";
+		$sql1 = $wpdb->prepare( $sql, $uniqueColumns );
+
+		//alter column so it is unique
+		$sql = "ALTER TABLE $tablename ADD UNIQUE (";
+		foreach ( $uniqueColumns as $uniqueColumn ) {
+			$sql .= "$uniqueColumn, ";
+		}
+		$sql = rtrim( $sql, " ," );
+		$sql .= ");";
+		$sql2   = $wpdb->prepare( $sql, $uniqueColumns );
+
+		$result = $wpdb->query( $wpdb->prepare( $sql1, $uniqueColumns) );
+		$result = $wpdb->query( $wpdb->prepare( $sql2, $uniqueColumns) );
 
 		return $result;
 	}

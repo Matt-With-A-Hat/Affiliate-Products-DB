@@ -1,0 +1,7 @@
+Die setUniqueColumns funktioniert noch nicht für arrays.
+
+Mit der Funktion soll die ASIN Spalte im AmazonCache unique gemacht werden.
+Hierdurch lässt sich die MYSQL REPLACE Methode benutzen, da die ASIN unique ist und so Doppelungen vermieden werden.
+
+ApdAmazonCache::updateCache muss fertig gestellt werden.
+Eventuell Methoden wie updateAmazonItem oder getAmazonItems auslagern

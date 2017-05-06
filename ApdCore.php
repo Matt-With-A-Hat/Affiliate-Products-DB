@@ -72,7 +72,7 @@ class ApdCore {
 	/**
 	 * the amazon webservice object
 	 */
-	protected $amazonWbs;
+	public $amazonWbs;
 
 	/**
 	 * APD Options

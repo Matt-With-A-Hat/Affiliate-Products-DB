@@ -124,16 +124,17 @@ function apd_options_install() {
 	global $wpdb;
 
 	//create amazon items table
-	$apdDatabase    = new ApdDatabase();
-	$apdAmazonCache = new ApdAmazonCache();
-	$tablename      = APD_AMAZON_ITEMS_TABLE;
+	$database    = new ApdDatabase();
+	$amazonCache = new ApdAmazonCache();
+	$tablename   = APD_AMAZON_CACHE_TABLE;
 
-	$apdDatabase->createTableFromArray( $tablename, $apdAmazonCache->getAmazonFields() );
+	$database->createTableFromArray( $tablename, $amazonCache->getAmazonFields() );
+	$database->setUniqueColumns( $tablename, $amazonCache->getUniqueAmazonFields() );
 
 	//create amazon cache options table
 	$tablename = APD_CACHE_OPTIONS_TABLE;
 
-	$apdDatabase->createTableFromArray( $tablename, $apdAmazonCache->getOptionFields() );
+	$database->createTableFromArray( $tablename, $amazonCache->getOptionFields() );
 
 }
 
