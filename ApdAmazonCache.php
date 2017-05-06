@@ -109,8 +109,8 @@ class ApdAmazonCache {
 	 * @param mixed $tablenameCache
 	 */
 	public function setTablenameCache( $tablenameCache ) {
-		$apdDatabase          = new ApdDatabase();
-		$this->tablenameCache = $apdDatabase->addTablePrefix( $tablenameCache );
+		$database             = new ApdDatabase( $tablenameCache );
+		$this->tablenameCache = $database->getTablename();
 	}
 
 	/**
@@ -124,8 +124,8 @@ class ApdAmazonCache {
 	 * @param mixed $tablenameOptions
 	 */
 	public function setTablenameOptions( $tablenameOptions ) {
-		$apdDatabase            = new ApdDatabase();
-		$this->tablenameOptions = $apdDatabase->addTablePrefix( $tablenameOptions );
+		$database               = new ApdDatabase($tablenameOptions);
+		$this->tablenameOptions = $database->getTablename();
 	}
 
 	/**
@@ -158,8 +158,8 @@ class ApdAmazonCache {
 	 */
 	public function setOptions( array $options ) {
 
-		$apdDatabase = new ApdDatabase();
-		$columns     = $apdDatabase->getTableColumns( $this->tablenameOptions );
+		$database = new ApdDatabase($this->tablenameOptions);
+		$columns  = $database->getTableColumns();
 
 		//@todo on new install cache options can only be empty
 		if ( $columns == false ) {
@@ -206,8 +206,8 @@ class ApdAmazonCache {
 	 */
 	public function getOptions() {
 
-		$apdDatabase = new ApdDatabase();
-		$result      = $apdDatabase->getRow( $this->tablenameOptions, 1, $this->getOptionFields() );
+		$database = new ApdDatabase($this->tablenameOptions);
+		$result   = $database->getRow( 1, $this->getOptionFields() );
 
 		return $result;
 	}
@@ -221,9 +221,9 @@ class ApdAmazonCache {
 	 */
 	public function getOption( $option ) {
 
-		$apdDatabase  = new ApdDatabase();
+		$database     = new ApdDatabase($this->tablenameOptions);
 		$optionsArray = array( 0 => $option );
-		$resultArray  = $apdDatabase->getRow( $this->tablenameOptions, 1, $optionsArray );
+		$resultArray  = $database->getRow( 1, $optionsArray );
 		$result       = reset( $resultArray );
 
 		return $result;

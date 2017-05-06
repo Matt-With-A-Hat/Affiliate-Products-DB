@@ -81,7 +81,8 @@ function handle_upload_form() {
 
 		$apdDB = new ApdDatabase( $tablename );
 
-		$result = $apdDB->addCsvToDatabase( $tablename, $csv );
+
+		$result = $apdDB->addCsvToDatabase( $csv );
 
 		if ( $result ) {
 			update_option( 'PRODUCTS_TABLE', $tablename );
@@ -124,17 +125,17 @@ function apd_options_install() {
 	global $wpdb;
 
 	//create amazon items table
-	$database    = new ApdDatabase();
-	$amazonCache = new ApdAmazonCache();
 	$tablename   = APD_AMAZON_CACHE_TABLE;
+	$database    = new ApdDatabase( $tablename );
+	$amazonCache = new ApdAmazonCache();
 
-	$database->createTableFromArray( $tablename, $amazonCache->getAmazonFields() );
-	$database->setUniqueColumns( $tablename, $amazonCache->getUniqueAmazonFields() );
+	$database->createTableFromArray( $amazonCache->getAmazonFields() );
+	$database->setUniqueColumns( $amazonCache->getUniqueAmazonFields() );
 
 	//create amazon cache options table
 	$tablename = APD_CACHE_OPTIONS_TABLE;
 
-	$database->createTableFromArray( $tablename, $amazonCache->getOptionFields() );
+	$database->createTableFromArray( $amazonCache->getOptionFields() );
 
 }
 

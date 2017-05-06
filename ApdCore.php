@@ -231,7 +231,7 @@ class ApdCore {
 		//=replace with Amazon information
 		//--------------------------------------------------------------
 
-		$apdAmazonItem = new ApdAmazonItem($this->amazonWbs);
+		$apdAmazonItem = new ApdAmazonItem( $this->amazonWbs );
 
 		$amazonPlaceholders = $apdAmazonItem->tplPlaceholder;
 
@@ -453,11 +453,11 @@ class ApdCore {
 
 		$tpl = $html;
 
-		$apdDb   = new ApdDatabase();
-		$apdItem = new ApdItem( $tablename );
+		$database = new ApdDatabase( $tablename );
+		$apdItem  = new ApdItem( $tablename );
 
-		$dbPlaceholders = $apdDb->getTableColumns( $tablename, false );
-		$tableInfo      = $apdDb->getTableInfo( $tablename );
+		$dbPlaceholders = $database->getTableColumns( false );
+		$tableInfo      = $database->getTableInfo();
 
 		if ( $dbPlaceholders === false OR $tableInfo === false ) {
 			return false;

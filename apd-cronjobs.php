@@ -116,7 +116,6 @@ echo "<br>";
 global $wpdb;
 $tablename   = $wpdb->prefix . APD_AMAZON_CACHE_TABLE;
 $amazonCache = new ApdAmazonCache();
-$database    = new ApdDatabase();
 
 $options = array( 'items_per_update' => 5 );
 $amazonCache->setOptions($options);

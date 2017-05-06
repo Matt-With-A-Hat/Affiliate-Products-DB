@@ -42,24 +42,24 @@ class ApdItem {
 	public function getItem( $asin ) {
 
 		global $wpdb;
-		$apdDatabase = new ApdDatabase();
+		$database = new ApdDatabase( $this->tablename );
 
-		$uniqeField   = $apdDatabase->getUniqueColumn( $this->tablename );
-		$sql          = "SELECT * FROM $this->tablename WHERE $uniqeField = %s";
-		$apdDatabase->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), OBJECT );
+		$uniqeField       = $database->getUniqueColumn();
+		$sql              = "SELECT * FROM $this->tablename WHERE $uniqeField = %s";
+		$database->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), OBJECT );
 
-		if ( empty( $apdDatabase->dbItem ) ) {
+		if ( empty( $database->dbItem ) ) {
 
 			if ( APD_DEBUG ) {
 				$error = "Entry does not exist: $asin";
-				print_error($error, __METHOD__, __LINE__);
+				print_error( $error, __METHOD__, __LINE__ );
 			}
 
 			return false;
 
 		}
 
-		return $apdDatabase->dbItem;
+		return $database->dbItem;
 
 		return $item;
 	}

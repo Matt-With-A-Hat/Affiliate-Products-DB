@@ -26,11 +26,36 @@ class ApdDatabase {
 	 */
 	protected $tablename;
 
-	public function __construct() {
+	public function __construct( $tablename ) {
 
 		global $wpdb;
 		$this->db = $wpdb;
+		$this->setTablename( $tablename );
 
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getTablename() {
+		return $this->tablename;
+	}
+
+	/**
+	 * sets the tablename and adds WP table prefix if it's missing
+	 *
+	 * @param mixed $tablename
+	 */
+	public function setTablename( $tablename ) {
+		$wpdb = $this->db;
+
+		$tablenameArray = explode( "_", $tablename );
+
+		if ( strtolower( $tablenameArray[0] . "_" ) == strtolower( $wpdb->prefix ) ) {
+			$this->tablename = $tablename;
+		} else {
+			$this->tablename = $wpdb->prefix . $tablename;
+		}
 	}
 
 	/**
@@ -42,10 +67,10 @@ class ApdDatabase {
 	 *
 	 * @return array
 	 */
-	public function getTableInfo( $tablename ) {
+	public function getTableInfo() {
 
 		$wpdb      = $this->db;
-		$tablename = add_table_prefix( $tablename );
+		$tablename = $this->tablename;
 
 		$sql = "SHOW fields FROM $tablename";
 
@@ -72,22 +97,12 @@ class ApdDatabase {
 	 *
 	 * @return array
 	 */
-	public function getTableColumns( $tablename, $suffix = true ) {
+	public function getTableColumns( $suffix = true ) {
 
 		$wpdb      = $this->db;
-		$tablename = add_table_prefix( $tablename );
+		$tablename = $this->tablename;
 
 		$sql = "SELECT * FROM $tablename";
-
-
-//		$sql = "SELECT * FROM $tablename";
-//		if($wpdb->query($sql)){
-//			echo "Connection works";
-//		}else{
-//			krumo($wpdb->query($sql));
-//			exit( krumo( $wpdb->last_query ) );
-//
-//		}
 
 		foreach ( $wpdb->get_col( "DESC " . $tablename, 0 ) as $columnname ) {
 
@@ -106,7 +121,8 @@ class ApdDatabase {
 				print_error( $error, __METHOD__, __LINE__ );
 			}
 
-			return false;
+			return array( 0 => "Empty query result" );
+
 		} else {
 			return $columns;
 		}
@@ -152,8 +168,9 @@ class ApdDatabase {
 
 	}
 
-	public function getColumns( $tablename, $id, $array ) {
+	public function getColumns( $id, $array ) {
 		global $wpdb;
+		$tablename = $this->tablename;
 
 		$sql = "SELECT * FROM $tablename WHERE $id = %s";
 
@@ -171,10 +188,10 @@ class ApdDatabase {
 	 * @internal param $table
 	 *
 	 */
-	public function getUniqueColumn( $tablename ) {
+	public function getUniqueColumn() {
 
-		$tablename = add_table_prefix( $tablename );
-		$columns   = $this->getTableColumns( $tablename, true );
+		$tablename = $this->tablename;
+		$columns   = $this->getTableColumns( true );
 
 		foreach ( $columns as $column ) {
 			if ( preg_match( "/_unique/", $column ) ) {
@@ -197,9 +214,10 @@ class ApdDatabase {
 	 *
 	 * @return array|null|object|void
 	 */
-	public function getRow( $tablename, $id, array $fields = null, $type = OBJECT ) {
+	public function getRow( $id, array $fields = null, $type = OBJECT ) {
 
 		global $wpdb;
+		$tablename = $this->tablename;
 
 		if ( $fields !== null ) {
 			$type = ARRAY_A;
@@ -258,10 +276,10 @@ class ApdDatabase {
 	 *
 	 * @return bool
 	 */
-	public function createTableFromCsvFields( $tablename, $fields ) {
+	public function createTableFromCsvFields( $fields ) {
 
 		$wpdb      = $this->db;
-		$tablename = add_table_prefix( $tablename );
+		$tablename = $this->tablename;
 
 		if ( ! is_array( $fields ) ) {
 			if ( APD_DEBUG ) {
@@ -272,9 +290,9 @@ class ApdDatabase {
 			return false;
 		}
 
-		if ( $this->tableExists( $tablename ) ) {
+		if ( $this->tableExists() ) {
 			if ( APD_DEBUG_DEV ) {
-				$this->dropTable( $tablename );
+				$this->dropTable();
 
 				return true;
 			}
@@ -331,9 +349,9 @@ class ApdDatabase {
 	 *
 	 * @return bool|false|int
 	 */
-	public function createTableFromArray( $tablename, $array ) {
+	public function createTableFromArray( $array ) {
 		$wpdb      = $this->db;
-		$tablename = add_table_prefix( $tablename );
+		$tablename = $this->tablename;
 
 		if ( ! is_array( $array ) ) {
 			if ( APD_DEBUG ) {
@@ -344,9 +362,9 @@ class ApdDatabase {
 			return false;
 		}
 
-		if ( $this->tableExists( $tablename ) ) {
+		if ( $this->tableExists() ) {
 			if ( APD_DEBUG_DEV ) {
-				$this->dropTable( $tablename );
+				$this->dropTable();
 
 			} else if ( APD_DEBUG ) {
 				$error = "Can not create table $tablename, which already exists.";
@@ -384,11 +402,11 @@ class ApdDatabase {
 		return $result;
 	}
 
-	public function setUniqueColumns( $tablename, array $uniqueColumns ) {
+	public function setUniqueColumns( array $uniqueColumns ) {
 
-		$tablename = $this->addTablePrefix( $tablename );
+		$tablename = $this->tablename;
 
-		$tableColumns = $this->getTableColumns( $tablename );
+		$tableColumns = $this->getTableColumns();
 
 		if ( empty( $tableColumns ) ) {
 			if ( APD_DEBUG ) {
@@ -428,10 +446,10 @@ class ApdDatabase {
 		}
 		$sql = rtrim( $sql, " ," );
 		$sql .= ");";
-		$sql2   = $wpdb->prepare( $sql, $uniqueColumns );
+		$sql2 = $wpdb->prepare( $sql, $uniqueColumns );
 
-		$result = $wpdb->query( $wpdb->prepare( $sql1, $uniqueColumns) );
-		$result = $wpdb->query( $wpdb->prepare( $sql2, $uniqueColumns) );
+		$result = $wpdb->query( $wpdb->prepare( $sql1, $uniqueColumns ) );
+		$result = $wpdb->query( $wpdb->prepare( $sql2, $uniqueColumns ) );
 
 		return $result;
 	}
@@ -443,10 +461,10 @@ class ApdDatabase {
 	 *
 	 * @return false|int
 	 */
-	public function dropTable( $tablename ) {
+	public function dropTable() {
 
 		$wpdb      = $this->db;
-		$tablename = add_table_prefix( $tablename );
+		$tablename = $this->tablename;
 
 		$sql = "DROP TABLE IF EXISTS $tablename";
 
@@ -456,41 +474,16 @@ class ApdDatabase {
 	}
 
 	/**
-	 * adds WP table prefix if it's missing
-	 *
-	 * @param $tablename
-	 *
-	 * @return mixed
-	 */
-	public function addTablePrefix( $tablename ) {
-
-		$wpdb = $this->db;
-
-		$tablenameArray = explode( "_", $tablename );
-
-		if ( strtolower( $tablenameArray[0] . "_" ) == strtolower( $wpdb->prefix ) ) {
-
-			return $tablename;
-
-		} else {
-
-			return $wpdb->prefix . $tablename;
-
-		}
-
-	}
-
-	/**
 	 * check if supplied table exists in wordpress
 	 *
 	 * @param $tablename
 	 *
 	 * @return bool
 	 */
-	public function tableExists( $tablename ) {
+	public function tableExists() {
 
 		$wpdb      = $this->db;
-		$tablename = add_table_prefix( $tablename );
+		$tablename = $this->tablename;
 
 		$sql            = "SHOW TABLES LIKE '%'";
 		$existingTables = $wpdb->get_results( $sql, ARRAY_N );
@@ -519,7 +512,9 @@ class ApdDatabase {
 	 *
 	 * @return bool
 	 */
-	public function insertCsv( $csv, $tablename ) {
+	public function insertCsv( $csv ) {
+
+		$tablename = $this->tablename;
 
 		if ( is_array( $csv ) ) {
 			$csv = $csv['tmp_name'];
@@ -529,8 +524,8 @@ class ApdDatabase {
 		$wpdb        = $this->db;
 		$tablename   = add_table_prefix( $tablename );
 		$csv         = new SplFileObject( $csv );
-		$tableFields = $this->getTableColumns( $tablename );
-		$tableInfo   = $this->getTableInfo( $tablename );
+		$tableFields = $this->getTableColumns();
+		$tableInfo   = $this->getTableInfo();
 
 		$csv->setFlags( SplFileObject::READ_CSV );
 		$csvArray = array();
@@ -609,14 +604,14 @@ class ApdDatabase {
 	 *
 	 * @return bool
 	 */
-	public function removeRedundantValues( $tablename ) {
+	public function removeRedundantValues() {
 
 		$wpdb      = $this->db;
-		$tablename = add_table_prefix( $tablename );
+		$tablename = $this->tablename;
 
 		$uniqueFieldExists = false;
 
-		$fields = $this->getTableColumns( $tablename );
+		$fields = $this->getTableColumns();
 
 		foreach ( $fields as $field ) {
 
@@ -655,11 +650,11 @@ class ApdDatabase {
 	 *
 	 * @return bool
 	 */
-	public function addCsvToDatabase( $tablename, $csv ) {
+	public function addCsvToDatabase( $csv ) {
 
 		//@TODO check $tablename for injection!
 
-		$tablename = add_table_prefix( $tablename );
+		$tablename = $this->tablename;
 
 		if ( is_array( $csv ) ) {
 			$csv = $csv['tmp_name'];
@@ -669,22 +664,22 @@ class ApdDatabase {
 
 		//create table if it doesn't exist yet
 		$result = true;
-		if ( $this->tableExists( $tablename ) === false ) {
+		if ( $this->tableExists() === false ) {
 
 			$fields = $this->getCsvFields( $csv );
-			$result .= $this->createTableFromCsvFields( $tablename, $fields );
+			$result .= $this->createTableFromCsvFields( $fields );
 
 		} else if ( APD_DEBUG_DEV === true ) {
 
 			//in debug always delete existing table when uploading a new csv
-			$result .= $this->dropTable( $tablename );
+			$result .= $this->dropTable();
 			$fields = $this->getCsvFields( $csv );
-			$result .= $this->createTableFromCsvFields( $tablename, $fields );
+			$result .= $this->createTableFromCsvFields( $fields );
 
 		}
 
-		$result .= $this->insertCsv( $csv, $tablename );
-		$result .= $this->removeRedundantValues( $tablename );
+		$result .= $this->insertCsv( $csv );
+		$result .= $this->removeRedundantValues();
 
 		if ( $result === false ) {
 
