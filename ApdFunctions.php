@@ -212,16 +212,27 @@ function add_table_prefix( $tablename ) {
 
 	global $wpdb;
 
+	$apdTablePrefix = APD_TABLE_PREFIX;
+
 	$tablenameArray = explode( "_", $tablename );
 
-	if ( $tablenameArray[0] . "_" == $wpdb->prefix ) {
+	$tablename1 = strtolower( $tablenameArray[0] );
+	$tablename2 = strtolower( $tablenameArray[1] );
+	$tablename3 = strtolower( $tablenameArray[2] );
 
+	$desiredPrefix = strtolower( $wpdb->prefix . $apdTablePrefix );
+
+	if ( $tablename1 . "_" . $tablename2 . "_" == $desiredPrefix ) {
+		//tablename has both prefixes
 		return $tablename;
 
+	} else if ( $tablename1 . "_" . $apdTablePrefix == $desiredPrefix ) {
+		//tablename was WordPress prefix
+		return $tablename = $wpdb->prefix . $apdTablePrefix . $tablename2;
+
 	} else {
-
-		return $wpdb->prefix . $tablename;
-
+		//tablename has no prefix
+		return $tablename = $wpdb->prefix . $apdTablePrefix . $tablename;
 	}
 
 }

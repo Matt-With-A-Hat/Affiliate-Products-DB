@@ -114,15 +114,14 @@ echo "<br>";
 echo "<br>";
 echo "<br>";
 global $wpdb;
-$tablename   = $wpdb->prefix . APD_AMAZON_CACHE_TABLE;
-$amazonCache = new ApdAmazonCache();
 
-$options = array( 'items_per_update' => 5 );
-$amazonCache->setOptions($options);
-$amazonCache->updateCache();
+$databaseService = new ApdDatabaseService();
+$x               = $databaseService->getProductTables();
+krumo( $x );
 
-//
-//krumo( wp_get_schedules() );
+//$databaseService->updateTableList('hallo2','test');
+
+//$databaseService->updateTableList('hallo', 'products');
 
 /**
  * // * * ----------------------- [ =for debugging ] -----------------------

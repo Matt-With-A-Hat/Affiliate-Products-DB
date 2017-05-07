@@ -86,13 +86,15 @@ function handle_upload_form() {
 
 		if ( $result ) {
 			update_option( 'PRODUCTS_TABLE', $tablename );
+
+			echo "CSV upload successful. Table $tablename was created.";
 		}
 
 		return $result;
 
 	} else {
 
-		echo "Please fill out missing fields";
+		echo "Please fill out missing fields!";
 
 		return false;
 
@@ -123,19 +125,25 @@ add_filter( 'plugin_action_links_' . APD_BASENAME, 'apd_settings_link' );
  */
 function apd_options_install() {
 	global $wpdb;
+	$amazonCache     = new ApdAmazonCache();
+	$databaseService = new ApdDatabaseService();
+
+	//create table list
+	$tablename = APD_TABLE_LIST_TABLE;
+	$database  = new ApdDatabase( $tablename );
+	$database->createTableFromArray( $databaseService->getListFields(), 'core' );
+	$database->setUniqueColumns( $databaseService->getUniqueListFields() );
 
 	//create amazon items table
-	$tablename   = APD_AMAZON_CACHE_TABLE;
-	$database    = new ApdDatabase( $tablename );
-	$amazonCache = new ApdAmazonCache();
-
-	$database->createTableFromArray( $amazonCache->getAmazonFields() );
+	$tablename = APD_AMAZON_CACHE_TABLE;
+	$database  = new ApdDatabase( $tablename );
+	$database->createTableFromArray( $amazonCache->getAmazonFields(), 'cache' );
 	$database->setUniqueColumns( $amazonCache->getUniqueAmazonFields() );
 
 	//create amazon cache options table
 	$tablename = APD_CACHE_OPTIONS_TABLE;
-
-	$database->createTableFromArray( $amazonCache->getOptionFields() );
+	$database  = new ApdDatabase( $tablename );
+	$database->createTableFromArray( $amazonCache->getOptionFields(), 'cache' );
 
 }
 

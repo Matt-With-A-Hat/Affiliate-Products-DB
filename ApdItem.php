@@ -46,6 +46,7 @@ class ApdItem {
 
 		$uniqeField       = $database->getUniqueColumn();
 		$sql              = "SELECT * FROM $this->tablename WHERE $uniqeField = %s";
+
 		$database->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), OBJECT );
 
 		if ( empty( $database->dbItem ) ) {

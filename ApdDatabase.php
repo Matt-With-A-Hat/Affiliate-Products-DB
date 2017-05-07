@@ -8,6 +8,13 @@ class ApdDatabase {
 	protected $db;
 
 	/**
+	 * the prefix for APD tables in the database
+	 *
+	 * @var string
+	 */
+	protected $apdTablePrefix = "apd_";
+
+	/**
 	 * the returned item from database
 	 *
 	 * @var
@@ -31,7 +38,6 @@ class ApdDatabase {
 		global $wpdb;
 		$this->db = $wpdb;
 		$this->setTablename( $tablename );
-
 	}
 
 	/**
@@ -47,15 +53,10 @@ class ApdDatabase {
 	 * @param mixed $tablename
 	 */
 	public function setTablename( $tablename ) {
+
 		$wpdb = $this->db;
 
-		$tablenameArray = explode( "_", $tablename );
-
-		if ( strtolower( $tablenameArray[0] . "_" ) == strtolower( $wpdb->prefix ) ) {
-			$this->tablename = $tablename;
-		} else {
-			$this->tablename = $wpdb->prefix . $tablename;
-		}
+		$this->tablename = add_table_prefix($tablename);
 	}
 
 	/**
@@ -271,12 +272,14 @@ class ApdDatabase {
 	 * _unique in field name will create a unique column
 	 * _bool in field name will create a boolean column
 	 *
-	 * @param $tablename
-	 * @param $fields
+	 * @param array $fields
+	 * @param null $purpose
 	 *
 	 * @return bool
+	 *
+	 * @todo refine code. Make it work with createTableFromArray and setUniqueColumns
 	 */
-	public function createTableFromCsvFields( $fields ) {
+	public function createTableFromCsvFields( array $fields, $purpose = null ) {
 
 		$wpdb      = $this->db;
 		$tablename = $this->tablename;
@@ -335,6 +338,11 @@ class ApdDatabase {
 
 		$result = $wpdb->query( $sql );
 
+		if ( $result ) {
+			$databaseService = new ApdDatabaseService();
+			$databaseService->updateTableList( $tablename, $purpose );
+		}
+
 		//@todo use this instead of wpdb->query and test whether it works
 //		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 //		dbDelta( $sql );
@@ -344,12 +352,12 @@ class ApdDatabase {
 	}
 
 	/**
-	 * @param $tablename
-	 * @param $array
+	 * @param array $array
+	 * @param null $purpose
 	 *
 	 * @return bool|false|int
 	 */
-	public function createTableFromArray( $array ) {
+	public function createTableFromArray( array $array, $purpose = null ) {
 		$wpdb      = $this->db;
 		$tablename = $this->tablename;
 
@@ -394,6 +402,11 @@ class ApdDatabase {
 		$sql .= ')';
 
 		$result = $wpdb->query( $sql );
+
+		if ( $result ) {
+			$databaseService = new ApdDatabaseService();
+			$databaseService->updateTableList( $tablename, $purpose );
+		}
 
 		//@todo use this instead of wpdb->query and test whether it works
 //		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -667,14 +680,14 @@ class ApdDatabase {
 		if ( $this->tableExists() === false ) {
 
 			$fields = $this->getCsvFields( $csv );
-			$result .= $this->createTableFromCsvFields( $fields );
+			$result .= $this->createTableFromCsvFields( $fields, 'products' );
 
 		} else if ( APD_DEBUG_DEV === true ) {
 
 			//in debug always delete existing table when uploading a new csv
 			$result .= $this->dropTable();
 			$fields = $this->getCsvFields( $csv );
-			$result .= $this->createTableFromCsvFields( $fields );
+			$result .= $this->createTableFromCsvFields( $fields, 'products' );
 
 		}
 

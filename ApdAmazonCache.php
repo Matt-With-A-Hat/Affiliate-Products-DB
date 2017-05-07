@@ -344,8 +344,6 @@ class ApdAmazonCache {
 			// if x request attempts were successful, decrease the interval by x
 		}
 
-
-		krumo( $amazonItems );
 	}
 }
 

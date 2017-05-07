@@ -75,6 +75,8 @@ define( 'APD_DEBUG_DEV', true );
 //define( 'APD_ITEMS_TABLE', 'amazon_items' );
 define( 'APD_AMAZON_CACHE_TABLE', 'amazon_cache' );
 define( 'APD_CACHE_OPTIONS_TABLE', 'cache_options' );
+define( 'APD_TABLE_LIST_TABLE', 'table_list' );
+define( 'APD_TABLE_PREFIX', 'apd_' );
 
 /**
  * User Constants
@@ -129,10 +131,11 @@ require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/ResultSet.php';
 require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/SimilarProduct.php';
 
 /**
- * APD Classes
+ * APD classes
  */
 require_once( dirname( __FILE__ ) . '/ApdCore.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
+require_once( dirname( __FILE__ ) . '/ApdDatabaseService.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonItem.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonCache.php' );
 require_once( dirname( __FILE__ ) . '/ApdItem.php' );
