@@ -56,7 +56,7 @@ class ApdDatabase {
 
 		$wpdb = $this->db;
 
-		$this->tablename = add_table_prefix($tablename);
+		$this->tablename = add_table_prefix( $tablename );
 	}
 
 	/**
@@ -268,9 +268,9 @@ class ApdDatabase {
 	}*/
 
 	/**
-	 * create a table with the supplied tablename and an array of fields
+	 * create a table with the supplied tablename and an array of fields from as csv
 	 * _unique in field name will create a unique column
-	 * _bool in field name will create a boolean column
+	 * _boolean, _varchar, _text in field name will set a column to the respective type
 	 *
 	 * @param array $fields
 	 * @param null $purpose
@@ -281,9 +281,6 @@ class ApdDatabase {
 	 */
 	public function createTableFromCsvFields( array $fields, $purpose = null ) {
 
-		$wpdb      = $this->db;
-		$tablename = $this->tablename;
-
 		if ( ! is_array( $fields ) ) {
 			if ( APD_DEBUG ) {
 				$error = '$fields is not an array<br>';
@@ -293,62 +290,35 @@ class ApdDatabase {
 			return false;
 		}
 
-		if ( $this->tableExists() ) {
-			if ( APD_DEBUG_DEV ) {
-				$this->dropTable();
-
-				return true;
-			}
-			if ( APD_DEBUG ) {
-				$error = "Can not create table $tablename, which already exists.";
-				print_error( $error, __METHOD__, __LINE__ );
-			}
-
-			return false;
-		}
-
-		foreach ( $fields as $key => $field ) {
-			$field          = esc_sql( $field );
-			$fields[ $key ] = str_replace( ' ', '', $field );
-		}
-
-		$sql = 'CREATE TABLE IF NOT EXISTS ' . $tablename . ' (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY';
+		$newFields  = array();
+		$fieldtypes = array();
 
 		foreach ( $fields as $field ) {
 
-			$field = "`" . esc_sql( $field ) . "`";
-
 			if ( preg_match( "/_unique/", $field ) ) {
+				krumo( $field );
+				krumo( str_replace( "_unique", "", $field ) );
 
-				$sql .= ", $field VARCHAR(255) NOT NULL UNIQUE";
+				$fieldtypes['unique'][] = $newFields[] = str_replace( "_unique", "", $field );
 
-			} else if ( ( preg_match( "/_bool/", $field ) ) ) {
+			} else if ( preg_match( "/_bool/", $field ) ) {
+				$fieldtypes['bool'][] = $newFields[] = str_replace( "_bool", "", $field );
 
-				$sql .= ", $field BOOLEAN DEFAULT NULL";
+			} else if ( preg_match( "/_text/", $field ) ) {
+				$fieldtypes['text'][] = $newFields[] = str_replace( "_text", "", $field );
 
+			} else if ( preg_match( "/_varchar/", $field ) ) {
+				$fieldtypes['varchar'][] = $newFields[] = str_replace( "_unique", "", $field );
 			} else {
-
-				$sql .= ", $field TEXT";
-
+				$newFields[] = $field;
 			}
 
 		}
 
-		$sql .= ')';
-
-		$result = $wpdb->query( $sql );
-
-		if ( $result ) {
-			$databaseService = new ApdDatabaseService();
-			$databaseService->updateTableList( $tablename, $purpose );
+		$this->createTableFromArray( $newFields, $purpose );
+		foreach ( $fieldtypes as $type => $columns ) {
+			$this->modifyColumns( $columns, $type );
 		}
-
-		//@todo use this instead of wpdb->query and test whether it works
-//		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-//		dbDelta( $sql );
-
-		return $result;
-
 	}
 
 	/**
@@ -415,9 +385,28 @@ class ApdDatabase {
 		return $result;
 	}
 
-	public function setUniqueColumns( array $uniqueColumns ) {
+	/**
+	 * alter every supplied column from the array with $modify
+	 *
+	 * @param array $uniqueColumns
+	 * @param $modify
+	 *
+	 * @return bool|false|int
+	 */
+	public function modifyColumns( array $uniqueColumns, $modify ) {
 
 		$tablename = $this->tablename;
+		$allowed   = array(
+			'unique',
+			'bool',
+			'text',
+			'varchar'
+		);
+
+		if ( ! in_array( $modify, $allowed ) ) {
+			$error = "Supplied modify argument not allowed";
+			print_error( $error, __METHOD__, __LINE__ );
+		}
 
 		$tableColumns = $this->getTableColumns();
 
@@ -442,27 +431,40 @@ class ApdDatabase {
 
 		global $wpdb;
 
-		//change columns data type to varchar, so unique can be applied to columns
-		$sql = "ALTER TABLE $tablename ";
-		foreach ( $uniqueColumns as $uniqueColumn ) {
-			$sql .= "MODIFY COLUMN $uniqueColumn VARCHAR(255), ";
+		if ( $modify == "unique" ) {
+			//change columns data type to varchar, so unique can be applied to columns
+			$sql = "ALTER TABLE $tablename ";
+			foreach ( $uniqueColumns as $uniqueColumn ) {
+				$sql .= "MODIFY COLUMN $uniqueColumn VARCHAR(255), ";
+			}
+			$sql = rtrim( $sql, " ," );
+
+			$sql .= ";";
+			$sql1 = $sql;
+
+			//alter column so it is unique
+			$sql = "ALTER TABLE $tablename ADD UNIQUE (";
+			foreach ( $uniqueColumns as $uniqueColumn ) {
+				$sql .= "$uniqueColumn, ";
+			}
+			$sql = rtrim( $sql, " ," );
+			$sql .= ");";
+			$sql2 = $sql;
+
+			$result = $wpdb->query( $wpdb->prepare( $sql1, $uniqueColumns ) );
+			$result .= $wpdb->query( $wpdb->prepare( $sql2, $uniqueColumns ) );
+
+		} else {
+			$modify = ( $modify == 'varchar' ) ? 'varchar(255)' : $modify;
+
+			$sql = "ALTER TABLE $tablename ";
+			foreach ( $uniqueColumns as $uniqueColumn ) {
+				$sql .= "MODIFY COLUMN $uniqueColumn $modify, ";
+			}
+			$sql = rtrim( $sql, " ," );
+
+			$result = $wpdb->query( $wpdb->prepare( $sql, $uniqueColumns ) );
 		}
-		$sql = rtrim( $sql, " ," );
-
-		$sql .= ";";
-		$sql1 = $wpdb->prepare( $sql, $uniqueColumns );
-
-		//alter column so it is unique
-		$sql = "ALTER TABLE $tablename ADD UNIQUE (";
-		foreach ( $uniqueColumns as $uniqueColumn ) {
-			$sql .= "$uniqueColumn, ";
-		}
-		$sql = rtrim( $sql, " ," );
-		$sql .= ");";
-		$sql2 = $wpdb->prepare( $sql, $uniqueColumns );
-
-		$result = $wpdb->query( $wpdb->prepare( $sql1, $uniqueColumns ) );
-		$result = $wpdb->query( $wpdb->prepare( $sql2, $uniqueColumns ) );
 
 		return $result;
 	}

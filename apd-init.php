@@ -132,13 +132,13 @@ function apd_options_install() {
 	$tablename = APD_TABLE_LIST_TABLE;
 	$database  = new ApdDatabase( $tablename );
 	$database->createTableFromArray( $databaseService->getListFields(), 'core' );
-	$database->setUniqueColumns( $databaseService->getUniqueListFields() );
+	$database->modifyColumns( $databaseService->getUniqueListFields(), 'unique' );
 
 	//create amazon items table
 	$tablename = APD_AMAZON_CACHE_TABLE;
 	$database  = new ApdDatabase( $tablename );
 	$database->createTableFromArray( $amazonCache->getAmazonFields(), 'cache' );
-	$database->setUniqueColumns( $amazonCache->getUniqueAmazonFields() );
+	$database->modifyColumns( $amazonCache->getUniqueAmazonFields(), 'unique' );
 
 	//create amazon cache options table
 	$tablename = APD_CACHE_OPTIONS_TABLE;
