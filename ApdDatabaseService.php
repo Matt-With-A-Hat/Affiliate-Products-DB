@@ -13,11 +13,6 @@ class ApdDatabaseService {
 		'tablename'
 	);
 
-	protected $asinHandles = array(
-		'asin',
-		'asin_unique'
-	);
-
 	/**
 	 * ApdDatabaseService constructor.
 	 */
@@ -77,6 +72,11 @@ class ApdDatabaseService {
 		}
 	}
 
+	/**
+	 * get all the APD tables that store imported products of any kind
+	 *
+	 * @return array
+	 */
 	public function getProductTables() {
 
 		global $wpdb;
@@ -87,14 +87,24 @@ class ApdDatabaseService {
 		return $result;
 	}
 
-	public function getAsinsFromTables() {
+	/**
+	 * get every asin from all product tables
+	 *
+	 * @return array
+	 */
+	public function getAllProductAsins() {
 
+		global $wpdb;
 		$tables = $this->getProductTables();
-//@todo last edit
+
+		$asins = array();
 		foreach ( $tables as $table ) {
-//			$sql =
+			$sql = "SELECT Asin FROM $table";
+			$asins[] = $wpdb->get_results($wpdb->prepare($sql, ''), ARRAY_N);
 		}
 
-	}
+		$asinsRefined = array_filter(array_values_recursive($asins));
 
+		return $asinsRefined;
+	}
 }

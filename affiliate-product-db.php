@@ -106,7 +106,7 @@ require dirname( __FILE__ ) . '/debug.php';
 /**
  * APD Functions
  */
-require( dirname( __FILE__ ) . '/ApdFunctions.php' );
+require( dirname( __FILE__ ) . '/apd-functions.php' );
 
 /**
  * functions for initializing plugin

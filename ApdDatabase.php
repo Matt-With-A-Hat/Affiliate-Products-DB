@@ -189,23 +189,23 @@ class ApdDatabase {
 	 * @internal param $table
 	 *
 	 */
-	public function getUniqueColumn() {
-
-		$tablename = $this->tablename;
-		$columns   = $this->getTableColumns( true );
-
-		foreach ( $columns as $column ) {
-			if ( preg_match( "/_unique/", $column ) ) {
-
-				return $column;
-
-			}
-
-		}
-
-		return false;
-
-	}
+//	public function getUniqueColumn() {
+//
+//		$tablename = $this->tablename;
+//		$columns   = $this->getTableColumns( true );
+//
+//		foreach ( $columns as $column ) {
+//			if ( preg_match( "/_unique/", $column ) ) {
+//
+//				return $column;
+//
+//			}
+//
+//		}
+//
+//		return false;
+//
+//	}
 
 	/**
 	 * @param $tablename
@@ -386,7 +386,10 @@ class ApdDatabase {
 	}
 
 	/**
-	 * alter every supplied column from the array with $modify
+	 * Alter every supplied column from the array with $modify
+	 * You can define a column as unique or change its datatype to bool, text or varchar.
+	 *
+	 * @todo allow default values
 	 *
 	 * @param array $uniqueColumns
 	 * @param $modify

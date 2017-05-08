@@ -80,6 +80,16 @@ class ApdCore {
 	protected $asaUseShortAmazonLinks = true;
 
 	/**
+	 * template placeholder prefix
+	 */
+	protected $tplPrefix = '{$';
+
+	/**
+	 * template placeholder postfix
+	 */
+	protected $tplPostfix = '}';
+
+	/**
 	 * ApdCore constructor.
 	 */
 	public function __construct() {
@@ -226,14 +236,13 @@ class ApdCore {
 	public function parseTpl( $asin, $tpl, $tablename ) {
 
 		$html = '';
-		//@todo #lastedit tablename in parseTpl einbauen (oder in getElement?)
 		//--------------------------------------------------------------
 		//=replace with Amazon information
 		//--------------------------------------------------------------
 
 		$apdAmazonItem = new ApdAmazonItem( $this->amazonWbs );
 
-		$amazonPlaceholders = $apdAmazonItem->tplPlaceholder;
+		$amazonPlaceholders = ApdAmazonItem::$amazonItemFields;
 
 		if ( ! empty( array_duplicates( $amazonPlaceholders ) ) ) {
 			$amazonPlaceholders = array_remove_duplicates( $amazonPlaceholders );
@@ -243,7 +252,7 @@ class ApdCore {
 
 		if ( $amazonItem instanceof AsaZend_Service_Amazon_Item ) {
 
-			$search = $apdAmazonItem->getTplPlaceholders( $amazonPlaceholders, true );
+			$placeholders = $this->getTplPlaceholders( ApdAmazonItem::$amazonItemFields, true );
 
 			$trackingId = '';
 
@@ -443,7 +452,7 @@ class ApdCore {
 				$offerMainPriceFormatted,
 			);
 
-			$html = preg_replace( $search, $replace, $tpl );
+			$html = preg_replace( $placeholders, $replace, $tpl );
 
 		}
 
@@ -522,16 +531,68 @@ class ApdCore {
 
 			}
 
-			$search = $apdAmazonItem->getTplPlaceholders( $dbPlaceholders, true );
+			$placeholders = $this->getTplPlaceholders( $dbPlaceholders, true );
 
 			$replace = (array) $dbItem;
 
-			$html = preg_replace( $search, $replace, $tpl );
+			$html = preg_replace( $placeholders, $replace, $tpl );
 
 		}
 
 		return $html;
 
+	}
+
+	/**
+	 * generates right placeholder format and returns them as array
+	 * optionally prepared for use as regex
+	 *
+	 * @param bool true for regex prepared
+	 *
+	 * @return array
+	 */
+	public function getTplPlaceholders( $placeholders, $regex = false ) {
+		$result = array();
+
+		foreach ( $placeholders as $ph ) {
+			$result[] = $this->tplPrefix . $ph . $this->tplPostfix;
+		}
+		if ( $regex == true ) {
+			return array_map( array( $this, 'TplPlaceholderToRegex' ), $result );
+		}
+
+		krumo( $result );
+
+		return $result;
+	}
+
+	/**
+	 * excapes placeholder for regex usage
+	 *
+	 * @param string placehoder
+	 *
+	 * @return string escaped placeholder
+	 */
+	public function TplPlaceholderToRegex( $ph ) {
+		$search = array(
+			'{',
+			'}',
+			'$',
+			'-',
+			'>'
+		);
+
+		$replace = array(
+			'\{',
+			'\}',
+			'\$',
+			'\-',
+			'\>'
+		);
+
+		$ph = str_replace( $search, $replace, $ph );
+
+		return '/' . $ph . '/';
 	}
 
 	/**

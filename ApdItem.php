@@ -44,8 +44,7 @@ class ApdItem {
 		global $wpdb;
 		$database = new ApdDatabase( $this->tablename );
 
-		$uniqeField       = $database->getUniqueColumn();
-		$sql              = "SELECT * FROM $this->tablename WHERE $uniqeField = %s";
+		$sql = "SELECT * FROM $this->tablename WHERE Asin = %s";
 
 		$database->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), OBJECT );
 

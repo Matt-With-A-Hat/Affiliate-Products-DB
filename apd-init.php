@@ -137,8 +137,8 @@ function apd_options_install() {
 	//create amazon items table
 	$tablename = APD_AMAZON_CACHE_TABLE;
 	$database  = new ApdDatabase( $tablename );
-	$database->createTableFromArray( $amazonCache->getAmazonFields(), 'cache' );
-	$database->modifyColumns( $amazonCache->getUniqueAmazonFields(), 'unique' );
+	$database->createTableFromArray( $amazonCache->getAmazonCacheColumns(), 'cache' );
+	$database->modifyColumns( $amazonCache->getUniqueAmazonCacheColumns(), 'unique' );
 
 	//create amazon cache options table
 	$tablename = APD_CACHE_OPTIONS_TABLE;

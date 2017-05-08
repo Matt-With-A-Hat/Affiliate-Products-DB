@@ -2,76 +2,81 @@
 
 class ApdAmazonCache {
 
-	protected $amazonFields = array(
-		'ASIN',
-		'DetailPageURL',
-		'SalesRank',
-		'TotalReviews',
-		'AverageRating',
-		'SmallImageUrl',
-		'SmallImageHeight',
-		'SmallImageWidth',
-		'MediumImageUrl',
-		'MediumImageHeight',
-		'MediumImageWidth',
-		'LargeImageUrl',
-		'LargeImageHeight',
-		'LargeImageWidth',
-		'Subjects',
-		'Features',
-		'LowestNewPrice',
-		'LowestNewPriceCurrency',
-		'LowestNewPriceFormattedPrice',
-		'LowestUsedPrice',
-		'LowestUsedPriceCurrenty',
-		'LowestUsedPriceFormattedPrice',
-		'SalePriceAmount',
-		'SalePriceFormatted',
-		'SalePriceCurrencyCode',
-		'TotalNew',
-		'TotalUsed',
-		'TotalCollectible',
-		'TotalRefurbished',
-		'MerchantMerchantId',
-		'MerchantMerchantName',
-		'MerchantGlancePage',
-		'MerchantCondition',
-		'MerchantOfferListingId',
-		'MerchantPrice',
-		'MerchantCurrencyCode',
-		'MerchantFormattedPrice',
-		'MerchantAvailability',
-		'MerchantIsEligibleForSuperSaverShipping',
-		'CustomerReviews',
-		'EditorialReviews',
-		'Source',
-		'Content',
-		'SimilarProducts',
-		'Accessories',
-		'Track',
-		'ListmaniaLists',
-		'CurrencyCode',
-		'Amount',
-		'FormattedPrice',
-		'ListPriceFormatted',
-		'Brand',
-		'EAN',
-		'Feature',
-		'Label',
-		'Manufacturer',
-		'ProductGroup',
-		'ProductTypeName',
-		'Publisher',
-		'Studio',
-		'Title',
-		'CustomerReviewsIFrameUrl',
-		'CustomerReviewsImgTag',
-		'CustomerReviewsImgSrc',
-		'CustomerReviewsTotalReviews',
-		'CustomerReviewsIFrameUrl2'
-	);
+	/**
+	 * @todo not used anymore.
+	 *
+	 * @var array
+	 */
+//	protected $amazonCacheColumns = array(
+//		'Asin',
+//		'DetailPageURL',
+//		'SalesRank',
+//		'TotalReviews',
+//		'AverageRating',
+//		'SmallImageUrl',
+//		'SmallImageHeight',
+//		'SmallImageWidth',
+//		'MediumImageUrl',
+//		'MediumImageHeight',
+//		'MediumImageWidth',
+//		'LargeImageUrl',
+//		'LargeImageHeight',
+//		'LargeImageWidth',
+//		'Subjects',
+//		'Features',
+//		'LowestNewPrice',
+//		'LowestNewPriceCurrency',
+//		'LowestNewPriceFormattedPrice',
+//		'LowestUsedPrice',
+//		'LowestUsedPriceCurrenty',
+//		'LowestUsedPriceFormattedPrice',
+//		'SalePriceAmount',
+//		'SalePriceFormatted',
+//		'SalePriceCurrencyCode',
+//		'TotalNew',
+//		'TotalUsed',
+//		'TotalCollectible',
+//		'TotalRefurbished',
+//		'MerchantMerchantId',
+//		'MerchantMerchantName',
+//		'MerchantGlancePage',
+//		'MerchantCondition',
+//		'MerchantOfferListingId',
+//		'MerchantPrice',
+//		'MerchantCurrencyCode',
+//		'MerchantFormattedPrice',
+//		'MerchantAvailability',
+//		'MerchantIsEligibleForSuperSaverShipping',
+//		'CustomerReviews',
+//		'EditorialReviews',
+//		'Source',
+//		'Content',
+//		'SimilarProducts',
+//		'Accessories',
+//		'Track',
+//		'ListmaniaLists',
+//		'CurrencyCode',
+//		'Amount',
+//		'FormattedPrice',
+//		'ListPriceFormatted',
+//		'Brand',
+//		'EAN',
+//		'Feature',
+//		'Label',
+//		'Manufacturer',
+//		'ProductGroup',
+//		'ProductTypeName',
+//		'Publisher',
+//		'Studio',
+//		'Title',
+//		'CustomerReviewsIFrameUrl',
+//		'CustomerReviewsImgTag',
+//		'CustomerReviewsImgSrc',
+//		'CustomerReviewsTotalReviews',
+//		'CustomerReviewsIFrameUrl2'
+//	);
 
-	protected $uniqueAmazonFields = array(
+	protected $uniqueAmazonCacheFields = array(
 		'ASIN'
 	);
 
@@ -124,22 +129,25 @@ class ApdAmazonCache {
 	 * @param mixed $tablenameOptions
 	 */
 	public function setTablenameOptions( $tablenameOptions ) {
-		$database               = new ApdDatabase($tablenameOptions);
+		$database               = new ApdDatabase( $tablenameOptions );
 		$this->tablenameOptions = $database->getTablename();
 	}
 
 	/**
+	 * Get the (database-)columns of the cache. Columns mirror the Amazon items fields.
+	 *
 	 * @return array
 	 */
-	public function getAmazonFields() {
-		return $this->amazonFields;
+	public function getAmazonCacheColumns() {
+//		return $this->amazonCacheFields;
+		return ApdAmazonItem::$amazonItemFields;
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getUniqueAmazonFields() {
-		return $this->uniqueAmazonFields;
+	public function getUniqueAmazonCacheColumns() {
+		return $this->uniqueAmazonCacheFields;
 	}
 
 	/**
@@ -158,7 +166,7 @@ class ApdAmazonCache {
 	 */
 	public function setOptions( array $options ) {
 
-		$database = new ApdDatabase($this->tablenameOptions);
+		$database = new ApdDatabase( $this->tablenameOptions );
 		$columns  = $database->getTableColumns();
 
 		//@todo on new install cache options can only be empty
@@ -206,7 +214,7 @@ class ApdAmazonCache {
 	 */
 	public function getOptions() {
 
-		$database = new ApdDatabase($this->tablenameOptions);
+		$database = new ApdDatabase( $this->tablenameOptions );
 		$result   = $database->getRow( 1, $this->getOptionFields() );
 
 		return $result;
@@ -221,7 +229,7 @@ class ApdAmazonCache {
 	 */
 	public function getOption( $option ) {
 
-		$database     = new ApdDatabase($this->tablenameOptions);
+		$database     = new ApdDatabase( $this->tablenameOptions );
 		$optionsArray = array( 0 => $option );
 		$resultArray  = $database->getRow( 1, $optionsArray );
 		$result       = reset( $resultArray );
@@ -260,33 +268,19 @@ class ApdAmazonCache {
 
 
 	/**
-	 * collect all Asins from product tables
-	 */
-	public function getAsinsFromTables() {
-
-	}
-
-	public function getNextItems() {
-
-	}
-
-	/**
 	 * get a number of items from Amazon API starting from last checked item
 	 *
 	 * @param $numberOfRows
 	 *
 	 * @return array|bool|string
 	 */
-	public function getAmazonItems( $numberOfRows ) {
+	public function getAmazonItems( $numberOfRows, $startId ) {
 
 		global $wpdb;
-		$apdCore         = new ApdCore();
-		$amazonWbs       = $apdCore->amazonWbs;
-		$tablename       = $wpdb->prefix . 'products';                                       //@todo Fill amazonCache with ASINs from other tables. Check for new ASINs on every update
-		$lastCheckedItem = $this->getOption( 'last_checked_id' );
-		$lastCheckedItem = ( $lastCheckedItem === null ? 0 : $lastCheckedItem );
+		$apdCore   = new ApdCore();
+		$amazonWbs = $apdCore->amazonWbs;
 
-		$sql = "SELECT Asin_unique FROM $tablename LIMIT $lastCheckedItem, $numberOfRows";   //@todo make this "ASIN". Remove underscores from DB
+		$sql = "SELECT Asin FROM $this->tablenameCache WHERE id > $startId LIMIT $numberOfRows";
 
 		$asins = $wpdb->get_results( $sql, ARRAY_A );
 
@@ -297,11 +291,10 @@ class ApdAmazonCache {
 			return false;
 		}
 
-		foreach ( $asins as $asin ) {
-			$asinArray[] = $asin['Asin_unique'];
-		}
+		$asins = array_filter( array_values_recursive( $asins ) );
 
-		foreach ( $asinArray as $asin ) {
+		$amazonItems = array();
+		foreach ( $asins as $asin ) {
 			$amazonItem    = new ApdAmazonItem( $amazonWbs );
 			$amazonItems[] = $amazonItem->getAmazonItem( $asin );
 
@@ -316,11 +309,13 @@ class ApdAmazonCache {
 	public function updateCache() {
 
 		//methods updateCacheItems oder getAmazonItems
-
-		$numberPerUpdate = $this->getOption( 'items_per_update' );
+		$this->updateCacheAsins();
+		$itemsPerUpdate = $this->getOption( 'items_per_update' );
+		$startId        = $this->getOption( 'last_checked_id' );
+		$startId        = ( $startId === null ) ? 0 : $startId;                     //@todo make column in table have 0 for default. Make ApdDatabase::modifyColumns allow default values
 
 		// request info for x items from Amazon API
-		$amazonItems = $this->getAmazonItems( $numberPerUpdate );
+		$amazonItems = $this->getAmazonItems( $itemsPerUpdate, $startId );
 
 		// if something went wrong with the request
 		if ( $amazonItems == 'throttle' ) {
@@ -337,13 +332,151 @@ class ApdAmazonCache {
 
 			// else
 		} else {
-			// get the last updated item and update the next x items
+
+//			krumo( $amazonItems );
+			$this->updateCacheProducts( $amazonItems );
+			// update items in cache with returned amazon items
 
 			// set new last updated item
 			// increase number of successful attempts by 1
 			// if x request attempts were successful, decrease the interval by x
 		}
 
+	}
+
+	/**
+	 * Get asins from every products table.
+	 * Fill in missing asins and delete unknown asins from cache table.
+	 */
+	public function updateCacheAsins() {
+
+		global $wpdb;
+		$databaseService = new ApdDatabaseService();
+		$productAsins    = $databaseService->getAllProductAsins();
+
+		$sql        = "SELECT Asin FROM $this->tablenameCache";
+		$cacheAsins = $wpdb->get_results( $wpdb->prepare( $sql, '' ) );
+		$cacheAsins = array_filter( array_values_recursive( $cacheAsins ) );
+
+
+		//asins from product tables that don't exist in cache yet
+		$diffProducts = array_diff_key( $productAsins, $cacheAsins );
+		if ( ! empty( $diffProducts ) ) {
+			$sql = "INSERT INTO $this->tablenameCache (Asin) VALUES ";
+			foreach ( $diffProducts as $diffProduct ) {
+				$sql .= "(%s), ";
+			}
+			$sql = rtrim( $sql, " ," ) . ";";
+			$wpdb->query( $wpdb->prepare( $sql, $diffProducts ) );
+		}
+
+
+		//asins from cache table that don't exist in procuts anymore
+		$diffCache = array_diff_key( $cacheAsins, $productAsins );
+		if ( ! empty( $diffCache ) ) {
+			$sql = "DELETE FROM $this->tablenameCache WHERE `Asin` IN (";
+			foreach ( $diffCache as $item ) {
+				$sql .= "%s, ";
+			}
+			$sql = rtrim( $sql, " ," ) . ");";
+			$wpdb->query( $wpdb->prepare( $sql, $diffCache ) );
+		}
+
+	}
+
+	/**
+	 * Update products in cache table with provided array of Amazon objects
+	 *
+	 * @param array $amazonItems
+	 */
+	public function updateCacheProducts( array $amazonItems ) {
+
+		global $wpdb;
+
+		foreach ( $amazonItems as $amazonItem ) {
+			$amazonItem1       = array_values_recursive( (array) $amazonItem );
+			$amazonItem2       = (array) $amazonItem;
+			$amazonCacheFields = $this->getAmazonCacheColumns();
+
+//			krumo($amazonItem);
+//			krumo(array_values_recursive($amazonItem));
+
+//			krumo( $amazonItem1 );
+//			krumo( $amazonItem2 );
+//			krumo( $amazonCacheFields );
+			break;
+		}
+	}
+
+	public function matchItemWithFields($amazonItem){
+//		$match = array(
+//			'Asin' => $amazonItem->ASIN,
+//			'DetailPageURL' => $amazonItem->DetailPageUrl,
+//			'SalesRank' => $amazonItem->SalesRank,
+//			'TotalReviews' => $amazonItem->TotalReviews,
+//			'AverageRating' => $amazonItem->AverageRating,
+//			'SmallImageUrl' => $amazonItem->SmallImage->Url->getUri(),
+//			'SmallImageHeight' => $amazonItem->SmallImage->Height,
+//			'SmallImageWidth' => $amazonItem->SmallImage->Width,
+//			'MediumImageUrl' => $amazonItem->MediumImage->Url->getUri(),
+//			'MediumImageHeight' => $amazonItem->MediumImage->Height,
+//			'MediumImageWidth' => $amazonItem->MediumImage->Width,
+//			'LargeImageUrl' => $amazonItem->LargeImage->Url->getUri(),
+//			'LargeImageHeight' => $amazonItem->LargeImage->Height,
+//			'LargeImageWidth' => $amazonItem->LargeImage->Width,
+//			'Subjects' => $amazonItem->Subjects,
+//			'Features' => $amazonItem->Features,
+//			'LowestNewPrice' => $amazonItem->Offers,
+//			'LowestNewPriceCurrency' => ,
+//			'LowestNewPriceFormattedPrice' => ,
+//			'LowestUsedPrice' => ,
+//			'LowestUsedPriceCurrenty' => ,
+//			'LowestUsedPriceFormattedPrice' => ,
+//			'SalePriceAmount' => ,
+//			'SalePriceFormatted' => ,
+//			'SalePriceCurrencyCode' => ,
+//			'TotalNew' => ,
+//			'TotalUsed' => ,
+//			'TotalCollectible' => ,
+//			'TotalRefurbished' => ,
+//			'MerchantMerchantId' => ,
+//			'MerchantMerchantName' => ,
+//			'MerchantGlancePage' => ,
+//			'MerchantCondition' => ,
+//			'MerchantOfferListingId' => ,
+//			'MerchantPrice' => ,
+//			'MerchantCurrencyCode' => ,
+//			'MerchantFormattedPrice' => ,
+//			'MerchantAvailability' => ,
+//			'MerchantIsEligibleForSuperSaverShipping' => ,
+//			'CustomerReviews' => ,
+//			'EditorialReviews' => ,
+//			'Source' => ,
+//			'Content' => ,
+//			'SimilarProducts' => ,
+//			'Accessories' => ,
+//			'Track' => ,
+//			'ListmaniaLists' => ,
+//			'CurrencyCode' => ,
+//			'Amount' => ,
+//			'FormattedPrice' => ,
+//			'ListPriceFormatted' => ,
+//			'Brand' => ,
+//			'EAN' => ,
+//			'Feature' => ,
+//			'Label' => ,
+//			'Manufacturer' => ,
+//			'ProductGroup' => ,
+//			'ProductTypeName' => ,
+//			'Publisher' => ,
+//			'Studio' => ,
+//			'Title' => ,
+//			'CustomerReviewsIFrameUrl' => ,
+//			'CustomerReviewsImgTag' => ,
+//			'CustomerReviewsImgSrc' => ,
+//			'CustomerReviewsTotalReviews' => ,
+//			'CustomerReviewsIFrameUrl2' =>
+//		);
 	}
 }
 

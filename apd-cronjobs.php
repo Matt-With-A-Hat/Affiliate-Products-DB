@@ -16,7 +16,7 @@ function apdcronjob_bootstrap() {
 		'inc_interval_rate_minutes' => 5,           //the amount of minutes to add to the interval, if Amazon API returns throttle error
 		'dec_interval_rate_minutes' => 1,           //the amount of minutes to subtract  from the interval, to recover from a throtteling event
 		'dec_interval_every_nth'    => 20,             //the number of intervals after which an attempt to decrease the interval is made
-		'items_per_update'          => 10,                   //the number of Amazon items that are updated with each request
+		'items_per_update'          => 5,                   //the number of Amazon items that are updated with each request
 	);
 
 	$amazonCache = new ApdAmazonCache();
@@ -115,9 +115,12 @@ echo "<br>";
 echo "<br>";
 global $wpdb;
 
+$amazonCache = new ApdAmazonCache();
+$amazonCache->updateCache();
+
 $databaseService = new ApdDatabaseService();
-$x               = $databaseService->getProductTables();
-krumo( $x );
+$asins = $databaseService->getAllProductAsins();
+//krumo($asins);
 
 //$databaseService->updateTableList('hallo2','test');
 

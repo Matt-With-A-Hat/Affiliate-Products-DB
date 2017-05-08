@@ -242,3 +242,53 @@ function print_error( $error, $function, $line ) {
 	echo "Error in " . $function . " line " . $line . ": " . $error . "<br>\n";
 
 }
+
+/**
+ * flatten an arbitrarily deep multidimensional array or object into a list of its scalar values
+ * (may be inefficient for large structures)
+ * (will infinite recurse on self-referential structures)
+ * (could be extended to handle objects)
+ *
+ * @param array|object $mixed
+ *
+ * @return array $list
+ */
+function array_values_recursive( $mixed ) {
+	$list = array();
+
+	if ( is_array( $mixed ) ) {
+		foreach ( array_keys( $mixed ) as $key ) {
+			$value = $mixed[ $key ];
+			if ( is_scalar( $value ) OR $value === null ) {
+				$list[] = $value;
+			} elseif ( is_array( $value ) OR is_object( $value ) ) {
+				$list = array_merge( $list,
+					array_values_recursive( $value )
+				);
+			} elseif ( $value !== null ) {
+				$error = "Unknown datatype.";
+				print_error( $error, __METHOD__, __LINE__ );
+			}
+		}
+
+	} else if ( is_object( $mixed ) ) {
+		foreach ( get_object_vars( $mixed ) as $key => $value ) {
+			if ( is_scalar( $value ) OR $value === null ) {
+				$list[] = $value;
+			} elseif ( is_array( $value ) OR is_object( $value ) ) {
+				$list = array_merge( $list,
+					array_values_recursive( $value )
+				);
+			} elseif ( $value !== null ) {
+				$error = "Unknown datatype.";
+				print_error( $error, __METHOD__, __LINE__ );
+			}
+		}
+
+	} else {
+		$error = "Provided type is not supported.";
+		print_error( $error, __METHOD__, __LINE__ );
+	}
+
+	return $list;
+}

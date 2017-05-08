@@ -3,9 +3,9 @@
 class ApdAmazonItem {
 
 	/**
-	 * available template placeholders
+	 * Amazon item fields respectively available template placeholders
 	 */
-	public $tplPlaceholder = array(
+	public static $amazonItemFields = array(
 		'ASIN',
 		'SmallImageUrl',
 		'SmallImageWidth',
@@ -82,16 +82,6 @@ class ApdAmazonItem {
 	protected $amazonWbs;
 
 	/**
-	 * template placeholder prefix
-	 */
-	protected $tplPrefix = '{$';
-
-	/**
-	 * template placeholder postfix
-	 */
-	protected $tplPostfix = '}';
-
-	/**
 	 * ApdAmazonItem constructor.
 	 *
 	 * @param $amazonWbs
@@ -118,52 +108,10 @@ class ApdAmazonItem {
 	}
 
 	/**
-	 * generates right placeholder format and returns them as array
-	 * optionally prepared for use as regex
-	 *
-	 * @param bool true for regex prepared
-	 *
-	 * @return array
+	 * Make Amazon item a simple array that matches placeholder array
 	 */
-	public function getTplPlaceholders( $placeholders, $regex = false ) {
-		$result = array();
-		foreach ( $placeholders as $ph ) {
-			$result[] = $this->tplPrefix . $ph . $this->tplPostfix;
-		}
-		if ( $regex == true ) {
-			return array_map( array( $this, 'TplPlaceholderToRegex' ), $result );
-		}
+	public function refineAmazonItem(){
 
-		return $result;
-	}
-
-	/**
-	 * excapes placeholder for regex usage
-	 *
-	 * @param string placehoder
-	 *
-	 * @return string escaped placeholder
-	 */
-	public function TplPlaceholderToRegex( $ph ) {
-		$search = array(
-			'{',
-			'}',
-			'$',
-			'-',
-			'>'
-		);
-
-		$replace = array(
-			'\{',
-			'\}',
-			'\$',
-			'\-',
-			'\>'
-		);
-
-		$ph = str_replace( $search, $replace, $ph );
-
-		return '/' . $ph . '/';
 	}
 
 }
