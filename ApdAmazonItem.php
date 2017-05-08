@@ -82,14 +82,24 @@ class ApdAmazonItem {
 	protected $amazonWbs;
 
 	/**
+	 * The returned Amazon object
+	 *
+	 * @var
+	 */
+	protected $amazonObject;
+
+	/**
 	 * ApdAmazonItem constructor.
 	 *
 	 * @param $amazonWbs
 	 */
-	public function __construct( $amazonWbs ) {
+	public function __construct( $amazonWbs, $asin ) {
 
 		$this->amazonWbs = $amazonWbs;
 
+		$this->amazonObject = $this->amazonWbs->itemLookup( $asin, array(
+			'ResponseGroup' => 'ItemAttributes,Images,Offers,OfferListings,Reviews,EditorialReview,Tracks'
+		) );
 	}
 
 	/**
@@ -99,12 +109,8 @@ class ApdAmazonItem {
 	 *
 	 * @return      object      AsaZend_Service_Amazon_Item object
 	 */
-	public function getAmazonItem( $asin ) {
-		$result = $this->amazonWbs->itemLookup( $asin, array(
-			'ResponseGroup' => 'ItemAttributes,Images,Offers,OfferListings,Reviews,EditorialReview,Tracks'
-		) );
-
-		return $result;
+	public function getAmazonObject() {
+		return $this->amazonObject;
 	}
 
 	/**

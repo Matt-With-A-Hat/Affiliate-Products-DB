@@ -295,8 +295,8 @@ class ApdAmazonCache {
 
 		$amazonItems = array();
 		foreach ( $asins as $asin ) {
-			$amazonItem    = new ApdAmazonItem( $amazonWbs );
-			$amazonItems[] = $amazonItem->getAmazonItem( $asin );
+			$amazonItem    = new ApdAmazonItem( $amazonWbs, $asin );
+			$amazonItems[] = $amazonItem->getAmazonObject();
 
 			if ( "Amazon returns throttle error" === true ) {                                   //@todo catch if request throttle error occurs
 				return "throttle";
@@ -408,7 +408,7 @@ class ApdAmazonCache {
 		}
 	}
 
-	public function matchItemWithFields($amazonItem){
+	public function matchItemWithFields( $amazonItem ) {
 //		$match = array(
 //			'Asin' => $amazonItem->ASIN,
 //			'DetailPageURL' => $amazonItem->DetailPageUrl,

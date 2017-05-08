@@ -240,7 +240,7 @@ class ApdCore {
 		//=replace with Amazon information
 		//--------------------------------------------------------------
 
-		$apdAmazonItem = new ApdAmazonItem( $this->amazonWbs );
+		$apdAmazonItem = new ApdAmazonItem( $this->amazonWbs, $asin );
 
 		$amazonPlaceholders = ApdAmazonItem::$amazonItemFields;
 
@@ -248,7 +248,7 @@ class ApdCore {
 			$amazonPlaceholders = array_remove_duplicates( $amazonPlaceholders );
 		}
 
-		$amazonItem = $apdAmazonItem->getAmazonItem( $asin );
+		$amazonItem = $apdAmazonItem->getAmazonObject();
 
 		if ( $amazonItem instanceof AsaZend_Service_Amazon_Item ) {
 
