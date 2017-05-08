@@ -73,7 +73,8 @@ class ApdAmazonItem {
 		'Class',
 		'OffersMainPriceAmount',
 		'OffersMainPriceCurrencyCode',
-		'OffersMainPriceFormattedPrice'
+		'OffersMainPriceFormattedPrice',
+		'LastCacheUpdate'
 	);
 
 	/**
@@ -96,6 +97,13 @@ class ApdAmazonItem {
 	protected $array;
 
 	/**
+	 * The refined associative array version of the Amazon object
+	 *
+	 * @var
+	 */
+	protected $arrayAssoc;
+
+	/**
 	 * @var
 	 */
 	protected $cache;
@@ -114,6 +122,14 @@ class ApdAmazonItem {
 		) );
 
 		$this->array = $this->refineAmazonItem();
+		$this->arrayAssoc = $this->matchWithFields();
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getAmazonItemFields() {
+		return self::$amazonItemFields;
 	}
 
 	/**
@@ -133,6 +149,14 @@ class ApdAmazonItem {
 	public function getArray() {
 		return $this->array;
 	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArrayAssoc() {
+		return $this->arrayAssoc;
+	}
+
 
 	/**
 	 * Make Amazon item a simple array that matches placeholder array
@@ -332,6 +356,7 @@ class ApdAmazonItem {
 				$offerMainPriceAmount,
 				$offerMainPriceCurrencyCode,
 				$offerMainPriceFormatted,
+				current_time('mysql')
 			);
 
 			return $amazonItemArray;
@@ -342,6 +367,13 @@ class ApdAmazonItem {
 
 			return $error;
 		}
+	}
+
+	public function matchWithFields(){
+		$fieldsArray = self::getAmazonItemFields();
+		$valuesArray = $this->array;
+
+		return array_combine($fieldsArray,$valuesArray);
 	}
 
 	/**

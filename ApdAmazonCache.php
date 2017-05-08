@@ -84,7 +84,7 @@ class ApdAmazonCache {
 		'interval_minutes',
 		'inc_interval_rate_minutes',
 		'dec_interval_rate_minutes',
-		'dec_interval_every_nth',
+		'successful_requests_threshold',
 		'successful_requests',
 		'items_per_update',
 		'last_checked_id',
@@ -140,7 +140,7 @@ class ApdAmazonCache {
 	 */
 	public function getAmazonCacheColumns() {
 //		return $this->amazonCacheFields;
-		return ApdAmazonItem::$amazonItemFields;
+		return ApdAmazonItem::getAmazonItemFields();
 	}
 
 	/**
@@ -273,18 +273,26 @@ class ApdAmazonCache {
 
 		//methods updateCacheItems oder getAmazonItems
 		$this->updateCacheAsins();
-		$itemsPerUpdate = $this->getOption( 'items_per_update' );
-		$startId        = $this->getOption( 'last_checked_id' );
-		$startId        = ( $startId === null ) ? 0 : $startId;                     //@todo make column in table have 0 for default. Make ApdDatabase::modifyColumns allow default values
+		$itemsPerUpdate              = $this->getOption( 'items_per_update' );
+		$currentInterval             = $this->getOption( 'interval_minutes' );
+		$incInterval                 = $this->getOption( 'inc_interval_rate_minutes' );
+		$decInterval                 = $this->getOption( 'dec_interval_rate_minutes' );
+		$startId                     = $this->getOption( 'last_checked_id' );
+		$startId                     = ( $startId === null ) ? 0 : $startId;                     //@todo make column in table have 0 for default. Make ApdDatabase::modifyColumns allow default values
+		$successfulRequests          = $this->getOption( 'successful_requests' );
+		$successfulRequestsThreshold = $this->getOption( 'successful_requests_threshold' );
+
 
 		// request info for x items from Amazon API
 		$amazonItems = $this->getAmazonItems( $itemsPerUpdate, $startId );
 
 		// if something went wrong with the request
 		if ( $amazonItems == 'throttle' ) {
+			//set new interval
+			$options = array( 'interval_minutes' => $currentInterval + $incInterval );
+			$this->setOptions( $options );
+
 			// create a new cronjob with increased interval
-			$currentInterval = $this->getOption( 'interval_minutes' );
-			$incInterval     = $this->getOption( 'inc_interval_rate_minutes' );
 			$this->setCronjob( $currentInterval + $incInterval );
 
 			// set number of successful requests to 0
@@ -296,13 +304,25 @@ class ApdAmazonCache {
 			// else
 		} else {
 
-//			krumo( $amazonItems );
-			$this->updateCacheProducts( $amazonItems );
 			// update items in cache with returned amazon items
+			$result = $this->updateCacheProducts( $amazonItems );
 
 			// set new last updated item
+			if ( is_int( $result ) ) {
+				$options = array( 'last_checked_id' => $startId + $result );
+				$this->setOptions( $options );
+			}
 			// increase number of successful attempts by 1
-			// if x request attempts were successful, decrease the interval by x
+			$options = array( 'successful_requests' => $successfulRequests + 1 );
+			$this->setOptions( $options );
+
+			// if x request attempts were successful, decrease the interval by x and create new cronjob
+			if ( $successfulRequests >= $successfulRequestsThreshold ) {
+				$newInterval = $currentInterval - $decInterval;
+				$options     = array( 'interval_minutes' => $newInterval );
+				$this->setOptions($options);
+				$this->setCronjob($newInterval);
+			}
 		}
 
 	}
@@ -320,15 +340,13 @@ class ApdAmazonCache {
 		$apdCore   = new ApdCore();
 		$amazonWbs = $apdCore->amazonWbs;
 
-		$sql = "SELECT Asin FROM $this->tablenameCache WHERE id > $startId LIMIT $numberOfRows";
+		$sql = "SELECT Asin FROM $this->tablenameCache WHERE id >= $startId LIMIT $numberOfRows";
 
 		$asins = $wpdb->get_results( $sql, ARRAY_A );
 
-		if ( empty( $asins ) ) {
-			$error = "Query didn't return any results";
-			print_error( $error, __METHOD__, __LINE__ );
-
-			return false;
+		if ( $asins === null ) {
+			$options = array( 'last_checked_id' => 0 );
+			$this->setOptions( $options );
 		}
 
 		$asins = array_filter( array_values_recursive( $asins ) );
@@ -336,7 +354,7 @@ class ApdAmazonCache {
 		$amazonItems = array();
 		foreach ( $asins as $asin ) {
 			$amazonItem    = new ApdAmazonItem( $amazonWbs, $asin );
-			$amazonItems[] = $amazonItem->getArray();
+			$amazonItems[] = $amazonItem->getArrayAssoc();
 
 			if ( "Amazon returns throttle error" === true ) {                                   //@todo catch if request throttle error occurs
 				return "throttle";
@@ -390,19 +408,35 @@ class ApdAmazonCache {
 	 * Update products in cache table with provided array of Amazon objects
 	 *
 	 * @param array $amazonItems
+	 *
+	 * @return int
 	 */
 	public function updateCacheProducts( array $amazonItems ) {
 
 		global $wpdb;
 
+		$success = 0;
 		foreach ( $amazonItems as $amazonItem ) {
 
-			krumo($amazonItem);
+			$sql = "UPDATE $this->tablenameCache SET ";
 
-			break;
+			foreach ( $amazonItem as $key => $value ) {
+				$sql .= "`$key` = '%s', ";
+			}
+			$sql = rtrim( $sql, " ," );
+			$sql .= " WHERE `Asin` = '$amazonItem[ASIN]';";
+
+			$result = $wpdb->query( $wpdb->prepare( $sql, $amazonItem ) );
+			if ( $result ) {
+				$success ++;
+			} else {
+				$error = "Amazon item $amazonItem[ASIN] couldn't be updated";
+				print_error( $error, __METHOD__, __LINE__ );
+			}
 		}
-	}
 
+		return $success;
+	}
 }
 
 
