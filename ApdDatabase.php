@@ -176,8 +176,6 @@ class ApdDatabase {
 		$sql = "SELECT * FROM $tablename WHERE $id = %s";
 
 		$result = $wpdb->get_results( $wpdb->prepare( $sql, $id ), ARRAY_A );
-
-		krumo( $result );
 	}
 
 	/**
@@ -296,9 +294,6 @@ class ApdDatabase {
 		foreach ( $fields as $field ) {
 
 			if ( preg_match( "/_unique/", $field ) ) {
-				krumo( $field );
-				krumo( str_replace( "_unique", "", $field ) );
-
 				$fieldtypes['unique'][] = $newFields[] = str_replace( "_unique", "", $field );
 
 			} else if ( preg_match( "/_bool/", $field ) ) {

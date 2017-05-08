@@ -189,10 +189,10 @@ class ApdCustomerReviews
                 $body = $this->_response['body'];
 
 
-                global $apd;
-                if ($apd->isDebug()) {
-                    $apd->getDebugger()->write($body);
-                }
+//                global $apdCore;
+//                if ($apdCore->isDebug()) {
+//                    $apdCore->getDebugger()->write($body);
+//                }
 
                 if ($this->getFindMethod() == self::FIND_METHOD_DOM) {
 

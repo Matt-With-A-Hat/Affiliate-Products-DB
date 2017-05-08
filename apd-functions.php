@@ -47,9 +47,9 @@ function path_for_local( $path ) {
  * @return string
  */
 function apd_get_item( $asin, $tpl = false, $tablename ) {
-	global $apd;
+	global $apdCore;
 
-	return $apd->getElement( $asin, $tpl, $tablename );
+	return $apdCore->getElement( $asin, $tpl, $tablename );
 }
 
 /**
@@ -123,7 +123,7 @@ function field_is_null( $field ) {
  */
 function apd_shortcode_handler( $atts, $asin = null, $code = "" ) {
 
-	global $apd;
+	global $apdCore;
 
 	if ( $atts[2] === 'disabled' ) {
 		return false;

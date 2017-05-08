@@ -16,12 +16,12 @@ class ApdCore {
 	/**
 	 * user's Amazon Tracking ID
 	 */
-	protected $amazonTrackingId;
+	public $amazonTrackingId;
 
 	/**
 	 * selected country code
 	 */
-	protected $amazonCountryCode = 'DE';
+	public $amazonCountryCode = 'DE';
 
 	/**
 	 * supported amazon country IDs
@@ -44,7 +44,7 @@ class ApdCore {
 	/**
 	 * the international amazon product page urls
 	 */
-	protected $amazonUrl = array(
+	public $amazonUrl = array(
 		'BR' => 'http://www.amazon.com.br/exec/obidos/ASIN/%s/%s',
 		'CA' => 'http://www.amazon.ca/exec/obidos/ASIN/%s/%s',
 		'DE' => 'http://www.amazon.de/exec/obidos/ASIN/%s/%s',
@@ -240,220 +240,20 @@ class ApdCore {
 		//=replace with Amazon information
 		//--------------------------------------------------------------
 
-		$apdAmazonItem = new ApdAmazonItem( $this->amazonWbs, $asin );
-
+		$amazonItem         = new ApdAmazonItem( $this->amazonWbs, $asin );
 		$amazonPlaceholders = ApdAmazonItem::$amazonItemFields;
 
 		if ( ! empty( array_duplicates( $amazonPlaceholders ) ) ) {
 			$amazonPlaceholders = array_remove_duplicates( $amazonPlaceholders );
 		}
 
-		$amazonItem = $apdAmazonItem->getAmazonObject();
-
-		if ( $amazonItem instanceof AsaZend_Service_Amazon_Item ) {
-
+		$amazonArray = $amazonItem->getArray();
+		if ( is_array( $amazonArray ) ) {
 			$placeholders = $this->getTplPlaceholders( ApdAmazonItem::$amazonItemFields, true );
-
-			$trackingId = '';
-
-			if ( ! empty( $this->amazonTrackingId ) ) {
-				// set the user's tracking id
-				$trackingId = $this->amazonTrackingId;
-			}
-
-			// get the customer rating object
-			$customerReviews = $this->getCustomerReviews( $amazonItem );
-
-			if ( isset( $amazonItem->Offers->LowestUsedPrice ) && isset( $amazonItem->Offers->LowestNewPrice ) ) {
-
-				$lowestOfferPrice          = ( $amazonItem->Offers->LowestUsedPrice < $amazonItem->Offers->LowestNewPrice ) ?
-					$amazonItem->Offers->LowestUsedPrice : $amazonItem->Offers->LowestNewPrice;
-				$lowestOfferCurrency       = ( $amazonItem->Offers->LowestUsedPrice < $amazonItem->Offers->LowestNewPrice ) ?
-					$amazonItem->Offers->LowestUsedPriceCurrency : $amazonItem->Offers->LowestNewPriceCurrency;
-				$lowestOfferFormattedPrice = ( $amazonItem->Offers->LowestUsedPrice < $amazonItem->Offers->LowestNewPrice ) ?
-					$amazonItem->Offers->LowestUsedPriceFormattedPrice : $amazonItem->Offers->LowestNewPriceFormattedPrice;
-
-			} else if ( isset( $amazonItem->Offers->LowestNewPrice ) ) {
-
-				$lowestOfferPrice          = $amazonItem->Offers->LowestNewPrice;
-				$lowestOfferCurrency       = $amazonItem->Offers->LowestNewPriceCurrency;
-				$lowestOfferFormattedPrice = $amazonItem->Offers->LowestNewPriceFormattedPrice;
-
-			} else if ( isset( $amazonItem->Offers->LowestUsedPrice ) ) {
-
-				$lowestOfferPrice          = $amazonItem->Offers->LowestUsedPrice;
-				$lowestOfferCurrency       = $amazonItem->Offers->LowestUsedPriceCurrency;
-				$lowestOfferFormattedPrice = $amazonItem->Offers->LowestUsedPriceFormattedPrice;
-			}
-
-			$lowestOfferPrice              = $this->formatPrice( $lowestOfferPrice );
-			$lowestNewPrice                = isset( $amazonItem->Offers->LowestNewPrice ) ? $this->formatPrice( $amazonItem->Offers->LowestNewPrice ) : '';
-			$lowestNewOfferFormattedPrice  = isset( $amazonItem->Offers->LowestNewPriceFormattedPrice ) ? $amazonItem->Offers->LowestNewPriceFormattedPrice : '';
-			$lowestUsedPrice               = isset( $amazonItem->Offers->LowestUsedPrice ) ? $this->formatPrice( $amazonItem->Offers->LowestUsedPrice ) : '';
-			$lowestUsedOfferFormattedPrice = isset( $amazonItem->Offers->LowestUsedPriceFormattedPrice ) ? $amazonItem->Offers->LowestUsedPriceFormattedPrice : '';
-
-			$amazonPrice          = $this->getAmazonPrice( $amazonItem );
-			$amazonPriceFormatted = $this->getAmazonPrice( $amazonItem, true );
-
-			if ( isset( $amazonItem->Offers->Offers[0]->Price ) && ! empty( $amazonItem->Offers->Offers[0]->Price ) ) {
-
-				if ( isset( $amazonItem->Offers->SalePriceAmount ) ) {
-					// set main price to sale price
-					$offerMainPriceAmount       = $this->formatPrice( (string) $amazonItem->Offers->SalePriceAmount );
-					$offerMainPriceCurrencyCode = $amazonItem->Offers->SalePriceCurrencyCode;
-					$offerMainPriceFormatted    = $amazonItem->Offers->SalePriceFormatted;
-				} else {
-					$offerMainPriceAmount       = $this->formatPrice( (string) $amazonItem->Offers->Offers[0]->Price );
-					$offerMainPriceCurrencyCode = (string) $amazonItem->Offers->Offers[0]->CurrencyCode;
-					$offerMainPriceFormatted    = (string) $amazonItem->Offers->Offers[0]->FormattedPrice;
-				}
-
-			} else {
-				// empty main price
-				$emptyMainPriceText         = get_option( '_asa_replace_empty_main_price' );
-				$offerMainPriceCurrencyCode = '';
-				if ( ! empty( $emptyMainPriceText ) ) {
-					$offerMainPriceFormatted = $emptyMainPriceText;
-					$offerMainPriceAmount    = $emptyMainPriceText;
-				} else {
-					$offerMainPriceFormatted = '--';
-					$offerMainPriceAmount    = '--';
-				}
-			}
-
-			$listPriceFormatted = $amazonItem->ListPriceFormatted;
-
-			//Amazon logo URLs
-			if ( empty( $this->amazonCountryCode ) ) {
-
-				$amazonItem->AmazonLogoSmallUrl = apd_plugins_url( 'img/amazon_US_small.gif', __FILE__ );
-				$amazonItem->AmazonLogoLargeUrl = apd_plugins_url( 'img/amazon_US.gif', __FILE__ );
-
-			} else if ( $this->amazonCountryCode == 'DE' ) {
-
-				$amazonItem->AmazonLogoSmallUrl = apd_plugins_url( 'img/amazon_DE_small.png', __FILE__ );
-				$amazonItem->AmazonLogoLargeUrl = apd_plugins_url( 'img/amazon_DE.png', __FILE__ );
-
-				if ( $amazonItem->Offers->Offers[0]->IsEligibleForSuperSaverShipping ) {
-
-					$amazonItem->AmazonLogoSmallUrl = apd_plugins_url( 'img/amazon_DE_small_prime.png', __FILE__ );
-					$amazonItem->AmazonLogoLargeUrl = apd_plugins_url( 'img/amazon_DE_prime.png', __FILE__ );
-
-				}
-
-			}
-
-			//make Amazon Stars prettier with font awesome
-			$ratingStarsHtml = '<span class="amazon-stars">';
-			$numberStars     = $customerReviews->averageRating;
-			$fullStar        = '<i class="fa fa-star"></i>';
-			$halfStar        = '<i class="fa fa-star-half-o"></i>';
-			$emptyStar       = '<i class="fa fa-star-o"></i>';
-
-
-			$nFullStars  = floor( $numberStars );
-			$nHalfStars  = $numberStars - $nFullStars;
-			$nEmptyStars = floor( 5 - $numberStars );
-
-			for ( $i = 0; $i < $nFullStars; $i ++ ) {
-				$ratingStarsHtml .= $fullStar;
-			}
-			if ( $nHalfStars != 0 ) {
-				$ratingStarsHtml .= $halfStar;
-			}
-			for ( $i = 0; $i < $nEmptyStars; $i ++ ) {
-				$ratingStarsHtml .= $emptyStar;
-			}
-
-			$ratingStarsHtml .= "</span>";
-
-
-			$totalOffers = $amazonItem->Offers->TotalNew + $amazonItem->Offers->TotalUsed +
-			               $amazonItem->Offers->TotalCollectible + $amazonItem->Offers->TotalRefurbished;
-
-			$platform = $amazonItem->Platform;
-			if ( is_array( $platform ) ) {
-				$platform = implode( ', ', $platform );
-			}
-
-			$percentageSaved = $amazonItem->PercentageSaved;
-
-			$no_img_url = apd_plugins_url( 'img/no_image.png', __FILE__ );
-
-			$replace = array(
-				$amazonItem->ASIN,
-				( $amazonItem->SmallImage != null ) ? $amazonItem->SmallImage->Url->getUri() : $no_img_url,
-				( $amazonItem->SmallImage != null ) ? $amazonItem->SmallImage->Width : 60,
-				( $amazonItem->SmallImage != null ) ? $amazonItem->SmallImage->Height : 60,
-				( $amazonItem->MediumImage != null ) ? $amazonItem->MediumImage->Url->getUri() : $no_img_url,
-				( $amazonItem->MediumImage != null ) ? $amazonItem->MediumImage->Width : 60,
-				( $amazonItem->MediumImage != null ) ? $amazonItem->MediumImage->Height : 60,
-				( $amazonItem->LargeImage != null ) ? $amazonItem->LargeImage->Url->getUri() : $no_img_url,
-				( $amazonItem->LargeImage != null ) ? $amazonItem->LargeImage->Width : 60,
-				( $amazonItem->LargeImage != null ) ? $amazonItem->LargeImage->Height : 60,
-				$amazonItem->Label,
-				$amazonItem->Manufacturer,
-				$amazonItem->Publisher,
-				$amazonItem->Studio,
-				$amazonItem->Title,
-				$this->getItemUrl( $amazonItem ),
-				empty( $totalOffers ) ? '0' : $totalOffers,
-				empty( $lowestOfferPrice ) ? '---' : $lowestOfferPrice,
-				isset( $lowestOfferCurrency ) ? $lowestOfferCurrency : '',
-				isset( $lowestOfferFormattedPrice ) ? str_replace( '$', '\$', $lowestOfferFormattedPrice ) : '',
-				empty( $lowestNewPrice ) ? '---' : $lowestNewPrice,
-				str_replace( '$', '\$', $lowestNewOfferFormattedPrice ),
-				empty( $lowestUsedPrice ) ? '---' : $lowestUsedPrice,
-				str_replace( '$', '\$', $lowestUsedOfferFormattedPrice ),
-				empty( $amazonPrice ) ? '---' : str_replace( '$', '\$', $amazonPrice ),
-				empty( $amazonPriceFormatted ) ? '---' : str_replace( '$', '\$', $amazonPriceFormatted ),
-				empty( $listPriceFormatted ) ? '---' : str_replace( '$', '\$', $listPriceFormatted ),
-				isset( $amazonItem->Offers->Offers[0]->CurrencyCode ) ? $amazonItem->Offers->Offers[0]->CurrencyCode : '',
-				isset( $amazonItem->Offers->Offers[0]->Availability ) ? $amazonItem->Offers->Offers[0]->Availability : '',
-				$amazonItem->AmazonLogoSmallUrl,
-				$amazonItem->AmazonLogoLargeUrl,
-				$this->handleItemUrl( $amazonItem->DetailPageURL ),
-				$platform,
-				$amazonItem->ISBN,
-				$amazonItem->EAN,
-				$amazonItem->NumberOfPages,
-				$this->getLocalizedDate( $amazonItem->ReleaseDate ),
-				$amazonItem->Binding,
-				is_array( $amazonItem->Author ) ? implode( ', ', $amazonItem->Author ) : $amazonItem->Author,
-				is_array( $amazonItem->Creator ) ? implode( ', ', $amazonItem->Creator ) : $amazonItem->Creator,
-				$amazonItem->Edition,
-				$customerReviews->averageRating,
-				( $customerReviews->totalReviews != null ) ? $customerReviews->totalReviews : 0,
-//				( $customerReviews->imgTag != null ) ? $customerReviews->imgTag : '<img src="' . apd_plugins_url( 'img/stars-0.gif', __FILE__ ) . '" class="asa_rating_stars" />',
-				$ratingStarsHtml,
-				( $customerReviews->imgSrc != null ) ? $customerReviews->imgSrc : apd_plugins_url( 'img/stars-0.gif', __FILE__ ),
-				is_array( $amazonItem->Director ) ? implode( ', ', $amazonItem->Director ) : $amazonItem->Director,
-				is_array( $amazonItem->Actor ) ? implode( ', ', $amazonItem->Actor ) : $amazonItem->Actor,
-				$amazonItem->RunningTime,
-				is_array( $amazonItem->Format ) ? implode( ', ', $amazonItem->Format ) : $amazonItem->Format,
-				! empty( $parse_params['custom_rating'] ) ? '<img src="' . apd_plugins_url( 'img/stars-' . $parse_params['custom_rating'] . '.gif', __FILE__ ) . '" class="asa_rating_stars" />' : '',
-				isset( $amazonItem->EditorialReviews[0] ) ? $amazonItem->EditorialReviews[0]->Content : '',
-				! empty( $amazonItem->EditorialReviews[1] ) ? $amazonItem->EditorialReviews[1]->Content : '',
-				is_array( $amazonItem->Artist ) ? implode( ', ', $amazonItem->Artist ) : $amazonItem->Artist,
-				! empty( $parse_params['comment'] ) ? $parse_params['comment'] : '',
-				! empty( $percentageSaved ) ? $percentageSaved : 0,
-				! empty( $amazonItem->Offers->Offers[0]->IsEligibleForSuperSaverShipping ) ? 'AmazonPrime' : '',
-				! empty( $amazonItem->Offers->Offers[0]->IsEligibleForSuperSaverShipping ) ? '<img src="' . apd_plugins_url( 'img/amazon_prime.png', __FILE__ ) . '" class="asa_prime_pic" />' : '',
-				$this->getAmazonShopUrl() . 'product-reviews/' . $amazonItem->ASIN . '/&tag=' . $this->getTrackingId(),
-				$customerReviews->iframeUrl,
-				$this->getTrackingId(),
-				$this->getAmazonShopUrl(),
-				isset( $amazonItem->Offers->SalePriceAmount ) ? $this->formatPrice( $amazonItem->Offers->SalePriceAmount ) : '',
-				isset( $amazonItem->Offers->SalePriceCurrencyCode ) ? $amazonItem->Offers->SalePriceCurrencyCode : '',
-				isset( $amazonItem->Offers->SalePriceFormatted ) ? $amazonItem->Offers->SalePriceFormatted : '',
-				! empty( $parse_params['class'] ) ? $parse_params['class'] : '',
-				$offerMainPriceAmount,
-				$offerMainPriceCurrencyCode,
-				$offerMainPriceFormatted,
-			);
-
-			$html = preg_replace( $placeholders, $replace, $tpl );
-
+			$html         = preg_replace( $placeholders, $amazonArray, $tpl );
+		} else {
+			$error = "Amazon array is empty";
+			print_error( $error, __METHOD__, __LINE__ );
 		}
 
 		//--------------------------------------------------------------
@@ -561,8 +361,6 @@ class ApdCore {
 			return array_map( array( $this, 'TplPlaceholderToRegex' ), $result );
 		}
 
-		krumo( $result );
-
 		return $result;
 	}
 
@@ -602,7 +400,7 @@ class ApdCore {
 	 *
 	 * @return         mixed        price (float, int for JP)
 	 */
-	protected function formatPrice( $price ) {
+	public function formatPrice( $price ) {
 		if ( $price === null || empty( $price ) ) {
 			return $price;
 		}
@@ -654,7 +452,7 @@ class ApdCore {
 	 *
 	 * @return string
 	 */
-	protected function handleItemUrl( $url ) {
+	public function handleItemUrl( $url ) {
 		$url = urldecode( $url );
 
 		$url = strtr( $url, array(
@@ -743,34 +541,6 @@ class ApdCore {
 		}
 
 		return $result;
-	}
-
-	/**
-	 * Retrieve the customer reviews object
-	 *
-	 * @param $item
-	 * @param bool $uncached
-	 *
-	 * @return AsaCustomerReviews|null
-	 */
-	public function getCustomerReviews( $item, $uncached = false ) {
-		require_once( dirname( __FILE__ ) . '/ApdCustomerReviews.php' );
-
-		$iframeUrl = ( $item->CustomerReviewsIFrameURL != null ) ? $item->CustomerReviewsIFrameURL : '';
-
-		if ( $uncached ) {
-			$cache = null;
-		} else {
-			$cache = $this->cache;
-		}
-
-		$reviews = new ApdCustomerReviews( $item->ASIN, $iframeUrl, $cache );
-		if ( get_option( '_asa_get_rating_alternative' ) ) {
-			$reviews->setFindMethod( ApdCustomerReviews::FIND_METHOD_DOM );
-		}
-		$reviews->load();
-
-		return $reviews;
 	}
 
 }

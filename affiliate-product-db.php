@@ -137,6 +137,7 @@ require_once( dirname( __FILE__ ) . '/ApdCore.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabaseService.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonItem.php' );
+require_once( dirname( __FILE__ ) . '/ApdCustomerReviews.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonCache.php' );
 require_once( dirname( __FILE__ ) . '/ApdItem.php' );
 
@@ -145,4 +146,4 @@ require_once( dirname( __FILE__ ) . '/ApdItem.php' );
  */
 require dirname( __FILE__ ) . '/apd-cronjobs.php';
 
-$apd = new ApdCore();
+$apdCore = new ApdCore();

@@ -266,46 +266,9 @@ class ApdAmazonCache {
 		}
 	}
 
-
 	/**
-	 * get a number of items from Amazon API starting from last checked item
-	 *
-	 * @param $numberOfRows
-	 *
-	 * @return array|bool|string
+	 * Update the Amazon cache
 	 */
-	public function getAmazonItems( $numberOfRows, $startId ) {
-
-		global $wpdb;
-		$apdCore   = new ApdCore();
-		$amazonWbs = $apdCore->amazonWbs;
-
-		$sql = "SELECT Asin FROM $this->tablenameCache WHERE id > $startId LIMIT $numberOfRows";
-
-		$asins = $wpdb->get_results( $sql, ARRAY_A );
-
-		if ( empty( $asins ) ) {
-			$error = "Query didn't return any results";
-			print_error( $error, __METHOD__, __LINE__ );
-
-			return false;
-		}
-
-		$asins = array_filter( array_values_recursive( $asins ) );
-
-		$amazonItems = array();
-		foreach ( $asins as $asin ) {
-			$amazonItem    = new ApdAmazonItem( $amazonWbs, $asin );
-			$amazonItems[] = $amazonItem->getAmazonObject();
-
-			if ( "Amazon returns throttle error" === true ) {                                   //@todo catch if request throttle error occurs
-				return "throttle";
-			}
-		}
-
-		return $amazonItems;
-	}
-
 	public function updateCache() {
 
 		//methods updateCacheItems oder getAmazonItems
@@ -342,6 +305,45 @@ class ApdAmazonCache {
 			// if x request attempts were successful, decrease the interval by x
 		}
 
+	}
+
+	/**
+	 * get a number of items from Amazon API starting from last checked item
+	 *
+	 * @param $numberOfRows
+	 *
+	 * @return array|bool|string
+	 */
+	public function getAmazonItems( $numberOfRows, $startId ) {
+
+		global $wpdb;
+		$apdCore   = new ApdCore();
+		$amazonWbs = $apdCore->amazonWbs;
+
+		$sql = "SELECT Asin FROM $this->tablenameCache WHERE id > $startId LIMIT $numberOfRows";
+
+		$asins = $wpdb->get_results( $sql, ARRAY_A );
+
+		if ( empty( $asins ) ) {
+			$error = "Query didn't return any results";
+			print_error( $error, __METHOD__, __LINE__ );
+
+			return false;
+		}
+
+		$asins = array_filter( array_values_recursive( $asins ) );
+
+		$amazonItems = array();
+		foreach ( $asins as $asin ) {
+			$amazonItem    = new ApdAmazonItem( $amazonWbs, $asin );
+			$amazonItems[] = $amazonItem->getArray();
+
+			if ( "Amazon returns throttle error" === true ) {                                   //@todo catch if request throttle error occurs
+				return "throttle";
+			}
+		}
+
+		return $amazonItems;
 	}
 
 	/**
@@ -394,90 +396,13 @@ class ApdAmazonCache {
 		global $wpdb;
 
 		foreach ( $amazonItems as $amazonItem ) {
-			$amazonItem1       = array_values_recursive( (array) $amazonItem );
-			$amazonItem2       = (array) $amazonItem;
-			$amazonCacheFields = $this->getAmazonCacheColumns();
 
-//			krumo($amazonItem);
-//			krumo(array_values_recursive($amazonItem));
+			krumo($amazonItem);
 
-//			krumo( $amazonItem1 );
-//			krumo( $amazonItem2 );
-//			krumo( $amazonCacheFields );
 			break;
 		}
 	}
 
-	public function matchItemWithFields( $amazonItem ) {
-//		$match = array(
-//			'Asin' => $amazonItem->ASIN,
-//			'DetailPageURL' => $amazonItem->DetailPageUrl,
-//			'SalesRank' => $amazonItem->SalesRank,
-//			'TotalReviews' => $amazonItem->TotalReviews,
-//			'AverageRating' => $amazonItem->AverageRating,
-//			'SmallImageUrl' => $amazonItem->SmallImage->Url->getUri(),
-//			'SmallImageHeight' => $amazonItem->SmallImage->Height,
-//			'SmallImageWidth' => $amazonItem->SmallImage->Width,
-//			'MediumImageUrl' => $amazonItem->MediumImage->Url->getUri(),
-//			'MediumImageHeight' => $amazonItem->MediumImage->Height,
-//			'MediumImageWidth' => $amazonItem->MediumImage->Width,
-//			'LargeImageUrl' => $amazonItem->LargeImage->Url->getUri(),
-//			'LargeImageHeight' => $amazonItem->LargeImage->Height,
-//			'LargeImageWidth' => $amazonItem->LargeImage->Width,
-//			'Subjects' => $amazonItem->Subjects,
-//			'Features' => $amazonItem->Features,
-//			'LowestNewPrice' => $amazonItem->Offers,
-//			'LowestNewPriceCurrency' => ,
-//			'LowestNewPriceFormattedPrice' => ,
-//			'LowestUsedPrice' => ,
-//			'LowestUsedPriceCurrenty' => ,
-//			'LowestUsedPriceFormattedPrice' => ,
-//			'SalePriceAmount' => ,
-//			'SalePriceFormatted' => ,
-//			'SalePriceCurrencyCode' => ,
-//			'TotalNew' => ,
-//			'TotalUsed' => ,
-//			'TotalCollectible' => ,
-//			'TotalRefurbished' => ,
-//			'MerchantMerchantId' => ,
-//			'MerchantMerchantName' => ,
-//			'MerchantGlancePage' => ,
-//			'MerchantCondition' => ,
-//			'MerchantOfferListingId' => ,
-//			'MerchantPrice' => ,
-//			'MerchantCurrencyCode' => ,
-//			'MerchantFormattedPrice' => ,
-//			'MerchantAvailability' => ,
-//			'MerchantIsEligibleForSuperSaverShipping' => ,
-//			'CustomerReviews' => ,
-//			'EditorialReviews' => ,
-//			'Source' => ,
-//			'Content' => ,
-//			'SimilarProducts' => ,
-//			'Accessories' => ,
-//			'Track' => ,
-//			'ListmaniaLists' => ,
-//			'CurrencyCode' => ,
-//			'Amount' => ,
-//			'FormattedPrice' => ,
-//			'ListPriceFormatted' => ,
-//			'Brand' => ,
-//			'EAN' => ,
-//			'Feature' => ,
-//			'Label' => ,
-//			'Manufacturer' => ,
-//			'ProductGroup' => ,
-//			'ProductTypeName' => ,
-//			'Publisher' => ,
-//			'Studio' => ,
-//			'Title' => ,
-//			'CustomerReviewsIFrameUrl' => ,
-//			'CustomerReviewsImgTag' => ,
-//			'CustomerReviewsImgSrc' => ,
-//			'CustomerReviewsTotalReviews' => ,
-//			'CustomerReviewsIFrameUrl2' =>
-//		);
-	}
 }
 
 

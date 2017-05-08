@@ -118,8 +118,7 @@ global $wpdb;
 $amazonCache = new ApdAmazonCache();
 $amazonCache->updateCache();
 
-$databaseService = new ApdDatabaseService();
-$asins = $databaseService->getAllProductAsins();
+
 //krumo($asins);
 
 //$databaseService->updateTableList('hallo2','test');
