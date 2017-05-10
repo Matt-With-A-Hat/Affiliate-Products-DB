@@ -240,17 +240,19 @@ class ApdCore {
 		//=replace with Amazon information
 		//--------------------------------------------------------------
 
-		$amazonItem         = new ApdAmazonItem( $this->amazonWbs, $asin );
-		$amazonPlaceholders = ApdAmazonItem::getAmazonItemFields();
+		$amazonCacheItem = new ApdAmazonCacheItem( $asin );
+		$amazonArray = $amazonCacheItem->getArray();
 
-		if ( ! empty( array_duplicates( $amazonPlaceholders ) ) ) {
-			$amazonPlaceholders = array_remove_duplicates( $amazonPlaceholders );
+		//if Amazon cache doesn't return anything, get the data directly from Amazon API
+		if($amazonArray === null){
+			$amazonItem = new ApdAmazonItem( $this->amazonWbs, $asin );
+			$amazonArray = $amazonItem->getArray();
 		}
 
-		$amazonArray = $amazonItem->getArray();
+
 		if ( is_array( $amazonArray ) ) {
 			$placeholders = $this->getTplPlaceholders( ApdAmazonItem::getAmazonItemFields(), true );
-			$html         = preg_replace( $placeholders, $amazonArray, $tpl );
+			$html = preg_replace( $placeholders, $amazonArray, $tpl );
 		} else {
 			$error = "Amazon array is empty";
 			print_error( $error, __METHOD__, __LINE__ );

@@ -125,8 +125,8 @@ add_filter( 'plugin_action_links_' . APD_BASENAME, 'apd_settings_link' );
  */
 function apd_options_install() {
 	global $wpdb;
-	$amazonCache     = new ApdAmazonCache();
-	$databaseService = new ApdDatabaseService();
+	$amazonCacheDatabase = new ApdAmazonCacheDatabase();
+	$databaseService     = new ApdDatabaseService();
 
 	//create table list
 	$tablename = APD_TABLE_LIST_TABLE;
@@ -137,13 +137,13 @@ function apd_options_install() {
 	//create amazon items table
 	$tablename = APD_AMAZON_CACHE_TABLE;
 	$database  = new ApdDatabase( $tablename );
-	$database->createTableFromArray( $amazonCache->getAmazonCacheColumns(), 'cache' );
-	$database->modifyColumns( $amazonCache->getUniqueAmazonCacheColumns(), 'unique' );
+	$database->createTableFromArray( $amazonCacheDatabase->getAmazonCacheColumns(), 'cache' );
+	$database->modifyColumns( $amazonCacheDatabase->getUniqueAmazonCacheColumns(), 'unique' );
 
 	//create amazon cache options table
 	$tablename = APD_CACHE_OPTIONS_TABLE;
 	$database  = new ApdDatabase( $tablename );
-	$database->createTableFromArray( $amazonCache->getOptionFields(), 'cache' );
+	$database->createTableFromArray( $amazonCacheDatabase->getOptionFields(), 'cache' );
 
 }
 

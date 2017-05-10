@@ -9,3 +9,6 @@ Eventuell Methoden wie updateAmazonItem oder getAmazonItems auslagern
 08.05.17
 Irgendetwas stimmt in ApdAmazonCache::updateCacheAsins nicht.
 Items müssen noch aus Cache geladen werden, anstatt direkt Anfragen zu setzen.
+
+10.05.17
+@todo migrate general functions from ApdAmazonCache to ApdCacheSettings

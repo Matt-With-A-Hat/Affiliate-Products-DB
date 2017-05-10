@@ -10,7 +10,7 @@
  */
 function apdcronjob_bootstrap() {
 
-//	@todo make this a class ApdOptionsCache that is extended by ApdAmazonCache
+//	@todo make this a class ApdOptionsCache that is extended by ApdAmazonCacheDatabase
 	//These are options for the initial startup of the Amazon Cache cronjob
 	$apd_ac_options = array(
 		'interval_minutes'              => 1,                    //the initial interval to update the cache
@@ -20,14 +20,14 @@ function apdcronjob_bootstrap() {
 		'items_per_update'              => 5,                   //the number of Amazon items that are updated with each request
 	);
 
-	$amazonCache = new ApdAmazonCache();
-	$amazonCache->setOptions( $apd_ac_options );
+	$amazonCacheDatabase = new ApdAmazonCacheDatabase();
+	$amazonCacheDatabase->setOptions( $apd_ac_options );
 
 	//insert first row in cache options table
 	global $wpdb;
 	$data              = $apd_ac_options;
 	$data['last_edit'] = current_time( 'mysql' );
-	$result            = $wpdb->insert( $amazonCache->getTablenameOptions(), $data );
+	$result            = $wpdb->insert( $amazonCacheDatabase->getTablenameOptions(), $data );
 
 }
 
@@ -66,8 +66,8 @@ function apdcronjob_trigger() {
 //	}
 
 	//----------------------- deployment -----------------------
-	$amazonCache = new ApdAmazonCache();
-	$amazonCache->setCronjob( $amazonCache->getOption( 'interval_minutes' ) );
+	$amazonCacheDatabase = new ApdAmazonCacheDatabase();
+	$amazonCacheDatabase->setCronjob( $amazonCacheDatabase->getOption( 'interval_minutes' ) );
 
 }
 
@@ -103,28 +103,22 @@ function update_amazon_items_cache() {
 
 	//----------------------- deployment code -----------------------
 
-	$amazonCache = new ApdAmazonCache();
-	$amazonCache->updateCache();
+	$amazonCacheDatabase = new ApdAmazonCacheDatabase();
+	$amazonCacheDatabase->updateCache();
 }
 
 add_action( 'apdcronjob', 'update_amazon_items_cache' );
 
 
-echo "<br>";
-echo "<br>";
-echo "<br>";
-echo "<br>";
-//global $wpdb;
+//echo "<br>";
+//echo "<br>";
+//echo "<br>";
+//echo "<br>";
 
-$amazonCache = new ApdAmazonCache();
-$amazonCache->updateCache();
+//$amazonCacheItem = new ApdAmazonCacheItem('B006MWDNVI');
+//$array = $amazonCacheItem->getAmazonCacheItem();
 
-
-//krumo($asins);
-
-//$databaseService->updateTableList('hallo2','test');
-
-//$databaseService->updateTableList('hallo', 'products');
+//krumo($array);
 
 /**
  * // * * ----------------------- [ =for debugging ] -----------------------

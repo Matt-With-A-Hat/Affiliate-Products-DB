@@ -157,11 +157,10 @@ class ApdAmazonItem {
 		return $this->arrayAssoc;
 	}
 
-
 	/**
 	 * Make Amazon item a simple array that matches placeholder array
 	 */
-	public function refineAmazonItem() {
+	private function refineAmazonItem() {
 
 		$apdCore      = new ApdCore();
 		$amazonObject = $this->object;

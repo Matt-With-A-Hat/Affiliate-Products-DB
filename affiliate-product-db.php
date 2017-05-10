@@ -139,6 +139,8 @@ require_once( dirname( __FILE__ ) . '/ApdDatabaseService.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonItem.php' );
 require_once( dirname( __FILE__ ) . '/ApdCustomerReviews.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonCache.php' );
+require_once( dirname( __FILE__ ) . '/ApdAmazonCacheDatabase.php' );
+require_once( dirname( __FILE__ ) . '/ApdAmazonCacheItem.php' );
 require_once( dirname( __FILE__ ) . '/ApdItem.php' );
 
 /**
