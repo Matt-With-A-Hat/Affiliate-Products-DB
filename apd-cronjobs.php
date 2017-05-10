@@ -110,15 +110,14 @@ function update_amazon_items_cache() {
 add_action( 'apdcronjob', 'update_amazon_items_cache' );
 
 
-//echo "<br>";
-//echo "<br>";
-//echo "<br>";
-//echo "<br>";
+echo "<br>";
+echo "<br>";
+echo "<br>";
+echo "<br>";
 //global $wpdb;
 
-//apdcronjob_bootstrap();
-//$amazonCache = new ApdAmazonCache();
-//$amazonCache->updateCache();
+$amazonCache = new ApdAmazonCache();
+$amazonCache->updateCache();
 
 
 //krumo($asins);

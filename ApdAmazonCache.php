@@ -192,10 +192,10 @@ class ApdAmazonCache {
 		global $wpdb;
 		$data              = $options;
 		$data['last_edit'] = current_time( 'mysql' );
-		$result            = $wpdb->update( $this->tablenameOptions, $data, array( 'ID' => 1 ) );
+		$result            = $wpdb->update( $this->tablenameOptions, $data, array( 'id' => 1 ) );
 
 		//error handling if database update didn't work
-		if ( $result == false ) {
+		if ( $result === false ) {
 			if ( APD_DEBUG ) {
 				$error = "Options couldn't be updated";
 				print_error( $error, __METHOD__, __LINE__ );
@@ -305,11 +305,11 @@ class ApdAmazonCache {
 		} else {
 
 			// update items in cache with returned amazon items
-			$result = $this->updateCacheProducts( $amazonItems );
+			$lastUpdatedId = $this->updateCacheProducts( $amazonItems );
 
 			// set new last updated item
-			if ( is_int( $result ) ) {
-				$options = array( 'last_checked_id' => $startId + $result );
+			if ( $lastUpdatedId !== null ) {
+				$options = array( 'last_checked_id' => $lastUpdatedId );
 				$this->setOptions( $options );
 			}
 			// increase number of successful attempts by 1
@@ -318,10 +318,11 @@ class ApdAmazonCache {
 
 			// if x request attempts were successful, decrease the interval by x and create new cronjob
 			if ( $successfulRequests >= $successfulRequestsThreshold ) {
-				$newInterval = $currentInterval - $decInterval;
-				$options     = array( 'interval_minutes' => $newInterval );
-				$this->setOptions($options);
-				$this->setCronjob($newInterval);
+				//interval can't ne smaller than 1
+				$newInterval = ( $currentInterval < 2 ) ? $currentInterval = 1 : $currentInterval - $decInterval;
+				$options = array( 'interval_minutes' => $newInterval );
+				$this->setOptions( $options );
+				$this->setCronjob( $newInterval );
 			}
 		}
 
@@ -344,7 +345,7 @@ class ApdAmazonCache {
 
 		$asins = $wpdb->get_results( $sql, ARRAY_A );
 
-		if ( $asins === null ) {
+		if ( count( $asins ) == 0 ) {
 			$options = array( 'last_checked_id' => 0 );
 			$this->setOptions( $options );
 		}
@@ -374,25 +375,26 @@ class ApdAmazonCache {
 		$databaseService = new ApdDatabaseService();
 		$productAsins    = $databaseService->getAllProductAsins();
 
+
 		$sql        = "SELECT Asin FROM $this->tablenameCache";
 		$cacheAsins = $wpdb->get_results( $wpdb->prepare( $sql, '' ) );
 		$cacheAsins = array_filter( array_values_recursive( $cacheAsins ) );
 
-
 		//asins from product tables that don't exist in cache yet
-		$diffProducts = array_diff_key( $productAsins, $cacheAsins );
+		$diffProducts = array_diff( $productAsins, $cacheAsins );
 		if ( ! empty( $diffProducts ) ) {
-			$sql = "INSERT INTO $this->tablenameCache (Asin) VALUES ";
+			$sql = "REPLACE INTO $this->tablenameCache (Asin) VALUES ";
 			foreach ( $diffProducts as $diffProduct ) {
 				$sql .= "(%s), ";
 			}
 			$sql = rtrim( $sql, " ," ) . ";";
+			krumo($wpdb->prepare( $sql, $diffProducts ));
 			$wpdb->query( $wpdb->prepare( $sql, $diffProducts ) );
 		}
 
 
 		//asins from cache table that don't exist in procuts anymore
-		$diffCache = array_diff_key( $cacheAsins, $productAsins );
+		$diffCache = array_diff( $cacheAsins, $productAsins );
 		if ( ! empty( $diffCache ) ) {
 			$sql = "DELETE FROM $this->tablenameCache WHERE `Asin` IN (";
 			foreach ( $diffCache as $item ) {
@@ -416,26 +418,42 @@ class ApdAmazonCache {
 		global $wpdb;
 
 		$success = 0;
-		foreach ( $amazonItems as $amazonItem ) {
 
+		$sql = "SET @update_id := 0;";
+		$wpdb->query( $sql );
+
+		$count = count( $amazonItems );
+		$i     = 0;
+		foreach ( $amazonItems as $amazonItem ) {
 			$sql = "UPDATE $this->tablenameCache SET ";
 
 			foreach ( $amazonItem as $key => $value ) {
 				$sql .= "`$key` = '%s', ";
 			}
 			$sql = rtrim( $sql, " ," );
+
+			//set the id for the last updated item and retrieve it later on
+			if ( $i == $count - 1 ) {
+				$sql .= ", id = (SELECT @update_id := id)";
+			}
+
 			$sql .= " WHERE `Asin` = '$amazonItem[ASIN]';";
 
 			$result = $wpdb->query( $wpdb->prepare( $sql, $amazonItem ) );
-			if ( $result ) {
-				$success ++;
-			} else {
+
+			if ( ! $result ) {
 				$error = "Amazon item $amazonItem[ASIN] couldn't be updated";
 				print_error( $error, __METHOD__, __LINE__ );
 			}
+
+			$i ++;
 		}
 
-		return $success;
+		//get last updated item
+		$sql        = "SELECT @update_id;";
+		$lastItemId = $wpdb->get_var( $sql );
+
+		return $lastItemId;
 	}
 }
 

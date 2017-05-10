@@ -5,3 +5,7 @@ Hierdurch lässt sich die MYSQL REPLACE Methode benutzen, da die ASIN unique ist
 
 ApdAmazonCache::updateCache muss fertig gestellt werden.
 Eventuell Methoden wie updateAmazonItem oder getAmazonItems auslagern
+
+08.05.17
+Irgendetwas stimmt in ApdAmazonCache::updateCacheAsins nicht.
+Items müssen noch aus Cache geladen werden, anstatt direkt Anfragen zu setzen.
