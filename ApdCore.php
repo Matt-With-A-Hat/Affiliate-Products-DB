@@ -90,6 +90,20 @@ class ApdCore {
 	protected $tplPostfix = '}';
 
 	/**
+	 * Delimiter for iterating through every item in a template
+	 *
+	 * @var string
+	 */
+	protected $loopDelimiterStart = "{loop-start}";
+
+	/**
+	 * Delimiter for iterating through every item in a template
+	 *
+	 * @var string
+	 */
+	protected $loopDelimiterEnd = "{loop-end}";
+
+	/**
 	 * ApdCore constructor.
 	 */
 	public function __construct() {
@@ -165,9 +179,11 @@ class ApdCore {
 
 		$tpl_src = $this->getTpl( $tpl );
 
-		$item_html .= $this->parseTpl( trim( $asin ), $tpl_src, $tablename );
-
-//		$item_html = $tpl_src;
+		if ( is_string( $asin ) ) {
+			$item_html .= $this->parseTpl( $asin, $tpl_src, $tablename );
+		} elseif ( is_array( $asin ) ) {
+			$item_html .= $this->parseMultiTpl( $asin, $tpl_src, $tablename );
+		}
 
 		return $item_html;
 	}
@@ -228,12 +244,17 @@ class ApdCore {
 	}
 
 	/**
+	 * Replace placeholders in template with information for item
+	 *
 	 * @param $asin
-	 * @param $tpl_src
+	 * @param $tpl
+	 * @param $tablename
 	 *
 	 * @return string
 	 */
 	public function parseTpl( $asin, $tpl, $tablename ) {
+
+		$asin = trim( $asin );
 
 		$html = '';
 		//--------------------------------------------------------------
@@ -241,18 +262,18 @@ class ApdCore {
 		//--------------------------------------------------------------
 
 		$amazonCacheItem = new ApdAmazonCacheItem( $asin );
-		$amazonArray = $amazonCacheItem->getArray();
+		$amazonArray     = $amazonCacheItem->getArray();
 
 		//if Amazon cache doesn't return anything, get the data directly from Amazon API
-		if($amazonArray === null){
-			$amazonItem = new ApdAmazonItem( $this->amazonWbs, $asin );
+		if ( $amazonArray === null ) {
+			$amazonItem  = new ApdAmazonItem( $this->amazonWbs, $asin );
 			$amazonArray = $amazonItem->getArray();
 		}
 
 
 		if ( is_array( $amazonArray ) ) {
 			$placeholders = $this->getTplPlaceholders( ApdAmazonItem::getAmazonItemFields(), true );
-			$html = preg_replace( $placeholders, $amazonArray, $tpl );
+			$html         = preg_replace( $placeholders, $amazonArray, $tpl );
 		} else {
 			$error = "Amazon array is empty";
 			print_error( $error, __METHOD__, __LINE__ );
@@ -343,6 +364,79 @@ class ApdCore {
 
 		return $html;
 
+	}
+
+	/**
+	 * Parse loops in template and replace placeholders with asins
+	 *
+	 * @param array $asins
+	 * @param $tpl
+	 * @param $tablename
+	 *
+	 * @return string
+	 */
+	public function parseMultiTpl( array $asins, $tpl, $tablename ) {
+
+		$html = '';
+		$codeBlocks = $this->divideTemplateIntoBlocks( $tpl );
+
+		foreach ( $codeBlocks as $key => $codeBlock ) {
+			$blockType = key( $codeBlock );
+			$blockHtml = current( $codeBlock );
+
+			if ( $blockType == 'loop' ) {
+				$loopHtml = '';
+				foreach ( $asins as $asin ) {
+					$loopHtml .= $this->parseTpl( $asin, $blockHtml, $tablename );
+				}
+				$blockHtml = $loopHtml;
+			}
+
+			$html .= $blockHtml;
+		}
+
+		return $html;
+	}
+
+	/**
+	 * @param $tpl
+	 *
+	 * @return array
+	 */
+	public function divideTemplateIntoBlocks( $tpl ) {
+
+		if ( ! is_array( $tpl ) ) {
+			$error = "Supplied parameter is not an array";
+			print_error( $error, __METHOD__, __LINE__ );
+		}
+
+		$htmlArray = array();
+
+		while ( $tpl != '' ) {
+			//get html until first loop
+			$html = strstr( $tpl, $this->loopDelimiterStart, true );
+
+			if ( $html !== false ) {
+				//store html until first loop
+				$htmlArray[]['block'] = $html;
+			} else {
+				//if there is no next loop, store rest of html
+				$htmlArray[]['block'] = $tpl;
+			}
+			//delete stored html from template
+			$tpl = str_replace_first( $this->loopDelimiterStart, '', strstr( $tpl, $this->loopDelimiterStart ) );
+
+			//get html until end of loop
+			$html = strstr( $tpl, $this->loopDelimiterEnd, true );
+			if ( $html ) {
+				//store html until end of loop
+				$htmlArray[]['loop'] = $html;
+			}
+			//delete stored html from template
+			$tpl = str_replace_first( $this->loopDelimiterEnd, '', strstr( $tpl, $this->loopDelimiterEnd ) );
+		}
+
+		return $htmlArray;
 	}
 
 	/**

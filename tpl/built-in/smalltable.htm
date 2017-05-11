@@ -1,0 +1,37 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Asin</th>
+        <th>Titel</th>
+        <th>Preis</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop-start}
+    <tr>
+        <td>{$Asin}</td>
+        <td>{$Title}</td>
+        <td>{$AmazonPrice}</td>
+    </tr>
+    {loop-end}
+    </tbody>
+</table>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Hersteller</th>
+        <th>Bewertung auf Amazon</th>
+        <th>Fläche</th>
+    </tr>
+    </thead>
+    <tbody>
+    {loop-start}
+    <tr>
+        <td>{$Manufacturer}</td>
+        <td>{$RatingStars}</td>
+        <td>{$SurfaceArea}</td>
+    </tr>
+    {loop-end}
+    </tbody>
+</table>

@@ -142,6 +142,11 @@ function apd_shortcode_handler( $atts, $asin = null, $code = "" ) {
 		$tpl       = $atts[1];
 	}
 
+	//catch asin arrays
+	if ( preg_match( "/ /", $asin ) ) {
+		$asin = explode( " ", $asin );
+	}
+
 	return apd_get_item( $asin, $tpl, $tablename );
 }
 
@@ -239,7 +244,9 @@ function add_table_prefix( $tablename ) {
 
 function print_error( $error, $function, $line ) {
 
-	echo "Error in " . $function . " line " . $line . ": " . $error . "<br>\n";
+	if(APD_DEBUG){
+		echo "Error in " . $function . " line " . $line . ": " . $error . "<br>\n";
+	}
 
 }
 
@@ -291,4 +298,41 @@ function array_values_recursive( $mixed ) {
 	}
 
 	return $list;
+}
+
+/**
+ * Get a string between two different other strings
+ *
+ * @param $string
+ * @param $start
+ * @param $end
+ *
+ * @return string
+ */
+function get_string_between( $string, $start, $end ) {
+	$string = ' ' . $string;
+	$ini    = strpos( $string, $start );
+	if ( $ini == 0 ) {
+		return '';
+	}
+	$ini += strlen( $start );
+	$len = strpos( $string, $end, $ini ) - $ini;
+
+	return substr( $string, $ini, $len );
+}
+
+/**
+ * @param $haystack
+ * @param $needle
+ * @param $replace
+ *
+ * @return bool|mixed
+ */
+function str_replace_first( $needle, $replace, $haystack ) {
+	$pos = strpos( $haystack, $needle );
+	if ( $pos !== false ) {
+		return $newstring = substr_replace( $haystack, $replace, $pos, strlen( $needle ) );
+	} else {
+		return false;
+	}
 }
