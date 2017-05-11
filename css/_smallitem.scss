@@ -5,7 +5,18 @@
 */
 
 .affiliate-products-db {
-  .infobox-thumbnail {
-    min-height: 170px;
+  .small-item {
+    margin: 20px 0 20px 0;
+    .panel-heading {
+      display: table;
+      height: 75px;
+      h4 {
+        display: table-cell;
+        vertical-align: middle;
+      }
+    }
+    .infobox-thumbnail {
+      min-height: 170px;
+    }
   }
 }

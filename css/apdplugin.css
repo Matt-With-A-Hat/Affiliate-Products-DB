@@ -463,7 +463,15 @@ th {
 * ====================== [ =Small Item Template ] ======================
 * --------------------------------------------------------------
 */
-.affiliate-products-db .infobox-thumbnail {
-  min-height: 170px; }
+.affiliate-products-db .small-item {
+  margin: 20px 0 20px 0; }
+  .affiliate-products-db .small-item .panel-heading {
+    display: table;
+    height: 75px; }
+    .affiliate-products-db .small-item .panel-heading h4 {
+      display: table-cell;
+      vertical-align: middle; }
+  .affiliate-products-db .small-item .infobox-thumbnail {
+    min-height: 170px; }
 
 /*# sourceMappingURL=apdplugin.css.map */
