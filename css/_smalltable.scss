@@ -1,0 +1,51 @@
+/**
+* --------------------------------------------------------------
+* ====================== [ =Small Table Template ] ======================
+* --------------------------------------------------------------
+*/
+.affiliate-products-db {
+  table {
+    thead {
+      tr {
+        background: $gray-1;
+        color: white;
+        a {
+          color: white;
+        }
+        th {
+          
+        }
+      }
+    }
+    
+    tbody {
+      tr {
+        &:nth-child(odd) {
+          background: white;
+        }
+        &:nth-child(even) {
+          background: $gray-3;
+        }
+        td {
+          //vertical-align: middle;
+          
+          .infobox-thumbnail {
+            margin-top: 10px;
+          }
+          .label-promotion {
+            width: 70%;
+            margin: 0 auto;
+          }
+          .btn {
+            width: 80%;
+            margin: 0 auto;
+          }
+          //.price {
+          //  font-weight: bold;
+          //  color: black;
+          //}
+        }
+      }
+    }
+  }
+}

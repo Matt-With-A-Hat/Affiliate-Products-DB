@@ -1,37 +1,94 @@
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Asin</th>
-        <th>Titel</th>
-        <th>Preis</th>
-    </tr>
-    </thead>
-    <tbody>
-    {loop-start}
-    <tr>
-        <td>{$Asin}</td>
-        <td>{$Title}</td>
-        <td>{$AmazonPrice}</td>
-    </tr>
-    {loop-end}
-    </tbody>
-</table>
-
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Hersteller</th>
-        <th>Bewertung auf Amazon</th>
-        <th>Fläche</th>
-    </tr>
-    </thead>
-    <tbody>
-    {loop-start}
-    <tr>
-        <td>{$Manufacturer}</td>
-        <td>{$RatingStars}</td>
-        <td>{$SurfaceArea}</td>
-    </tr>
-    {loop-end}
-    </tbody>
-</table>
+<div class="affiliate-products-db">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th></th>
+            {loop-start}
+            <th class="text-center"><a href="{$AmazonUrl}" title="{Title}" target="_blank" rel="nofollow">{$Longname}</a></th>
+            {loop-end}
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td></td>
+            {loop-start}
+            <td>
+                <div class="row text-center">
+                    <div class="infobox-thumbnail">
+                        <a href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">
+                            <img src="{$MediumImageUrl}">
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="center">
+                        <span class="text-danger label-promotion">{$Promo}</span>
+                    </div>
+                </div>
+            </td>
+            {loop-end}
+        </tr>
+        <tr class="price">
+            <td>Preis</td>
+            {loop-start}
+            <td class="text-center">
+                <strong><a class="price" href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">EUR {$AmazonPrice}</a><br></strong>
+                <small>inkl. 19% gesetzlicher MwSt.</small>
+            </td>
+            {loop-end}
+        </tr>
+        <tr>
+            <td>Bewertung</td>
+            {loop-start}
+            <td  class="text-center">{$RatingStars}</td>
+            {loop-end}
+        </tr>
+        <tr>
+            <td>Max. Rasenfläche</td>
+            {loop-start}
+            <td class="text-center">{$SurfaceArea}</td>
+            {loop-end}
+        </tr>
+        <tr>
+            <td>PIN gesichert</td>
+            {loop-start}
+            <td class="text-center">{$PincodeLock}</td>
+            {loop-end}
+        </tr>
+        <tr>
+            <td>Alarmgesichert</td>
+            {loop-start}
+            <td class="text-center">{$AlarmSystem}</td>
+            {loop-end}
+        </tr>
+        <tr>
+            <td>Schnitthöhe</td>
+            {loop-start}
+            <td class="text-center">{$CuttingHeightMinMm} - {$CuttingHeightMaxMm}mm</td>
+            {loop-end}
+        </tr>
+        <tr>
+            <td>Schnittbreite</td>
+            {loop-start}
+            <td class="text-center">{$CuttingWidthCm}cm</td>
+            {loop-end}
+        </tr>
+        <tr>
+            <td>Max. Steigung</td>
+            {loop-start}
+            <td class="text-center">{$MaxRaising}</td>
+            {loop-end}
+        </tr>
+        <tr>
+            <td></td>
+            {loop-start}
+            <td class="text-center">
+                <a class="btn btn-apd-default btn-danger btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} - Produkt auf amazon.de anschauen">
+                    <i class="fa fa-amazon"></i><span>auf Amazon ansehen</span>
+                </a>
+            </td>
+            {loop-end}
+        </tr>
+        </tbody>
+    </table>
+</div>
