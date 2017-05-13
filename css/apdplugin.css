@@ -24,6 +24,12 @@ Text Domain: apd
 * ----------------------- [ =Mixins ] -----------------------
 */
 /**
+* ----------------------- [ =General ] -----------------------
+*/
+.affiliate-products-db {
+  margin: 20px 0 20px 0; }
+
+/**
 * ----------------------- [ =Elements ] -----------------------
 */
 .btn > .fa {
@@ -471,16 +477,37 @@ th {
 * ====================== [ =Small Item Template ] ======================
 * --------------------------------------------------------------
 */
-.affiliate-products-db .small-item {
-  margin: 20px 0 20px 0; }
-  .affiliate-products-db .small-item .panel-heading {
-    display: table;
-    height: 75px; }
-    .affiliate-products-db .small-item .panel-heading h4 {
-      display: table-cell;
-      vertical-align: middle; }
-  .affiliate-products-db .small-item .infobox-thumbnail {
-    min-height: 170px; }
+.affiliate-products-db .small-item .panel-heading {
+  display: table;
+  height: 75px; }
+  .affiliate-products-db .small-item .panel-heading h4 {
+    display: table-cell;
+    vertical-align: middle; }
+.affiliate-products-db .small-item .infobox-thumbnail {
+  min-height: 170px; }
+
+/**
+* --------------------------------------------------------------
+* ====================== [ =Small Table Template ] ======================
+* --------------------------------------------------------------
+*/
+.affiliate-products-db table thead tr {
+  background: #323232;
+  color: white; }
+  .affiliate-products-db table thead tr a {
+    color: white; }
+.affiliate-products-db table tbody tr:nth-child(odd) {
+  background: white; }
+.affiliate-products-db table tbody tr:nth-child(even) {
+  background: #f5f5f5; }
+.affiliate-products-db table tbody tr td .infobox-thumbnail {
+  margin-top: 10px; }
+.affiliate-products-db table tbody tr td .label-promotion {
+  width: 70%;
+  margin: 0 auto; }
+.affiliate-products-db table tbody tr td .btn {
+  width: 80%;
+  margin: 0 auto; }
 
 /**
 * --------------------------------------------------------------

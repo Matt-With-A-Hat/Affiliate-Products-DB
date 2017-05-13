@@ -38,7 +38,13 @@
             {loop-end}
         </tr>
         <tr>
-            <td>Bewertung</td>
+            <td>Gesamt-Note</td>
+            {loop-start}
+            <td  class="text-center">{$OverallRatingText} ({$OverallRating})</td>
+            {loop-end}
+        </tr>
+        <tr>
+            <td>Amazon Bewertung</td>
             {loop-start}
             <td  class="text-center">{$RatingStars}</td>
             {loop-end}
