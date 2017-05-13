@@ -24,15 +24,129 @@ Text Domain: apd
 * ----------------------- [ =Mixins ] -----------------------
 */
 /**
+* ----------------------- [ =General ] -----------------------
+*/
+.affiliate-products-db {
+  margin: 20px 0 20px 0; }
+
+/**
 * ----------------------- [ =Elements ] -----------------------
 */
 .btn > .fa {
-  margin-right: 10px; }
+  margin-right: 7px; }
 
 span.amazon-stars {
   color: #ffc200;
   margin-right: 3px;
   font-size: 18px; }
+
+.list-pro li:before {
+  content: "";
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  /*--adjust as necessary--*/
+  color: #000;
+  font-size: 18px;
+  padding-right: 0.5em;
+  position: relative;
+  left: 0;
+  font-size: 14px;
+  color: #3c763d; }
+
+.list-con li:before {
+  content: "";
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  /*--adjust as necessary--*/
+  color: #000;
+  font-size: 18px;
+  padding-right: 0.5em;
+  position: relative;
+  left: 0;
+  font-size: 14px;
+  color: #a94442; }
+
+.check-square:before {
+  content: "";
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  /*--adjust as necessary--*/
+  color: #000;
+  font-size: 18px;
+  padding-right: 0.5em;
+  position: relative;
+  left: 0;
+  color: #3c763d;
+  font-size: 130%; }
+
+.minus-square:before {
+  content: "";
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  /*--adjust as necessary--*/
+  color: #000;
+  font-size: 18px;
+  padding-right: 0.5em;
+  position: relative;
+  left: 0;
+  color: #a94442;
+  font-size: 130%; }
+
+.plus-factor:before {
+  content: "";
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  /*--adjust as necessary--*/
+  color: #000;
+  font-size: 18px;
+  padding-right: 0.5em;
+  position: relative;
+  left: 0;
+  color: #3c763d;
+  font-size: 130%;
+  padding-right: 4px; }
+
+.minus-factor:before {
+  content: "";
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  /*--adjust as necessary--*/
+  color: #000;
+  font-size: 18px;
+  padding-right: 0.5em;
+  position: relative;
+  left: 0;
+  color: #a94442;
+  font-size: 130%;
+  padding-right: 4px; }
+
+.label-promotion:empty {
+  display: none; }
+
+.label-promotion {
+  color: white;
+  width: 100%;
+  display: block;
+  font-size: 18px;
+  padding: .2em .6em .3em;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0; }
 
 /* =Base Rules */
 /**
@@ -218,7 +332,7 @@ th {
 
 /**
 * --------------------------------------------------------------
-* ====================Details Template====================
+* ====================== [ =Details Template ] ======================
 * --------------------------------------------------------------
 */
 .affiliate-products-db {
@@ -244,20 +358,6 @@ th {
     display: inline-block;
     vertical-align: middle;
     float: none; }
-  .affiliate-products-db .label-promotion {
-    color: white;
-    width: 100%;
-    display: block;
-    font-size: 14px;
-    padding: .2em .6em .3em;
-    font-weight: 700;
-    line-height: 1.5;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: 0; }
-  .affiliate-products-db .label-promotion:empty {
-    display: none; }
   .affiliate-products-db .list-pro, .affiliate-products-db .list-con {
     margin-bottom: 25px;
     padding-left: 0;
@@ -274,92 +374,6 @@ th {
     font-size: 18px;
     margin-top: 10px;
     margin-bottom: 10px; }
-  .affiliate-products-db .list-pro li:before {
-    content: "";
-    font-family: 'FontAwesome';
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit;
-    /*--adjust as necessary--*/
-    color: #000;
-    font-size: 18px;
-    padding-right: 0.5em;
-    position: relative;
-    left: 0;
-    font-size: 14px;
-    color: #3c763d; }
-  .affiliate-products-db .list-con li:before {
-    content: "";
-    font-family: 'FontAwesome';
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit;
-    /*--adjust as necessary--*/
-    color: #000;
-    font-size: 18px;
-    padding-right: 0.5em;
-    position: relative;
-    left: 0;
-    font-size: 14px;
-    color: #a94442; }
-  .affiliate-products-db .check-square:before {
-    content: "";
-    font-family: 'FontAwesome';
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit;
-    /*--adjust as necessary--*/
-    color: #000;
-    font-size: 18px;
-    padding-right: 0.5em;
-    position: relative;
-    left: 0;
-    color: #3c763d;
-    font-size: 130%; }
-  .affiliate-products-db .minus-square:before {
-    content: "";
-    font-family: 'FontAwesome';
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit;
-    /*--adjust as necessary--*/
-    color: #000;
-    font-size: 18px;
-    padding-right: 0.5em;
-    position: relative;
-    left: 0;
-    color: #a94442;
-    font-size: 130%; }
-  .affiliate-products-db .plus-factor:before {
-    content: "";
-    font-family: 'FontAwesome';
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit;
-    /*--adjust as necessary--*/
-    color: #000;
-    font-size: 18px;
-    padding-right: 0.5em;
-    position: relative;
-    left: 0;
-    color: #3c763d;
-    font-size: 130%;
-    padding-right: 4px; }
-  .affiliate-products-db .minus-factor:before {
-    content: "";
-    font-family: 'FontAwesome';
-    font-style: normal;
-    font-weight: normal;
-    text-decoration: inherit;
-    /*--adjust as necessary--*/
-    color: #000;
-    font-size: 18px;
-    padding-right: 0.5em;
-    position: relative;
-    left: 0;
-    color: #a94442;
-    font-size: 130%;
-    padding-right: 4px; }
   .affiliate-products-db .infobox .infobox-top {
     margin-top: 15px;
     display: table;
@@ -463,15 +477,36 @@ th {
 * ====================== [ =Small Item Template ] ======================
 * --------------------------------------------------------------
 */
-.affiliate-products-db .small-item {
-  margin: 20px 0 20px 0; }
-  .affiliate-products-db .small-item .panel-heading {
-    display: table;
-    height: 75px; }
-    .affiliate-products-db .small-item .panel-heading h4 {
-      display: table-cell;
-      vertical-align: middle; }
-  .affiliate-products-db .small-item .infobox-thumbnail {
-    min-height: 170px; }
+.affiliate-products-db .small-item .panel-heading {
+  display: table;
+  height: 75px; }
+  .affiliate-products-db .small-item .panel-heading h4 {
+    display: table-cell;
+    vertical-align: middle; }
+.affiliate-products-db .small-item .infobox-thumbnail {
+  min-height: 170px; }
+
+/**
+* --------------------------------------------------------------
+* ====================== [ =Small Table Template ] ======================
+* --------------------------------------------------------------
+*/
+.affiliate-products-db table thead tr {
+  background: #323232;
+  color: white; }
+  .affiliate-products-db table thead tr a {
+    color: white; }
+.affiliate-products-db table tbody tr:nth-child(odd) {
+  background: white; }
+.affiliate-products-db table tbody tr:nth-child(even) {
+  background: #f5f5f5; }
+.affiliate-products-db table tbody tr td .infobox-thumbnail {
+  margin-top: 10px; }
+.affiliate-products-db table tbody tr td .label-promotion {
+  width: 70%;
+  margin: 0 auto; }
+.affiliate-products-db table tbody tr td .btn {
+  width: 80%;
+  margin: 0 auto; }
 
 /*# sourceMappingURL=apdplugin.css.map */

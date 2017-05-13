@@ -1,6 +1,6 @@
 /**
 * --------------------------------------------------------------
-* ====================Details Template====================
+* ====================== [ =Details Template ] ======================
 * --------------------------------------------------------------
 */
 .affiliate-products-db {
@@ -21,25 +21,6 @@
     display: inline-block;
     vertical-align: middle;
     float: none;
-  }
-  
-  .label-promotion {
-    color: white;
-    width: 100%;
-    display: block;
-    font-size: 14px;
-    padding: .2em .6em .3em;
-    font-weight: 700;
-    line-height: 1.5;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: 0;
-  }
-  
-  //@todo this obviously doesn't work
-  .label-promotion:empty {
-    display: none;
   }
   
   //a.btn {
@@ -72,47 +53,6 @@
     margin-bottom: 10px;
   }
   
-  .list-pro {
-    li:before {
-      @include font-awesome("\f0fe");
-      font-size: 14px;
-      color: $success;
-    }
-  }
-  
-  .list-con {
-    li:before {
-      @include font-awesome("\f146");
-      font-size: 14px;
-      color: $danger;
-    }
-  }
-  
-  .check-square:before {
-    @include font-awesome("\f14a");
-    color: $success;
-    font-size: 130%;
-  }
-  
-  .minus-square:before {
-    @include font-awesome("\f146");
-    color: $danger;
-    font-size: 130%;
-  }
-  
-  .plus-factor:before {
-    @include font-awesome("\f055");
-    color: $success;
-    font-size: 130%;
-    padding-right: 4px;
-  }
-  
-  .minus-factor:before {
-    @include font-awesome("\f056");
-    color: $danger;
-    font-size: 130%;
-    padding-right: 4px;
-  }
   
   /**
   * --------------------------------------------------------------
