@@ -5,10 +5,14 @@
 */
 .affiliate-products-db {
   table {
+    margin: 20px 0 60px 0;
+  
+    border: 1px solid $gray-4;
     thead {
       tr {
         background: $gray-1;
         color: white;
+        font-size: 16px;
         a {
           color: white;
         }
@@ -27,7 +31,7 @@
           background: $gray-3;
         }
         td {
-          //vertical-align: middle;
+          position: relative;
           
           .infobox-thumbnail {
             margin-top: 10px;

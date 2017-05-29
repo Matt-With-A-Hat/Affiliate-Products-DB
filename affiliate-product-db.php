@@ -11,7 +11,7 @@
 Plugin Name: Affiliate Product DB
 Plugin URI: https://#
 Description: Manage details on all your presented affiliate products of your affiliate site.
-Version: 0.1.3
+Version: 0.1.5
 Author: Matthias Müller
 Author URI: https://#
 Author email: matthias.mueller88@web.de
@@ -64,10 +64,10 @@ define( 'APD_LIB_DIR', dirname( __FILE__ ) . '/lib/' );
 //affiliate-products-db
 define( 'APD_MENU_SLUG', 'affiliate-products-db' );
 
-define( 'APD_DEBUG', true );
+define( 'APD_DEBUG', false );
 
 //WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
-define( 'APD_DEBUG_DEV', true );
+define( 'APD_DEBUG_DEV', false );
 
 /**
  * Table Names

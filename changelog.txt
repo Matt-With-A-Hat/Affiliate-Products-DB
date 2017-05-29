@@ -1,2 +1,3 @@
 = 0.1.5 =
+Extended template engine with loop-function, making it possible to loop through Amazon products in an HTML-template.
 New template "smalltable"
