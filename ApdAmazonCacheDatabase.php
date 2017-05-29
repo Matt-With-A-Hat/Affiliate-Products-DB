@@ -135,14 +135,14 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		$currentInterval             = $this->getOption( 'interval_minutes' );
 		$incInterval                 = $this->getOption( 'inc_interval_rate_minutes' );
 		$decInterval                 = $this->getOption( 'dec_interval_rate_minutes' );
-		$startId                     = $this->getOption( 'last_checked_id' );
-		$startId                     = ( $startId === null ) ? 0 : $startId;                     //@todo make column in table have 0 for default. Make ApdDatabase::modifyColumns allow default values
+		$lastCheckedId               = $this->getOption( 'last_checked_id' );
+		$lastCheckedId               = ( $lastCheckedId === null ) ? 0 : $lastCheckedId;                     //@todo make column in table have 0 as default. Make ApdDatabase::modifyColumns allow default values
 		$successfulRequests          = $this->getOption( 'successful_requests' );
 		$successfulRequestsThreshold = $this->getOption( 'successful_requests_threshold' );
 
 
 		// request info for x items from Amazon API
-		$amazonItems = $this->getAmazonItems( $itemsPerUpdate, $startId );
+		$amazonItems = $this->getAmazonItems( $itemsPerUpdate, $lastCheckedId );
 
 		// if something went wrong with the request
 		if ( $amazonItems == 'throttle' ) {
@@ -166,17 +166,24 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 			$lastUpdatedId = $this->updateCacheProducts( $amazonItems );
 
 			// set new last updated item
-			if ( $lastUpdatedId !== null ) {
-				$options = array( 'last_checked_id' => $lastUpdatedId );
-				$this->setOptions( $options );
+			$pointerId = 0;
+			if ( $lastCheckedId == $lastUpdatedId ) {
+				$pointerId = 0;
+			} else if ( $lastUpdatedId !== null ) {
+				$pointerId = $lastUpdatedId;
+			} else if ( $lastUpdatedId === null ) {
+				$pointerId = $lastCheckedId - $currentInterval;
 			}
+			$options = array( 'last_checked_id' => $pointerId );
+			$this->setOptions( $options );
+
 			// increase number of successful attempts by 1
 			$options = array( 'successful_requests' => $successfulRequests + 1 );
 			$this->setOptions( $options );
 
 			// if x request attempts were successful, decrease the interval by x and create new cronjob
 			if ( $successfulRequests >= $successfulRequestsThreshold ) {
-				//interval can't ne smaller than 1
+				//interval can't be smaller than 1
 				$newInterval = ( $currentInterval < 2 ) ? $currentInterval = 1 : $currentInterval - $decInterval;
 				$options     = array( 'interval_minutes' => $newInterval );
 				$this->setOptions( $options );
