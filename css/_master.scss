@@ -102,14 +102,14 @@ span.amazon-stars {
   }
 }
 
-.check-square:before {
-  @include font-awesome("\f14a");
+.check:before {
+  @include font-awesome("\f067");
   color: $success-1;
   font-size: 130%;
 }
 
-.minus-square:before {
-  @include font-awesome("\f146");
+.times:before {
+  @include font-awesome("\f00d");
   color: $danger;
   font-size: 130%;
 }

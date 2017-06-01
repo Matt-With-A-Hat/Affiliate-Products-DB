@@ -79,8 +79,8 @@ span.amazon-stars {
   font-size: 14px;
   color: #a94442; }
 
-.check-square:before {
-  content: "";
+.check:before {
+  content: "";
   font-family: 'FontAwesome';
   font-style: normal;
   font-weight: normal;
@@ -94,8 +94,8 @@ span.amazon-stars {
   color: #3c763d;
   font-size: 130%; }
 
-.minus-square:before {
-  content: "";
+.times:before {
+  content: "";
   font-family: 'FontAwesome';
   font-style: normal;
   font-weight: normal;

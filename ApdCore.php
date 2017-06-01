@@ -334,9 +334,9 @@ class ApdCore {
 				if ( type_is_boolean( $fieldType ) ) {
 
 					if ( field_is_true( $item ) ) {
-						$dbItem->$key = '<i class="check-square"></i>';
+						$dbItem->$key = '<i class="check"></i>';
 					} else if ( field_is_false( $item ) ) {
-						$dbItem->$key = '<i class="minus-square"></i>';
+						$dbItem->$key = '<i class="times"></i>';
 					}
 
 				}
