@@ -10,13 +10,19 @@
 * --------------------------------------------------------------
 */
 
-$success: #3c763d;
+$success-1: #3c763d;
+$success-2: #EDF3ED;
 $green-1: #2b7a00;
+$blue-1: #0275d8;
+$blue-2: #5bc0de;
+$blue-3: #F0F9FC;
 $danger: #a94442;
 $gray-1: #323232;
 $gray-2: #ddd;
 $gray-3: #f5f5f5;
 $gray-4: #efefff;
+$yellow-1: #f0ad4e;
+$yellow-2: #FEF8EF;
 $amazon-1: #ffc200;
 $amazon-2: #febd69;
 
@@ -79,7 +85,7 @@ span.amazon-stars {
   li:before {
     @include font-awesome("\f0fe");
     font-size: 14px;
-    color: $success;
+    color: $success-1;
   }
 }
 
@@ -93,7 +99,7 @@ span.amazon-stars {
 
 .check-square:before {
   @include font-awesome("\f14a");
-  color: $success;
+  color: $success-1;
   font-size: 130%;
 }
 
@@ -105,7 +111,7 @@ span.amazon-stars {
 
 .plus-factor:before {
   @include font-awesome("\f055");
-  color: $success;
+  color: $success-1;
   font-size: 130%;
   padding-right: 4px;
 }
@@ -117,7 +123,7 @@ span.amazon-stars {
   padding-right: 4px;
 }
 
-.label-promotion:empty {
+.details-promotion:empty {
   display: none;
 }
 
@@ -128,7 +134,7 @@ span.amazon-stars {
   margin-bottom: 20px;
 }
 
-.label-promotion {
+.details-promotion {
   color: white;
   width: 100%;
   display: block;

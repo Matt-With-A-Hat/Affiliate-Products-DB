@@ -6,20 +6,55 @@
 .affiliate-products-db {
   table {
     margin: 20px 0 60px 0;
-  
     border: 1px solid $gray-4;
-    thead {
-      tr {
-        background: $gray-1;
-        color: white;
-        font-size: 16px;
-        a {
-          color: white;
-        }
-        th {
-          
-        }
+    
+    .table-promotion {
+      color: white;
+      position: absolute;
+      top: 0;
+      left: -1px;
+      right: -1px;
+      text-transform: uppercase;
+      line-height: 40px;
+      font-weight: 700;
+      &.bestseller {
+        background: $success-1;
       }
+      &.promo-performance {
+        background: $yellow-1;
+      }
+      &.promo-price-performance {
+        background: $yellow-1;
+      }
+    }
+    
+    td.bestseller {
+      border-left: 2px solid $success-1;
+      border-right: 2px solid $success-1;
+      background: $success-2;
+    }
+    tr:last-of-type td.bestseller {
+      border-bottom: 2px solid $success-1;
+    }
+    td.promo-performance {
+      border-left: 2px solid $yellow-1;
+      border-right: 2px solid $yellow-1;
+      background: $yellow-2;
+    }
+    tr:last-of-type td.promo-performance {
+      border-bottom: 2px solid $yellow-1;
+    }
+    td.promo-price-performance {
+      border-left: 2px solid $yellow-1;
+      border-right: 2px solid $yellow-1;
+      background: $yellow-2;
+    }
+    tr:last-of-type td.promo-price-performance {
+      border-bottom: 2px solid $yellow-1;
+    }
+    
+    thead {
+      display: none;
     }
     
     tbody {
@@ -30,24 +65,34 @@
         &:nth-child(even) {
           background: $gray-3;
         }
+        &.image {
+          td {
+            padding-top: 55px;
+            img {
+              max-width: 100px;
+            }
+          }
+        }
         td {
           position: relative;
           
           .infobox-thumbnail {
             margin-top: 10px;
           }
-          .label-promotion {
-            width: 70%;
-            margin: 0 auto;
-          }
+          
           .btn {
             width: 80%;
             margin: 0 auto;
           }
-          //.price {
-          //  font-weight: bold;
-          //  color: black;
-          //}
+          
+          span.overall-rating {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+            font-size:20px;
+          }
+          span.overall-rating-text {
+            
+          }
         }
       }
     }
