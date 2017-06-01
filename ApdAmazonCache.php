@@ -18,6 +18,81 @@ class ApdAmazonCache {
 		'last_edit'
 	);
 
+	/**
+	 * Amazon item fields respectively available template placeholders
+	 */
+	public static $amazonItemFields = array(
+		'ASIN',
+		'SmallImageUrl',
+		'SmallImageWidth',
+		'SmallImageHeight',
+		'MediumImageUrl',
+		'MediumImageWidth',
+		'MediumImageHeight',
+		'LargeImageUrl',
+		'LargeImageWidth',
+		'LargeImageHeight',
+		'Label',
+		'Manufacturer',
+		'Publisher',
+		'Studio',
+		'Title',
+		'AmazonUrl',
+		'TotalOffers',
+		'LowestOfferPrice',
+		'LowestOfferCurrency',
+		'LowestOfferFormattedPrice',
+		'LowestNewPrice',
+		'LowestNewOfferFormattedPrice',
+		'LowestUsedPrice',
+		'LowestUsedOfferFormattedPrice',
+		'AmazonPrice',
+		'AmazonPriceFormatted',
+		'ListPriceFormatted',
+		'AmazonCurrency',
+		'AmazonAvailability',
+		'AmazonLogoSmallUrl',
+		'AmazonLogoLargeUrl',
+		'DetailPageURL',
+		'Platform',
+		'ISBN',
+		'EAN',
+		'NumberOfPages',
+		'ReleaseDate',
+		'Binding',
+		'Author',
+		'Creator',
+		'Edition',
+		'AverageRating',
+		'TotalReviews',
+		'RatingStars',
+		'RatingStarsSrc',
+		'Director',
+		'Actors',
+		'RunningTime',
+		'Format',
+		'CustomRating',
+		'ProductDescription',
+		'AmazonDescription',
+		'Artist',
+		'Comment',
+		'PercentageSaved',
+		'Prime',
+		'PrimePic',
+		'ProductReviewsURL',
+		'IFrameUrl',
+		'TrackingId',
+		'AmazonShopURL',
+		'SalePriceAmount',
+		'SalePriceCurrencyCode',
+		'SalePriceFormatted',
+		'Class',
+		'OffersMainPriceAmount',
+		'OffersMainPriceCurrencyCode',
+		'OffersMainPriceFormattedPrice',
+		'LastCacheUpdate'
+	);
+
 	protected $tablenameCache;
 
 	protected $tablenameOptions;
@@ -25,6 +100,13 @@ class ApdAmazonCache {
 	public function __construct() {
 		$this->setTablenameCache( APD_AMAZON_CACHE_TABLE );
 		$this->setTablenameOptions( APD_CACHE_OPTIONS_TABLE );
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getAmazonItemFields() {
+		return self::$amazonItemFields;
 	}
 
 	/**

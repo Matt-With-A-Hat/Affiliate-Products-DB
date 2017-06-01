@@ -253,7 +253,6 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 				$sql .= "(%s), ";
 			}
 			$sql = rtrim( $sql, " ," ) . ";";
-			krumo( $wpdb->prepare( $sql, $diffProducts ) );
 			$wpdb->query( $wpdb->prepare( $sql, $diffProducts ) );
 		}
 
@@ -282,14 +281,13 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 
 		global $wpdb;
 
-		$success = 0;
-
 		$sql = "SET @update_id := 0;";
 		$wpdb->query( $sql );
 
 		$count = count( $amazonItems );
 		$i     = 0;
 		foreach ( $amazonItems as $amazonItem ) {
+
 			$sql = "UPDATE $this->tablenameCache SET ";
 
 			foreach ( $amazonItem as $key => $value ) {
