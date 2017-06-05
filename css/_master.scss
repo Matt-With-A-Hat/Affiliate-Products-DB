@@ -103,7 +103,7 @@ span.amazon-stars {
 }
 
 .check:before {
-  @include font-awesome("\f067");
+  @include font-awesome("\f00c");
   color: $success-1;
   font-size: 130%;
 }

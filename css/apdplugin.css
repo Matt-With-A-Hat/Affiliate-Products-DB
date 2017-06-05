@@ -80,7 +80,7 @@ span.amazon-stars {
   color: #a94442; }
 
 .check:before {
-  content: "";
+  content: "";
   font-family: 'FontAwesome';
   font-style: normal;
   font-weight: normal;
@@ -534,20 +534,17 @@ th {
       background: #5bc0de; }
   .affiliate-products-db table td.bestseller {
     border-left: 2px solid #3c763d;
-    border-right: 2px solid #3c763d;
-    background: #EDF3ED; }
+    border-right: 2px solid #3c763d; }
   .affiliate-products-db table tr:last-of-type td.bestseller {
     border-bottom: 2px solid #3c763d; }
   .affiliate-products-db table td.promo-performance {
     border-left: 2px solid #5bc0de;
-    border-right: 2px solid #5bc0de;
-    background: #F0F9FC; }
+    border-right: 2px solid #5bc0de; }
   .affiliate-products-db table tr:last-of-type td.promo-performance {
     border-bottom: 2px solid #5bc0de; }
   .affiliate-products-db table td.promo-price-performance {
     border-left: 2px solid #5bc0de;
-    border-right: 2px solid #5bc0de;
-    background: #F0F9FC; }
+    border-right: 2px solid #5bc0de; }
   .affiliate-products-db table tr:last-of-type td.promo-price-performance {
     border-bottom: 2px solid #5bc0de; }
   .affiliate-products-db table thead {

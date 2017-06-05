@@ -150,8 +150,8 @@ function apd_options_install() {
 register_activation_hook( APD_BASE_FILE, 'apd_options_install' );
 
 function load_fonts(){
-	wp_register_style('googleFonts', 'https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Roboto:400,400i,700,700i');
-	wp_enqueue_style('googleFonts');
+	wp_register_style('apdGoogleFonts', 'https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Roboto:400,400i,700,700i');
+	wp_enqueue_style('apdGoogleFonts');
 }
 
 add_action('wp_print_styles','load_fonts');
