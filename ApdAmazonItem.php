@@ -1,81 +1,6 @@
 <?php
 
-class ApdAmazonItem {
-
-	/**
-	 * Amazon item fields respectively available template placeholders
-	 */
-	public static $amazonItemFields = array(
-		'ASIN',
-		'SmallImageUrl',
-		'SmallImageWidth',
-		'SmallImageHeight',
-		'MediumImageUrl',
-		'MediumImageWidth',
-		'MediumImageHeight',
-		'LargeImageUrl',
-		'LargeImageWidth',
-		'LargeImageHeight',
-		'Label',
-		'Manufacturer',
-		'Publisher',
-		'Studio',
-		'Title',
-		'AmazonUrl',
-		'TotalOffers',
-		'LowestOfferPrice',
-		'LowestOfferCurrency',
-		'LowestOfferFormattedPrice',
-		'LowestNewPrice',
-		'LowestNewOfferFormattedPrice',
-		'LowestUsedPrice',
-		'LowestUsedOfferFormattedPrice',
-		'AmazonPrice',
-		'AmazonPriceFormatted',
-		'ListPriceFormatted',
-		'AmazonCurrency',
-		'AmazonAvailability',
-		'AmazonLogoSmallUrl',
-		'AmazonLogoLargeUrl',
-		'DetailPageURL',
-		'Platform',
-		'ISBN',
-		'EAN',
-		'NumberOfPages',
-		'ReleaseDate',
-		'Binding',
-		'Author',
-		'Creator',
-		'Edition',
-		'AverageRating',
-		'TotalReviews',
-		'RatingStars',
-		'RatingStarsSrc',
-		'Director',
-		'Actors',
-		'RunningTime',
-		'Format',
-		'CustomRating',
-		'ProductDescription',
-		'AmazonDescription',
-		'Artist',
-		'Comment',
-		'PercentageSaved',
-		'Prime',
-		'PrimePic',
-		'ProductReviewsURL',
-		'IFrameUrl',
-		'TrackingId',
-		'AmazonShopURL',
-		'SalePriceAmount',
-		'SalePriceCurrencyCode',
-		'SalePriceFormatted',
-		'Class',
-		'OffersMainPriceAmount',
-		'OffersMainPriceCurrencyCode',
-		'OffersMainPriceFormattedPrice',
-		'LastCacheUpdate'
-	);
+class ApdAmazonItem extends ApdAmazonCache {
 
 	/**
 	 * the amazon webservice object
@@ -121,15 +46,8 @@ class ApdAmazonItem {
 			'ResponseGroup' => 'ItemAttributes,Images,Offers,OfferListings,Reviews,EditorialReview,Tracks'
 		) );
 
-		$this->array = $this->refineAmazonItem();
+		$this->array      = $this->refineAmazonItem();
 		$this->arrayAssoc = $this->matchWithFields();
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public static function getAmazonItemFields() {
-		return self::$amazonItemFields;
 	}
 
 	/**
@@ -162,8 +80,9 @@ class ApdAmazonItem {
 	 */
 	private function refineAmazonItem() {
 
-		$apdCore      = new ApdCore();
-		$amazonObject = $this->object;
+		$apdCore         = new ApdCore();
+		$amazonObject    = $this->object;
+		$amazonCacheItem = ( new ApdAmazonCacheItem( $amazonObject->ASIN ) )->getObject();
 
 		if ( $amazonObject instanceof AsaZend_Service_Amazon_Item ) {
 
@@ -230,7 +149,7 @@ class ApdAmazonItem {
 			$listPriceFormatted = $amazonObject->ListPriceFormatted;
 
 
-			//Amazon logo URLs
+			/* =Amazon logo URLs */
 			if ( empty( $apdCore->amazonCountryCode ) ) {
 
 				$amazonObject->AmazonLogoSmallUrl = apd_plugins_url( 'img/amazon_US_small.gif', __FILE__ );
@@ -250,7 +169,19 @@ class ApdAmazonItem {
 
 			}
 
-			//make Amazon Stars prettier with font awesome
+			/* =catch faulty Amazon rating */
+			//this is necessary because Amazon doesn't always return ratings correctly (returns 0 stars)!
+			//if Amazon returns 0 stars and cache stars are not 0, there must be something wrong.
+			$newRating   = $customerReviews->averageRating;
+			$cacheRating = $amazonCacheItem->AverageRating;
+
+			if ( $cacheRating !== null ) {
+				if ( $newRating == 0 AND $cacheRating != 0 ) {
+					$customerReviews->averageRating = $cacheRating;
+				}
+			}
+
+			/* =make Amazon Stars prettier */
 			$ratingStarsHtml = '<span class="amazon-stars">';
 			$numberStars     = $customerReviews->averageRating;
 			$fullStar        = '<i class="fa fa-star"></i>';
@@ -272,6 +203,10 @@ class ApdAmazonItem {
 			}
 			$ratingStarsHtml .= "</span>";
 
+			/* =catch empty AmazonPrice values */
+			if($amazonPrice === "---"){
+				$amazonPrice = "Derzeit nicht verfügbar.";
+			}
 
 			$totalOffers = $amazonObject->Offers->TotalNew + $amazonObject->Offers->TotalUsed +
 			               $amazonObject->Offers->TotalCollectible + $amazonObject->Offers->TotalRefurbished;
@@ -355,7 +290,7 @@ class ApdAmazonItem {
 				$offerMainPriceAmount,
 				$offerMainPriceCurrencyCode,
 				$offerMainPriceFormatted,
-				current_time('mysql')
+				current_time( 'mysql' )
 			);
 
 			return $amazonItemArray;
@@ -368,11 +303,11 @@ class ApdAmazonItem {
 		}
 	}
 
-	public function matchWithFields(){
+	public function matchWithFields() {
 		$fieldsArray = self::getAmazonItemFields();
 		$valuesArray = $this->array;
 
-		return array_combine($fieldsArray,$valuesArray);
+		return array_combine( $fieldsArray, $valuesArray );
 	}
 
 	/**

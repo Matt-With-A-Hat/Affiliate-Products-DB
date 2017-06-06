@@ -1,2 +1,9 @@
+= 0.1.6 =
+smalltable design
+cache bugfixes:
+- catched wrong item rating return from Amazon API
+- no empty price lables anymore
+
 = 0.1.5 =
+Extended template engine with loop-function, making it possible to loop through Amazon products in an HTML-template.
 New template "smalltable"

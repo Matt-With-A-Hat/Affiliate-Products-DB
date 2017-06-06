@@ -11,7 +11,7 @@
 Plugin Name: Affiliate Product DB
 Plugin URI: https://#
 Description: Manage details on all your presented affiliate products of your affiliate site.
-Version: 0.1.3
+Version: 0.1.5
 Author: Matthias Müller
 Author URI: https://#
 Author email: matthias.mueller88@web.de
@@ -64,7 +64,7 @@ define( 'APD_LIB_DIR', dirname( __FILE__ ) . '/lib/' );
 //affiliate-products-db
 define( 'APD_MENU_SLUG', 'affiliate-products-db' );
 
-define( 'APD_DEBUG', true );
+define( 'APD_DEBUG', false );
 
 //WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
 define( 'APD_DEBUG_DEV', true );
@@ -136,11 +136,11 @@ require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/SimilarProduct.php';
 require_once( dirname( __FILE__ ) . '/ApdCore.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabaseService.php' );
-require_once( dirname( __FILE__ ) . '/ApdAmazonItem.php' );
 require_once( dirname( __FILE__ ) . '/ApdCustomerReviews.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonCache.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonCacheDatabase.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonCacheItem.php' );
+require_once( dirname( __FILE__ ) . '/ApdAmazonItem.php' );
 require_once( dirname( __FILE__ ) . '/ApdItem.php' );
 
 /**
@@ -149,3 +149,6 @@ require_once( dirname( __FILE__ ) . '/ApdItem.php' );
 require dirname( __FILE__ ) . '/apd-cronjobs.php';
 
 $apdCore = new ApdCore();
+
+//$cache = new ApdAmazonCacheDatabase();
+//$cache->updateCache();

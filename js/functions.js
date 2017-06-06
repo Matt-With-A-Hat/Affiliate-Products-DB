@@ -12,7 +12,7 @@ jQuery(document).ready(function () {
     });
 
     //test
-    var iFrameHeight = jQuery(".crIframe").css("height");
-    console.log(iFrameHeight);
+    // var iFrameHeight = jQuery(".crIframe").css("height");
+    // console.log(iFrameHeight);
 
 });
