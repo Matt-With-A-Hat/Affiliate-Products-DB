@@ -3,10 +3,10 @@
 * ====================== [ =Small Table Template ] ======================
 * --------------------------------------------------------------
 */
-.affiliate-products-db {
+.affiliate-products-db.smalltable {
   table {
     margin: 20px 0 60px 0;
-    border: 1px solid $gray-4;
+    border: 1px solid $gray-3;
     
     .table-promotion {
       color: white;
@@ -63,16 +63,9 @@
           background: white;
         }
         &:nth-child(even) {
-          background: $gray-3;
+          background: $gray-2;
         }
-        &.image {
-          td {
-            padding-top: 55px;
-            img {
-              max-width: 100px;
-            }
-          }
-        }
+        
         td {
           position: relative;
           
@@ -90,13 +83,28 @@
             font-weight: bold;
             //font-size: 28px;
             font-size: 2.8em;
-            color: $blue-2;
+            //color: $blue-2;
           }
           span.overall-rating-text {
             text-transform: uppercase;
             font-size: 1.2em;
             font-weight: bold;
           }
+        }
+      }
+      
+      tr.image {
+        td {
+          padding-top: 55px;
+          img {
+            max-width: 100px;
+          }
+        }
+      }
+      tr.amazon-buttons {
+        a.btn {
+          margin-top: 10px;
+          margin-bottom: 10px;
         }
       }
     }

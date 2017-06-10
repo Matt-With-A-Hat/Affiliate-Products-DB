@@ -5,18 +5,6 @@
 */
 .affiliate-products-db {
     
-  h2 {
-    margin-bottom: 0;
-    font-size: 22px;
-    font-weight: 600;
-  }
-  
-  h3 {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 40px;
-  }
-  
   .vcenter {
     display: inline-block;
     vertical-align: middle;
@@ -29,29 +17,28 @@
   //  }
   //}
   
-  .list-pro, .list-con {
-    margin-bottom: 25px;
-    padding-left: 0;
-    list-style: none;
-    
-    ul {
-      margin-left: 0 !important;
-      
-      li {
-        list-style-type: none;
-        margin-top: 3px;
-        margin-bottom: 3px;
-        margin-left: 20px;
-      }
-    }
-  }
-  
-  .list-header {
-    font-weight: 600;
-    font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
+  //.list-pro, .list-con {
+  //  margin-bottom: 25px;
+  //  padding-left: 0;
+  //  list-style: none;
+  //
+  //  ul {
+  //    margin-left: 0 !important;
+  //
+  //    li {
+  //      list-style-type: none;
+  //      margin-top: 3px;
+  //      margin-bottom: 3px;
+  //      margin-left: 20px;
+  //    }
+  //  }
+  //}
+  //
+  //.list-header {
+  //  font-size: 18px;
+  //  margin-top: 10px;
+  //  margin-bottom: 10px;
+  //}
   
   
   /**
@@ -60,7 +47,7 @@
   * --------------------------------------------------------------
   */
   
-  .infobox .infobox-top {
+  .infobox .infobox-top-body {
     margin: 20px 0 60px 0;
     display: table;
     border-collapse: separate;
@@ -86,7 +73,7 @@
         
         .zoom {
           font-size: 14px;
-          color: $gray-2;
+          color: $gray-1;
           display: block;
           position: absolute;
           bottom: 60px;
@@ -143,7 +130,7 @@
           @include box-shadow;
           
           .small-table {
-            background-color: $gray-3;
+            background-color: $gray-2;
             padding: 10px 5px;
             margin-top: 10px;
             margin-bottom: 20px;
@@ -191,7 +178,7 @@
   
   .infobox {
     margin-bottom: 30px;
-    .infobox-body {
+    .infobox-bottom-body {
       > .row {
         margin-top: 30px;
         .tabs {
@@ -215,7 +202,7 @@
   
   .tab-pane.overview {
     .general-rating-row {
-      .row {
+      > div {
         margin-top: 10px;
         margin-bottom: 10px;
         
@@ -235,7 +222,7 @@
             margin: 2px 10px;
             
             span {
-              color: $gray-1;
+              color: $white;
             }
           }
         }
@@ -245,17 +232,20 @@
   
   .tab-pane.details {
     .row {
-      tr.category {
-        background: $gray-3;
-        font-weight: bold;
-        td:nth-child(3) {
-          font-family: inherit;
+      table{
+        margin-bottom: 0;
+        tr.category {
+          background: $gray-2;
+          font-weight: bold;
+          td:nth-child(3) {
+            font-family: inherit;
+          }
         }
-      }
-      
-      tr {
-        td:nth-child(3) {
-          font-family: monospace;
+  
+        tr {
+          td:nth-child(3) {
+            font-family: monospace;
+          }
         }
       }
     }

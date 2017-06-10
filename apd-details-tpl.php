@@ -17,7 +17,7 @@
 						</div>
 
 						<!--Infobox Top-->
-						<div class="infobox-top">
+						<div class="infobox-top-body">
 							<div class="row">
 								<div class="col-sm-5 text-center vcenter thin-border">
 									<div class="image-area">
@@ -146,7 +146,7 @@
 						<!--Infobox Top end-->
 
 						<!--Infobox Body-->
-						<div class="infobox-body">
+						<div class="infobox-bottom-body">
 							<div class="row">
 								<div class="tabs">
 									<ul class="nav nav-tabs">

@@ -1,101 +1,109 @@
-<div class="affiliate-products-db">
+<div class="affiliate-products-db smalltable">
     <div class="table-responsive">
         <table class="table">
             <thead>
-            <tr>
-                <th></th>
-                {loop-start}
-                <th class="text-center"><a href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">{$Longname}</a></th>
-                {loop-end}
-            </tr>
+                <tr>
+                    <th></th>
+                    {loop-start}
+                    <th class="text-center"><a href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">{$Longname}</a></th>
+                    {loop-end}
+                </tr>
             </thead>
             <tbody>
-            <tr class="image">
-                <td></td>
-                {loop-start}
-                <td class="{$PromoClass}">
-                    <div class="row text-center">
-                        <span class="text-danger text-center table-promotion {$PromoClass}">{$Promo}</span>
-                        <div class="infobox-thumbnail">
-                            <a href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">
-                                <img src="{$MediumImageUrl}">
-                                <!--<img src="http://placehold.it/100x50">-->
-                            </a>
+                <tr class="image">
+                    <td></td>
+                    {loop-start}
+                    <td class="{$PromoClass}">
+                        <div class="row text-center">
+                            <span class="text-center table-promotion {$PromoClass}">{$Promo}</span>
+                            <div class="infobox-thumbnail">
+                                <a href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">
+                                    <img src="{$MediumImageUrl}">
+                                    <!--<img src="http://placehold.it/100x50">-->
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                {loop-end}
-            </tr>
-            <tr class="price">
-                <td>Preis</td>
-                {loop-start}
-                <td class="text-center {$PromoClass}">
-                    <strong><a class="neat-link" href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">EUR {$AmazonPrice}</a><br></strong>
-                    <small>inkl. 19% gesetzlicher MwSt.</small>
-                </td>
-                {loop-end}
-            </tr>
-            <tr>
-                <td>Gesamt-Note</td>
-                {loop-start}
-                <td class="text-center {$PromoClass}">
-                    <span class="overall-rating">{$OverallRating}</span><br>
-                    <span class="overall-rating-text">{$OverallRatingText}</span>
-                </td>
-                {loop-end}
-            </tr>
-            <tr>
-                <td>Amazon Bewertung</td>
-                {loop-start}
-                <td class="text-center {$PromoClass}">{$RatingStars}</td>
-                {loop-end}
-            </tr>
-            <tr>
-                <td>Max. Rasenfläche</td>
-                {loop-start}
-                <td class="text-center {$PromoClass}">{$SurfaceArea}</td>
-                {loop-end}
-            </tr>
-            <tr>
-                <td>PIN gesichert</td>
-                {loop-start}
-                <td class="text-center {$PromoClass}">{$PincodeLock}</td>
-                {loop-end}
-            </tr>
-            <tr>
-                <td>Alarmgesichert</td>
-                {loop-start}
-                <td class="text-center {$PromoClass}">{$AlarmSystem}</td>
-                {loop-end}
-            </tr>
-            <tr>
-                <td>Schnitthöhe</td>
-                {loop-start}
-                <td class="text-center {$PromoClass}">{$CuttingHeightMinMm} - {$CuttingHeightMaxMm}mm</td>
-                {loop-end}
-            </tr>
-            <tr>
-                <td>Schnittbreite</td>
-                {loop-start}
-                <td class="text-center {$PromoClass}">{$CuttingWidthCm}cm</td>
-                {loop-end}
-            </tr>
-            <tr>
-                <td>Max. Steigung</td>
-                {loop-start}
-                <td class="text-center {$PromoClass}">{$MaxRaising}</td>
-                {loop-end}
-            </tr>
-            <tr>
-                <td></td>
-                {loop-start}
-                <td class="text-center {$PromoClass}">
-                    <a class="btn btn-apd-default btn-amazon btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} - Produkt auf amazon.de anschauen">
-                        <i class="fa fa-amazon"></i><span>zu Amazon</span>
-                    </a>
-                </td>
-                {loop-end}
-            </tr>
+                    </td>
+                    {loop-end}
+                </tr>
+                <tr class="model">
+                    <td>Modell</td>
+                    {loop-start}
+                    <td class="text-center {$PromoClass}">
+                        <span><a class="neat-link" href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">{$Longname}</a><br></span>
+                    </td>
+                    {loop-end}
+                </tr>
+                <tr>
+                    <td>Gesamt-Note</td>
+                    {loop-start}
+                    <td class="text-center {$PromoClass}">
+                        <span class="overall-rating">{$OverallRating}</span><br>
+                        <span class="overall-rating-text">{$OverallRatingText}</span>
+                    </td>
+                    {loop-end}
+                </tr>
+                <tr>
+                    <td>Amazon Bewertung</td>
+                    {loop-start}
+                    <td class="text-center {$PromoClass}">{$RatingStars}</td>
+                    {loop-end}
+                </tr>
+                <tr class="price">
+                    <td>Preis</td>
+                    {loop-start}
+                    <td class="text-center {$PromoClass}">
+                        <span><a class="neat-link" href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">EUR {$AmazonPrice}</a><br></span>
+                        <small>inkl. 19% gesetzlicher MwSt.</small>
+                    </td>
+                    {loop-end}
+                </tr>
+                <tr>
+                    <td>Max. Rasenfläche</td>
+                    {loop-start}
+                    <td class="text-center {$PromoClass}">{$SurfaceArea}</td>
+                    {loop-end}
+                </tr>
+                <tr>
+                    <td>PIN gesichert</td>
+                    {loop-start}
+                    <td class="text-center {$PromoClass}">{$PincodeLock}</td>
+                    {loop-end}
+                </tr>
+                <tr>
+                    <td>Alarmgesichert</td>
+                    {loop-start}
+                    <td class="text-center {$PromoClass}">{$AlarmSystem}</td>
+                    {loop-end}
+                </tr>
+                <tr>
+                    <td>Schnitthöhe</td>
+                    {loop-start}
+                    <td class="text-center {$PromoClass}">{$CuttingHeightMinMm} - {$CuttingHeightMaxMm}mm</td>
+                    {loop-end}
+                </tr>
+                <tr>
+                    <td>Schnittbreite</td>
+                    {loop-start}
+                    <td class="text-center {$PromoClass}">{$CuttingWidthCm}cm</td>
+                    {loop-end}
+                </tr>
+                <tr>
+                    <td>Max. Steigung</td>
+                    {loop-start}
+                    <td class="text-center {$PromoClass}">{$MaxRaising}</td>
+                    {loop-end}
+                </tr>
+                <tr class="amazon-buttons">
+                    <td></td>
+                    {loop-start}
+                    <td class="text-center {$PromoClass}">
+                        <a class="btn btn-apd-default btn-amazon btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} - Produkt auf amazon.de anschauen">
+                            <i class="fa fa-amazon"></i><span>zu Amazon</span>
+                        </a>
+                    </td>
+                    {loop-end}
+                </tr>
             </tbody>
         </table>
     </div>

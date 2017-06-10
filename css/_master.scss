@@ -10,6 +10,7 @@
 * --------------------------------------------------------------
 */
 
+$white: #ffffff;
 $success-1: #3c763d;
 $success-2: #EDF3ED;
 $green-1: #2b7a00;
@@ -75,7 +76,7 @@ $amazon-2: #febd69;
   }
 }
 
-.btn-amazon{
+.btn-amazon {
   background: $amazon-2;
   color: black;
 }
@@ -141,16 +142,28 @@ span.amazon-stars {
 
 .details-promotion {
   color: white;
-  width: 100%;
-  display: block;
-  font-size: 18px;
-  padding: .2em .6em .3em;
+  background: $danger;
+  position: absolute;
+  height: 38px;
+  padding: 0;
+  top: 0;
+  left: -1px;
+  right: -1px;
+  text-transform: uppercase;
+  line-height: 40px;
   font-weight: 700;
-  line-height: 1.5;
-  text-align: center;
   white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: 0;
+  
+  //color: white;
+  //width: 100%;
+  //display: block;
+  //font-size: 18px;
+  //padding: .2em .6em .3em;
+  //font-weight: 700;
+  //line-height: 1.5;
+  //text-align: center;
+  //vertical-align: baseline;
+  //border-radius: 0;
 }
 
 .table-responsive {

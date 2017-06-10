@@ -6,7 +6,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading text-center infobox-header">
                         <!--<p class="panel-title">Infobox - <strong><span itemprop="name">Automower 305</span></strong></p>-->
-                        <h2>{$Longname}</h2>
+                        <h3>{$Longname}</h3>
                     </div>
 
                     <div class="panel-body">
@@ -17,19 +17,17 @@
                         </div>
 
                         <!--Infobox Top-->
-                        <div class="infobox-top">
+                        <div class="infobox-top-body">
                             <div class="row">
                                 <div class="col-sm-5 text-center vcenter thin-border">
                                     <div class="image-area">
                                         <div class="row">
                                             <div class="infobox-thumbnail">
+                                                <span class="details-promotion">{$Promo}</span>
                                                 <a href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">
                                                     <!--<img class="img-responsive" src="{MediumImageUrl}">-->
                                                     <img class="img-responsive" src="{$LargeImageUrl}">
 
-                                                    <span class="zoom">
-                                                        <i class="fa fa-search-plus fa-2x"></i>
-                                                    </span>
                                                 </a>
                                                 <!--@todo the urls of every image of the image set-->
                                                 <!--{imageSet}-->
@@ -38,7 +36,6 @@
 
                                         <div class="row">
                                             <div class="center">
-                                                <span class="text-danger details-promotion">{$Promo}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -53,7 +50,7 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="img img-responsive">
-                                                        <a class="btn btn-apd-default btn-danger btn-lg btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Angebot auf amazon.de ansehen">
+                                                        <a class="btn btn-apd-heavy btn-danger btn-lg btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Angebot auf amazon.de ansehen">
                                                             <i class="fa fa-caret-right"></i><span>Angebot ansehen</span><i class="fa fa-icon-eye"></i>
                                                         </a>
                                                     </div>
@@ -116,7 +113,7 @@
                                                 <div class="col-sm-12">
                                                     <div class="img img-responsive">
                                                         <a class="btn btn-apd-default btn-danger btn-lg btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de">
-                                                            <span class="badge">EUR {$AmazonPrice}</span>
+                                                            EUR {$AmazonPrice}
                                                         </a>
                                                     </div>
                                                 </div>
@@ -129,7 +126,7 @@
                                                     <div class="img img-responsive">
                                                         <div class="row">
                                                             <div class="col-xs-12">
-                                                                <a class="btn btn-apd-default btn-danger btn-md btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Produkt direkt in den Warenkorb auf amazon.de legen">
+                                                                <a class="btn btn-apd-heavy btn-danger btn-md btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Produkt direkt in den Warenkorb auf amazon.de legen">
                                                                     <i class="fa fa-caret-right"></i><span>In den Warenkorb legen</span><i class="fa fa-shopping-cart"></i>
                                                                 </a>
                                                             </div>
@@ -146,7 +143,7 @@
                         <!--Infobox Top end-->
 
                         <!--Infobox Body-->
-                        <div class="infobox-body">
+                        <div class="infobox-bottom-body">
                             <div class="row">
                                 <div class="tabs">
                                     <ul class="nav nav-tabs">
@@ -161,21 +158,19 @@
 
                                             <!--General rating-->
                                             <div class="general-rating-row">
-                                                <div class="row">
+                                                <div class="row-eq-height">
                                                     <div class="col-sm-offset-0 col-sm-6">
-                                                        <div class="btn btn-apd-light btn-default btn-lg btn-block overall-rating">
+                                                        <div class="btn btn-default btn-lg btn-block overall-rating">
                                                             <span class="overall-rating text-center">
-                                                                <p>
-                                                                    <small>Gesamtnote</small>
-                                                                    <br>
-                                                                    <b>{$OverallRatingText} ({$OverallRating})</b>
-                                                                </p>
+                                                                <small>Gesamtnote</small>
+                                                                <br>
+                                                                {$OverallRatingText} ({$OverallRating})
                                                             </span>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-offset-1 col-sm-4">
                                                         <div class="amazon-rating">
-                                                            <div itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating">
+                                                            <div class="aggregate-rating" itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating">
                                                                 <a class="btn btn-default btn-xs btn-block" target="_blank" rel="nofollow" title="{$Title} - {$AverageRating} von 5 Sternen ({$TotalReviews} Kundenbewertungen auf amazon.de)" href="{$AmazonUrl}">
                                                                     <i class="fa fa-caret-right"></i>
                                                                     <span itemprop="ratingValue">{$AverageRating}</span>
@@ -204,7 +199,7 @@
                                                 <div class="row">
                                                     <div class="category-rating">
                                                         <div class="col-sm-6">
-                                                            <h3>Kategoriewertung</h3>
+                                                            <h4>Kategoriewertung</h4>
                                                             <div class="progress-bars">
 
                                                                 <div class="progress">
@@ -273,16 +268,16 @@
                                                     <div class="pro-con">
                                                         <div class="col-sm-6">
                                                             <div class="col-sm-12">
-                                                                <h3>Vorteile und Nachteile</h3>
-                                                                <div class="list-pro">
-                                                                    <h4 class="text-success list-header">Pluspunkte</h4>
-                                                                    <ul>
+                                                                <h4>Vorteile und Nachteile</h4>
+                                                                <div>
+                                                                    <h5 class="text-success list-header">Pluspunkte</h5>
+                                                                    <ul class="list-pro">
                                                                         {$Advantages}
                                                                     </ul>
                                                                 </div>
-                                                                <div class="list-con">
-                                                                    <h4 class="text-danger list-header">Minuspunkte</h4>
-                                                                    <ul>
+                                                                <div>
+                                                                    <h5 class="text-danger list-header">Minuspunkte</h5>
+                                                                    <ul class="list-con">
                                                                         {$Disadvantages}
                                                                     </ul>
                                                                 </div>
@@ -306,260 +301,259 @@
                                                                 <table class="table table-condensed table-bordered table-hover">
 
                                                                     <thead>
-                                                                    <tr>
-                                                                        <th>Kategorie</th>
-                                                                        <th>Anteil Gesamtnote</th>
-                                                                        <th>Note/Punkte</th>
-                                                                    </tr>
+                                                                        <tr>
+                                                                            <th>Kategorie</th>
+                                                                            <th>Anteil Gesamtnote</th>
+                                                                            <th>Note/Punkte</th>
+                                                                        </tr>
                                                                     </thead>
-
 
                                                                     <tbody>
 
-                                                                    <tr class="category">
-                                                                        <td>Mähwerk</td>
-                                                                        <td>20%</td>
-                                                                        <td>Note {$RotaryMowerRating}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Mähwerk</td>
-                                                                        <td>{$RotaryMowerType}</td>
-                                                                        <td>{$RotaryMowerTypeRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Schnittbreite</td>
-                                                                        <td>{$CuttingWidthCm} cm</td>
-                                                                        <td>{$CuttingWidthRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Schnitthöhe</td>
-                                                                        <td>{$CuttingHeightMinMm}mm - {$CuttingHeightMaxMm}mm</td>
-                                                                        <td>{$CuttingHeightRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr class="sum">
-                                                                        <td><strong>Summe Punkte</strong></td>
-                                                                        <td></td>
-                                                                        <td><strong>{$RotaryMowerPoints} von {$RotaryMowerMaxPoints} ({$RotaryMowerRatingPercent}%)</strong></td>
-                                                                    </tr>
+                                                                        <tr class="category">
+                                                                            <td>Mähwerk</td>
+                                                                            <td>20%</td>
+                                                                            <td>Note {$RotaryMowerRating}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Mähwerk</td>
+                                                                            <td>{$RotaryMowerType}</td>
+                                                                            <td>{$RotaryMowerTypeRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Schnittbreite</td>
+                                                                            <td>{$CuttingWidthCm} cm</td>
+                                                                            <td>{$CuttingWidthRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Schnitthöhe</td>
+                                                                            <td>{$CuttingHeightMinMm}mm - {$CuttingHeightMaxMm}mm</td>
+                                                                            <td>{$CuttingHeightRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr class="sum">
+                                                                            <td>Summe Punkte</td>
+                                                                            <td></td>
+                                                                            <td>{$RotaryMowerPoints} von {$RotaryMowerMaxPoints} ({$RotaryMowerRatingPercent}%)</td>
+                                                                        </tr>
 
 
-                                                                    <tr class="category">
-                                                                        <td>Lautstärke</td>
-                                                                        <td>15%</td>
-                                                                        <td>Note {$LoudnessRating}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Lautstärke</td>
-                                                                        <td>{$LoudnessDb} dB</td>
-                                                                        <td>{$LoudnessDbRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr class="sum">
-                                                                        <td><strong>Summe Punkte</strong></td>
-                                                                        <td></td>
-                                                                        <td><strong>{$LoudnessPoints} von {$LoudnessMaxPoints} ({$LoudnessRatingPercent}%)</strong></td>
-                                                                    </tr>
+                                                                        <tr class="category">
+                                                                            <td>Lautstärke</td>
+                                                                            <td>15%</td>
+                                                                            <td>Note {$LoudnessRating}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Lautstärke</td>
+                                                                            <td>{$LoudnessDb} dB</td>
+                                                                            <td>{$LoudnessDbRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr class="sum">
+                                                                            <td>Summe Punkte</td>
+                                                                            <td></td>
+                                                                            <td>{$LoudnessPoints} von {$LoudnessMaxPoints} ({$LoudnessRatingPercent}%)</td>
+                                                                        </tr>
 
 
-                                                                    <tr class="category">
-                                                                        <td>Akku-Leistung</td>
-                                                                        <td>15%</td>
-                                                                        <td>Note {$BatteryPowerRating}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Akku</td>
-                                                                        <td>{$PowerSource}</td>
-                                                                        <td>{$PowerSourceRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Ladezeit</td>
-                                                                        <td>{$ChargingTimeText}</td>
-                                                                        <td>{$ChargingTimeRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Laufzeit</td>
-                                                                        <td>{$RunTime}</td>
-                                                                        <td>{$RunTimeRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr class="sum">
-                                                                        <td><strong>Summe Punkte</strong></td>
-                                                                        <td></td>
-                                                                        <td><strong>{$BatteryPowerPoints} von {$BatteryPowerMaxPoints} ({$BatteryPowerRatingPercent}%)</strong></td>
-                                                                    </tr>
+                                                                        <tr class="category">
+                                                                            <td>Akku-Leistung</td>
+                                                                            <td>15%</td>
+                                                                            <td>Note {$BatteryPowerRating}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Akku</td>
+                                                                            <td>{$PowerSource}</td>
+                                                                            <td>{$PowerSourceRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Ladezeit</td>
+                                                                            <td>{$ChargingTimeText}</td>
+                                                                            <td>{$ChargingTimeRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Laufzeit</td>
+                                                                            <td>{$RunTime}</td>
+                                                                            <td>{$RunTimeRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr class="sum">
+                                                                            <td>Summe Punkte</td>
+                                                                            <td></td>
+                                                                            <td>{$BatteryPowerPoints} von {$BatteryPowerMaxPoints} ({$BatteryPowerRatingPercent}%)</td>
+                                                                        </tr>
 
 
-                                                                    <tr class="category">
-                                                                        <td>Bedienung/Handhabung</td>
-                                                                        <td>20%</td>
-                                                                        <td>Note {$HandlingRating}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Gewicht</td>
-                                                                        <td>{$WeightKg} Kg</td>
-                                                                        <td>{$WeightRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Timer</td>
-                                                                        <td>{$Timer}</td>
-                                                                        <td>{$TimerRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Abfahren nach Zufallsprinzip</td>
-                                                                        <td>{$RandomMovement}</td>
-                                                                        <td>{$RandomMovementRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Logicut-Navigation</td>
-                                                                        <td>{$LogicutNavigation}</td>
-                                                                        <td>{$LogicutNavigationRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Regensensor</td>
-                                                                        <td>{$RainDetection}</td>
-                                                                        <td>{$RainDetectionRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Wetter-Timer</td>
-                                                                        <td>{$WeatherTimer}</td>
-                                                                        <td>{$WeatherTimerRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>GPS-Navigation</td>
-                                                                        <td>{$GpsNavigation}</td>
-                                                                        <td>{$GpsNavigationRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Optionale Fernbedienung</td>
-                                                                        <td>{$OptionalRemote}</td>
-                                                                        <td>{$OptionalRemoteRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Kalenderfunktion</td>
-                                                                        <td>{$CalendarFunction}</td>
-                                                                        <td>{$CalendarFunctionRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Smartphone Steuerung</td>
-                                                                        <td>{$SmartphoneControl}</td>
-                                                                        <td>{$SmartphoneControlRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr class="sum">
-                                                                        <td><strong>Summe Punkte</strong></td>
-                                                                        <td></td>
-                                                                        <td><strong>{$HandlingPoints} von {$HandlingMaxPoints} ({$HandlingRatingPercent}%)</strong></td>
-                                                                    </tr>
+                                                                        <tr class="category">
+                                                                            <td>Bedienung/Handhabung</td>
+                                                                            <td>20%</td>
+                                                                            <td>Note {$HandlingRating}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Gewicht</td>
+                                                                            <td>{$WeightKg} Kg</td>
+                                                                            <td>{$WeightRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Timer</td>
+                                                                            <td>{$Timer}</td>
+                                                                            <td>{$TimerRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Abfahren nach Zufallsprinzip</td>
+                                                                            <td>{$RandomMovement}</td>
+                                                                            <td>{$RandomMovementRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Logicut-Navigation</td>
+                                                                            <td>{$LogicutNavigation}</td>
+                                                                            <td>{$LogicutNavigationRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Regensensor</td>
+                                                                            <td>{$RainDetection}</td>
+                                                                            <td>{$RainDetectionRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Wetter-Timer</td>
+                                                                            <td>{$WeatherTimer}</td>
+                                                                            <td>{$WeatherTimerRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>GPS-Navigation</td>
+                                                                            <td>{$GpsNavigation}</td>
+                                                                            <td>{$GpsNavigationRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Optionale Fernbedienung</td>
+                                                                            <td>{$OptionalRemote}</td>
+                                                                            <td>{$OptionalRemoteRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Kalenderfunktion</td>
+                                                                            <td>{$CalendarFunction}</td>
+                                                                            <td>{$CalendarFunctionRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Smartphone Steuerung</td>
+                                                                            <td>{$SmartphoneControl}</td>
+                                                                            <td>{$SmartphoneControlRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr class="sum">
+                                                                            <td>Summe Punkte</td>
+                                                                            <td></td>
+                                                                            <td>{$HandlingPoints} von {$HandlingMaxPoints} ({$HandlingRatingPercent}%)</td>
+                                                                        </tr>
 
 
-                                                                    <tr class="category">
-                                                                        <td>Sicherheit</td>
-                                                                        <td>15%</td>
-                                                                        <td>Note {$SecurityRating}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Stoßsensor</td>
-                                                                        <td>{$ImpactDetection}</td>
-                                                                        <td>{$ImpactDetectionRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Pincodesperre</td>
-                                                                        <td>{$PincodeLock}</td>
-                                                                        <td>{$PincodeLockRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Hebe- und Neigungssperre</td>
-                                                                        <td>{$LiftTiltLock}</td>
-                                                                        <td>{$LiftTiltLockRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Zeitschloss</td>
-                                                                        <td>{$Timelock}</td>
-                                                                        <td>{$TimelockRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Alarmsystem</td>
-                                                                        <td>{$AlarmSystem}</td>
-                                                                        <td>{$AlarmSystemRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>GPS Diebstahlschutz</td>
-                                                                        <td>{$GpsAntiTheft}</td>
-                                                                        <td>{$GpsAntiTheftRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Installationssperre</td>
-                                                                        <td>{$InstallationLock}</td>
-                                                                        <td>{$InstallationLockRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Kindersicherung</td>
-                                                                        <td>{$ChildProtection}</td>
-                                                                        <td>{$ChildProtectionRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr class="sum">
-                                                                        <td><strong>Summe Punkte</strong></td>
-                                                                        <td></td>
-                                                                        <td><strong>{$SecurityPoints} von {$SecurityMaxPoints} ({$SecurityRatingPercent}%)</strong></td>
-                                                                    </tr>
+                                                                        <tr class="category">
+                                                                            <td>Sicherheit</td>
+                                                                            <td>15%</td>
+                                                                            <td>Note {$SecurityRating}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Stoßsensor</td>
+                                                                            <td>{$ImpactDetection}</td>
+                                                                            <td>{$ImpactDetectionRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Pincodesperre</td>
+                                                                            <td>{$PincodeLock}</td>
+                                                                            <td>{$PincodeLockRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Hebe- und Neigungssperre</td>
+                                                                            <td>{$LiftTiltLock}</td>
+                                                                            <td>{$LiftTiltLockRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Zeitschloss</td>
+                                                                            <td>{$Timelock}</td>
+                                                                            <td>{$TimelockRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Alarmsystem</td>
+                                                                            <td>{$AlarmSystem}</td>
+                                                                            <td>{$AlarmSystemRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>GPS Diebstahlschutz</td>
+                                                                            <td>{$GpsAntiTheft}</td>
+                                                                            <td>{$GpsAntiTheftRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Installationssperre</td>
+                                                                            <td>{$InstallationLock}</td>
+                                                                            <td>{$InstallationLockRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Kindersicherung</td>
+                                                                            <td>{$ChildProtection}</td>
+                                                                            <td>{$ChildProtectionRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr class="sum">
+                                                                            <td>Summe Punkte</td>
+                                                                            <td></td>
+                                                                            <td>{$SecurityPoints} von {$SecurityMaxPoints} ({$SecurityRatingPercent}%)</td>
+                                                                        </tr>
 
 
-                                                                    <tr class="category">
-                                                                        <td>Preis-Leistung</td>
-                                                                        <td>15%</td>
-                                                                        <td>Note {$PricePerformanceRatioRating}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Preis-Leistungs-Verhältnis</td>
-                                                                        <td>{$PricePerformanceRatioRating}</td>
-                                                                        <td>{$PricePerformanceRatioRatingPercent}</td>
-                                                                    </tr>
-                                                                    <tr class="sum">
-                                                                        <td><strong>Summe Punkte</strong></td>
-                                                                        <td></td>
-                                                                        <td><strong>{$PricePerformanceRatioPoints} von {$PricePerformanceRatioMaxPoints} ({$PricePerformanceRatioRatingPercent}%)</strong></td>
-                                                                    </tr>
+                                                                        <tr class="category">
+                                                                            <td>Preis-Leistung</td>
+                                                                            <td>15%</td>
+                                                                            <td>Note {$PricePerformanceRatioRating}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Preis-Leistungs-Verhältnis</td>
+                                                                            <td>{$PricePerformanceRatioRating}</td>
+                                                                            <td>{$PricePerformanceRatioRatingPercent}</td>
+                                                                        </tr>
+                                                                        <tr class="sum">
+                                                                            <td>Summe Punkte</td>
+                                                                            <td></td>
+                                                                            <td>{$PricePerformanceRatioPoints} von {$PricePerformanceRatioMaxPoints} ({$PricePerformanceRatioRatingPercent}%)</td>
+                                                                        </tr>
 
 
-                                                                    <tr class="category">
-                                                                        <td>Ungewertet</td>
-                                                                        <td>0%</td>
-                                                                        <td>-</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Begrenzungskabel</td>
-                                                                        <td>{$GuideWire}</td>
-                                                                        <td>-</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Suchschleife</td>
-                                                                        <td>{$GuideLoop}</td>
-                                                                        <td>-</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Hersteller</td>
-                                                                        <td>{$Manufacturer}</td>
-                                                                        <td>-</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Fläche</td>
-                                                                        <td>{$SurfaceArea}</td>
-                                                                        <td>-</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Maximale Steigung</td>
-                                                                        <td>{$MaxRaising}</td>
-                                                                        <td></td>
-                                                                    </tr>
+                                                                        <tr class="category">
+                                                                            <td>Ungewertet</td>
+                                                                            <td>0%</td>
+                                                                            <td>-</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Begrenzungskabel</td>
+                                                                            <td>{$GuideWire}</td>
+                                                                            <td>-</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Suchschleife</td>
+                                                                            <td>{$GuideLoop}</td>
+                                                                            <td>-</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Hersteller</td>
+                                                                            <td>{$Manufacturer}</td>
+                                                                            <td>-</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Fläche</td>
+                                                                            <td>{$SurfaceArea}</td>
+                                                                            <td>-</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Maximale Steigung</td>
+                                                                            <td>{$MaxRaising}</td>
+                                                                            <td></td>
+                                                                        </tr>
 
 
-                                                                    <tr class="category">
-                                                                        <td>Amazon-Daten</td>
-                                                                        <td>0%</td>
-                                                                        <td>Note k. A.</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Amazon-Wertung</td>
-                                                                        <td>{$AverageRating} von 5 Sternen</td>
-                                                                        <td>-</td>
-                                                                    </tr>
+                                                                        <tr class="category">
+                                                                            <td>Amazon-Daten</td>
+                                                                            <td>0%</td>
+                                                                            <td>Note k. A.</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Amazon-Wertung</td>
+                                                                            <td>{$AverageRating} von 5 Sternen</td>
+                                                                            <td>-</td>
+                                                                        </tr>
 
 
                                                                     </tbody>
