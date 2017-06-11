@@ -170,7 +170,7 @@ class ApdCore {
 	 *
 	 * @return string
 	 */
-	public function getElement( $asin, $tpl = false, $tablename ) {
+	public function getElement( $asin, $tpl = false ) {
 		$item_html = '';
 
 		if ( $tpl == false ) {
@@ -180,9 +180,9 @@ class ApdCore {
 		$tpl_src = $this->getTpl( $tpl );
 
 		if ( is_string( $asin ) ) {
-			$item_html .= $this->parseTpl( $asin, $tpl_src, $tablename );
+			$item_html .= $this->parseTpl( $asin, $tpl_src );
 		} elseif ( is_array( $asin ) ) {
-			$item_html .= $this->parseMultiTpl( $asin, $tpl_src, $tablename );
+			$item_html .= $this->parseMultiTpl( $asin, $tpl_src );
 		}
 
 		return $item_html;
@@ -248,11 +248,10 @@ class ApdCore {
 	 *
 	 * @param $asin
 	 * @param $tpl
-	 * @param $tablename
 	 *
 	 * @return string
 	 */
-	public function parseTpl( $asin, $tpl, $tablename ) {
+	public function parseTpl( $asin, $tpl ) {
 
 		$asin = trim( $asin );
 
@@ -285,8 +284,9 @@ class ApdCore {
 
 		$tpl = $html;
 
+		$apdItem  = new ApdItem( $asin );
+		$tablename = $apdItem->getItemTable();
 		$database = new ApdDatabase( $tablename );
-		$apdItem  = new ApdItem( $tablename );
 
 		$dbPlaceholders = $database->getTableColumns( false );
 		$tableInfo      = $database->getTableInfo();
@@ -299,7 +299,7 @@ class ApdCore {
 			$dbPlaceholders = array_remove_duplicates( $dbPlaceholders );
 		}
 
-		$dbItem = $apdItem->getItem( $asin );
+		$dbItem = $apdItem->getItem();
 
 		if ( ! empty( $dbItem ) ) {
 			//reformat advantage list
@@ -371,11 +371,10 @@ class ApdCore {
 	 *
 	 * @param array $asins
 	 * @param $tpl
-	 * @param $tablename
 	 *
 	 * @return string
 	 */
-	public function parseMultiTpl( array $asins, $tpl, $tablename ) {
+	public function parseMultiTpl( array $asins, $tpl ) {
 
 		$html = '';
 		$codeBlocks = $this->divideTemplateIntoBlocks( $tpl );
@@ -387,7 +386,7 @@ class ApdCore {
 			if ( $blockType == 'loop' ) {
 				$loopHtml = '';
 				foreach ( $asins as $asin ) {
-					$loopHtml .= $this->parseTpl( $asin, $blockHtml, $tablename );
+					$loopHtml .= $this->parseTpl( $asin, $blockHtml );
 				}
 				$blockHtml = $loopHtml;
 			}
@@ -637,6 +636,11 @@ class ApdCore {
 		}
 
 		return $result;
+	}
+
+	public function getApdItem($asin){
+//		$amazonItem = (new ApdAmazonCacheItem($asin))->getObject;
+//		$apdItem = (new ApdItem($asin))->getItem();
 	}
 
 }

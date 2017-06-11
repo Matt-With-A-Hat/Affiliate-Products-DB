@@ -1,5 +1,5 @@
 <div class="apdsetupmenu">
-	<h2>Affiliate Product Database</h2>
+	<h2>Affiliate Products Database</h2>
 	<div class="row">
 		<div class="col-md-8">
 			<div class="form-description">Please choose a name for the database table to be created and choose a CSV file to upload.</div>

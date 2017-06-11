@@ -10,7 +10,7 @@ add_shortcode( 'apd-data', 'apd_shortcode_handler' );
  * Hook for adding admin menus
  */
 function setupBackendMenu() {
-	add_options_page( 'Affiliate Products DB Setup Menu', 'Affiliate Products', 'manage_options', APD_MENU_SLUG, 'setupMenuPage' );
+	add_options_page( 'Affiliate Products DB Setup Menu', 'Affiliate Products', 'manage_options', APD_MENU_SLUG, 'setup_menu_page' );
 }
 
 add_action( 'admin_menu', 'setupBackendMenu' );
@@ -49,7 +49,7 @@ add_action( 'admin_enqueue_scripts', 'add_apd_admin_scripts' );
 /**
  * Create the setup menupage
  */
-function setupMenuPage() {
+function setup_menu_page() {
 
 	handle_upload_form();
 
@@ -80,8 +80,6 @@ function handle_upload_form() {
 		}
 
 		$apdDB = new ApdDatabase( $tablename );
-
-
 		$result = $apdDB->addCsvToDatabase( $csv );
 
 		if ( $result ) {
@@ -133,6 +131,12 @@ function apd_options_install() {
 	$database  = new ApdDatabase( $tablename );
 	$database->createTableFromArray( $databaseService->getListFields(), 'core' );
 	$database->modifyColumns( $databaseService->getUniqueListFields(), 'unique' );
+
+	//create asins table
+	$tablename = APD_ASIN_TABLE;
+	$database = new ApdDatabase($tablename);
+	$database->createTableFromArray(ApdItem::getItemFields(), 'core');
+	$database->modifyColumns(ApdItem::getUniqueItemFields(), 'unique');
 
 	//create amazon items table
 	$tablename = APD_AMAZON_CACHE_TABLE;

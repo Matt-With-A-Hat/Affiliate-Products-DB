@@ -46,10 +46,10 @@ function path_for_local( $path ) {
  *
  * @return string
  */
-function apd_get_item( $asin, $tpl = false, $tablename ) {
+function apd_get_item( $asin, $tpl = false ) {
 	global $apdCore;
 
-	return $apdCore->getElement( $asin, $tpl, $tablename );
+	return $apdCore->getElement( $asin, $tpl );
 }
 
 /**
@@ -121,25 +121,20 @@ function field_is_null( $field ) {
  *
  * @return string
  */
-function apd_shortcode_handler( $atts, $asin = null, $code = "" ) {
-
-	global $apdCore;
+function apd_shortcode_handler( $atts, $asin = null) {
 
 	if ( $atts[2] === 'disabled' ) {
 		return false;
 	}
 
-	$tpl = false;
-
-	if ( count( $atts ) < 2 ) {
+	if ( count( $atts ) < 1 ) {
 		if ( APD_DEBUG ) {
 			echo "Missing attribute in shortcode: $asin<br>";
 		}
 
 		return false;
 	} else {
-		$tablename = $atts[0];
-		$tpl       = $atts[1];
+		$tpl       = $atts[0];
 	}
 
 	//catch asin arrays
@@ -147,7 +142,7 @@ function apd_shortcode_handler( $atts, $asin = null, $code = "" ) {
 		$asin = explode( " ", $asin );
 	}
 
-	return apd_get_item( $asin, $tpl, $tablename );
+	return apd_get_item( $asin, $tpl );
 }
 
 /**

@@ -21,7 +21,7 @@ class ApdAmazonCache {
 	/**
 	 * Amazon item fields respectively available template placeholders
 	 */
-	public static $amazonItemFields = array(
+	protected static $amazonItemFields = array(
 		'ASIN',
 		'SmallImageUrl',
 		'SmallImageWidth',

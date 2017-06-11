@@ -64,7 +64,7 @@ define( 'APD_LIB_DIR', dirname( __FILE__ ) . '/lib/' );
 //affiliate-products-db
 define( 'APD_MENU_SLUG', 'affiliate-products-db' );
 
-define( 'APD_DEBUG', false );
+define( 'APD_DEBUG', true );
 
 //WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
 define( 'APD_DEBUG_DEV', true );
@@ -76,6 +76,7 @@ define( 'APD_DEBUG_DEV', true );
 define( 'APD_AMAZON_CACHE_TABLE', 'amazon_cache' );
 define( 'APD_CACHE_OPTIONS_TABLE', 'cache_options' );
 define( 'APD_TABLE_LIST_TABLE', 'table_list' );
+define( 'APD_ASIN_TABLE', 'asin_table' );
 define( 'APD_TABLE_PREFIX', 'apd_' );
 
 /**
@@ -150,5 +151,16 @@ require dirname( __FILE__ ) . '/apd-cronjobs.php';
 
 $apdCore = new ApdCore();
 
+//echo "<br><br>";
+
 //$cache = new ApdAmazonCacheDatabase();
 //$cache->updateCache();
+
+//$database = new ApdDatabase('products');
+//$database->updateAsins();
+
+//$databaseService = new ApdDatabaseService();
+//$asins = $databaseService->getAllAsins(true);
+//krumo($asins);
+//
+//$databaseService->updateAsins();

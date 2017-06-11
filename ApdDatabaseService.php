@@ -4,11 +4,21 @@ class ApdDatabaseService {
 
 	protected $tablename;
 
+	/**
+	 * all columns of the table-list table
+	 *
+	 * @var array
+	 */
 	protected $listFields = array(
 		'tablename',
 		'purpose'
 	);
 
+	/**
+	 * unique columns of the table-list table
+	 *
+	 * @var array
+	 */
 	protected $uniqueListFields = array(
 		'tablename'
 	);
@@ -88,23 +98,77 @@ class ApdDatabaseService {
 	}
 
 	/**
-	 * get every asin from all product tables
+	 * get every asin from all product tables as array
+	 *
+	 * @param bool $assoc if supplied, function returns an associative array with the name
+	 * of the table where the asin was found
 	 *
 	 * @return array
 	 */
-	public function getAllProductAsins() {
+	public function getAllAsins( $assoc = false ) {
 
 		global $wpdb;
 		$tables = $this->getProductTables();
 
-		$asins = array();
+		$asins      = array();
+		$asinsArray = array();
 		foreach ( $tables as $table ) {
-			$sql = "SELECT Asin FROM $table";
-			$asins[] = $wpdb->get_results($wpdb->prepare($sql, ''), ARRAY_N);
+			$sql                  = "SELECT Asin FROM $table";
+			$asins                = $wpdb->get_results( $wpdb->prepare( $sql, '' ), ARRAY_N );
+			$asinsArray[ $table ] = array_filter( array_values_recursive( $asins ) );
 		}
 
-		$asinsRefined = array_filter(array_values_recursive($asins));
+		if ( $assoc ) {
+			$asins = array();
+			foreach ( $asinsArray as $key => $array ) {
+				foreach ( $array as $item ) {
+					$asins[] = array(
+						'table' => $key,
+						'asin'  => $item
+					);
+				}
+			}
+		} else {
+			$asins = array_filter( array_values_recursive( $asinsArray ) );
+		}
 
-		return $asinsRefined;
+		return $asins;
+	}
+
+	/**
+	 * update the asin table
+	 *
+	 * @return bool
+	 */
+	function updateAsins() {
+		global $wpdb;
+		$asins     = $this->getAllAsins( true );
+		$asinTable = add_table_prefix( APD_ASIN_TABLE );
+
+		//add asins of products that don't exist in asins table yet
+		$sql = "REPLACE INTO $asinTable (`asin`, `table`) VALUES ";
+		foreach ( $asins as $asin ) {
+			$sql .= "('$asin[asin]', '$asin[table]'), ";
+		}
+		$sql    = rtrim( $sql, " ," ) . ";";
+		$result = $wpdb->query( $sql );
+
+		//remove asins of products that have been deleted
+		$productsAsins = $this->getAllAsins();
+		$sql           = "SELECT Asin FROM $asinTable";
+		$tableAsins    = $wpdb->get_results( $wpdb->prepare( $sql, '' ) );
+		$tableAsins    = array_filter( array_values_recursive( $tableAsins ) );
+
+		$diffTable = array_diff( $tableAsins, $productsAsins );
+		if ( ! empty( $diffTable ) ) {
+			$sql = "DELETE FROM $asinTable WHERE `asin` IN (";
+			foreach ( $diffTable as $item ) {
+				$sql .= "%s, ";
+			}
+			$sql = rtrim( $sql, " ," ) . ");";
+			$wpdb->query($wpdb->prepare($sql, $diffTable));
+		}
+
+		return (bool) $result;
 	}
 }

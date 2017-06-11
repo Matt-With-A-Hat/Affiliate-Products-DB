@@ -63,10 +63,7 @@ class ApdDatabase {
 	 * return all fields of a table with this info:
 	 * field, type, null, key, default, extra (auto increment etc.)
 	 *
-	 *
-	 * @param $tablename
-	 *
-	 * @return array
+	 * @return array|bool
 	 */
 	public function getTableInfo() {
 
@@ -277,7 +274,7 @@ class ApdDatabase {
 	 *
 	 * @todo refine code. Make it work with createTableFromArray and setUniqueColumns
 	 */
-	public function createTableFromCsvFields( array $fields, $purpose = null ) {
+	public function createTable( $purpose = null, array $fields = null ) {
 
 		if ( ! is_array( $fields ) ) {
 			if ( APD_DEBUG ) {
@@ -286,33 +283,48 @@ class ApdDatabase {
 			}
 
 			return false;
-		}
 
-		$newFields  = array();
-		$fieldtypes = array();
+		} else if ( $fields === null ) {
+			global $wpdb;
+			$sql    = "CREATE TABLE IF NOT EXISTS $this->tablename;";
+			$result = $wpdb->query( $sql );
 
-		foreach ( $fields as $field ) {
+			if ( $result ) {
+				$databaseService = new ApdDatabaseService();
+				$databaseService->updateTableList( $this->tablename, $purpose );
 
-			if ( preg_match( "/_unique/", $field ) ) {
-				$fieldtypes['unique'][] = $newFields[] = str_replace( "_unique", "", $field );
-
-			} else if ( preg_match( "/_bool/", $field ) ) {
-				$fieldtypes['bool'][] = $newFields[] = str_replace( "_bool", "", $field );
-
-			} else if ( preg_match( "/_text/", $field ) ) {
-				$fieldtypes['text'][] = $newFields[] = str_replace( "_text", "", $field );
-
-			} else if ( preg_match( "/_varchar/", $field ) ) {
-				$fieldtypes['varchar'][] = $newFields[] = str_replace( "_unique", "", $field );
+				return true;
 			} else {
-				$newFields[] = $field;
+				return false;
+			}
+		} else {
+			$newFields  = array();
+			$fieldtypes = array();
+
+			foreach ( $fields as $field ) {
+
+				if ( preg_match( "/_unique/", $field ) ) {
+					$fieldtypes['unique'][] = $newFields[] = str_replace( "_unique", "", $field );
+
+				} else if ( preg_match( "/_bool/", $field ) ) {
+					$fieldtypes['bool'][] = $newFields[] = str_replace( "_bool", "", $field );
+
+				} else if ( preg_match( "/_text/", $field ) ) {
+					$fieldtypes['text'][] = $newFields[] = str_replace( "_text", "", $field );
+
+				} else if ( preg_match( "/_varchar/", $field ) ) {
+					$fieldtypes['varchar'][] = $newFields[] = str_replace( "_unique", "", $field );
+				} else {
+					$newFields[] = $field;
+				}
 			}
 
-		}
+			$this->createTableFromArray( $newFields, $purpose );
+			foreach ( $fieldtypes as $type => $columns ) {
+				$this->modifyColumns( $columns, $type );
+			}
 
-		$this->createTableFromArray( $newFields, $purpose );
-		foreach ( $fieldtypes as $type => $columns ) {
-			$this->modifyColumns( $columns, $type );
+			return true;
 		}
 	}
 
@@ -571,7 +583,7 @@ class ApdDatabase {
 
 			foreach ( $csvRow as $key => $csvField ) {
 
-				//$key + 1 because array skips first column which is "id" in excel
+				//$key + 1 because first column needs to be skipped, which is "id" in excel
 				$fieldType = $tableInfo[ $key + 1 ]['Type'];
 
 				if ( type_is_boolean( $fieldType ) ) {
@@ -612,12 +624,12 @@ class ApdDatabase {
 
 	/**
 	 * remove redundant values in "_unique" fields from the supplied table
-	 *
-	 * @param $tablename
-	 *
 	 * @return bool
+	 * @internal param $tablename
+	 *
 	 */
-	public function removeRedundantValues() {
+	public
+	function removeRedundantValues() {
 
 		$wpdb      = $this->db;
 		$tablename = $this->tablename;
@@ -667,32 +679,31 @@ class ApdDatabase {
 
 		//@TODO check $tablename for injection!
 
-		$tablename = $this->tablename;
-
 		if ( is_array( $csv ) ) {
 			$csv = $csv['tmp_name'];
 		}
 
-		//@TODO also check if fields already exist in table
+		//@TODO also check if columns already exist in table
 
 		//create table if it doesn't exist yet
 		$result = true;
 		if ( $this->tableExists() === false ) {
 
 			$fields = $this->getCsvFields( $csv );
-			$result .= $this->createTableFromCsvFields( $fields, 'products' );
+			$result .= $this->createTable( 'products', $fields );
 
 		} else if ( APD_DEBUG_DEV === true ) {
 
 			//in debug always delete existing table when uploading a new csv
 			$result .= $this->dropTable();
 			$fields = $this->getCsvFields( $csv );
-			$result .= $this->createTableFromCsvFields( $fields, 'products' );
+			$result .= $this->createTable( 'products', $fields );
 
 		}
 
 		$result .= $this->insertCsv( $csv );
 		$result .= $this->removeRedundantValues();
+//		$result .= ( new ApdDatabaseService() )->updateAsins();
 
 		if ( $result === false ) {
 

@@ -2,67 +2,139 @@
 
 /**
  * Class ApdItem
+ *
+ * The class representing custom items that were uploaded to the database.
  */
 class ApdItem {
 
+	protected static $uniqueItemFields = array(
+		'asin'
+	);
+
+	protected static $itemFields = array(
+		'asin',
+		'table',
+		'last_edit'
+	);
+
 	/**
-	 * the tablename where the item can be found
+	 * the products table where the item can be found
 	 *
 	 * @var
 	 */
-	protected $tablename;
+	protected $itemTable;
 
-	function __construct( $tablename ) {
+	/**
+	 * the junction table where all items are stored with their respective asin
+	 * and the products table containing each item
+	 *
+	 * @var string
+	 */
+	protected $asinTable;
 
-		$this->setTablename( ( $tablename ) );
+	/**
+	 * the items asin
+	 *
+	 * @var
+	 */
+	protected $asin;
+
+	function __construct( $asin ) {
+
+		$this->setAsinTable();
+		$this->setAsin( $asin );
+		$this->setItemTable();
 
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getTablename() {
-		return $this->tablename;
+	public function getAsin() {
+		return $this->asin;
 	}
 
 	/**
-	 * @param mixed $tablename
+	 * @return mixed
 	 */
-	public function setTablename( $tablename ) {
-		$this->tablename = add_table_prefix( $tablename );
+	public function getItemTable() {
+		return $this->itemTable;
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getUniqueItemFields() {
+		return self::$uniqueItemFields;
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getItemFields() {
+		return self::$itemFields;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAsinTable() {
+		return $this->asinTable;
+	}
+
+	/**
+	 * @param mixed $asin
+	 */
+	public function setAsin( $asin ) {
+		$this->asin = $asin;
+	}
+
+	/**
+	 * get the item tablename from the asin table
+	 */
+	public function setItemTable() {
+		global $wpdb;
+
+		$sql       = "SELECT `table` FROM $this->asinTable WHERE `Asin` = %s";
+		$itemTable = $wpdb->get_var( $wpdb->prepare( $sql, $this->asin ) );
+
+		if ( ! empty( $itemTable ) ) {
+			$this->itemTable = add_table_prefix( $itemTable );
+		} else {
+			$error = "Item doesn't exist.";
+			print_error( $error, __METHOD__, __LINE__ );
+		}
+	}
+
+	/**
+	 *
+	 */
+	public function setAsinTable() {
+		$this->asinTable = add_table_prefix( APD_ASIN_TABLE );
 	}
 
 	/**
 	 * get the APD item selected by asin
-	 *
-	 * @param $asin
-	 *
 	 * @return array|bool|null|object|void
+	 * @internal param $asin
+	 *
 	 */
-	public function getItem( $asin ) {
+	public function getItem() {
 
 		global $wpdb;
-		$database = new ApdDatabase( $this->tablename );
-
-		$sql = "SELECT * FROM $this->tablename WHERE Asin = %s";
-
-		$database->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $asin ), OBJECT );
+		$database         = new ApdDatabase( $this->itemTable );
+		$sql              = "SELECT * FROM $this->itemTable WHERE Asin = %s";
+		$database->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $this->asin ), OBJECT );
 
 		if ( empty( $database->dbItem ) ) {
-
 			if ( APD_DEBUG ) {
-				$error = "Entry does not exist: $asin";
+				$error = "Entry does not exist: $this->asin";
 				print_error( $error, __METHOD__, __LINE__ );
 			}
 
 			return false;
-
 		}
 
 		return $database->dbItem;
-
-		return $item;
 	}
-
-
 }

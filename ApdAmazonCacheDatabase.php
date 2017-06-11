@@ -238,7 +238,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 
 		global $wpdb;
 		$databaseService = new ApdDatabaseService();
-		$productAsins    = $databaseService->getAllProductAsins();
+		$productAsins    = $databaseService->getAllAsins();
 
 
 		$sql        = "SELECT Asin FROM $this->tablenameCache";
@@ -257,7 +257,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		}
 
 
-		//asins from cache table that don't exist in procuts anymore
+		//remove asins from cache table that don't exist in procuts anymore
 		$diffCache = array_diff( $cacheAsins, $productAsins );
 		if ( ! empty( $diffCache ) ) {
 			$sql = "DELETE FROM $this->tablenameCache WHERE `Asin` IN (";
@@ -267,7 +267,6 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 			$sql = rtrim( $sql, " ," ) . ");";
 			$wpdb->query( $wpdb->prepare( $sql, $diffCache ) );
 		}
-
 	}
 
 	/**
