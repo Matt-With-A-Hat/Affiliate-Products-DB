@@ -703,7 +703,7 @@ class ApdDatabase {
 
 		$result .= $this->insertCsv( $csv );
 		$result .= $this->removeRedundantValues();
-//		$result .= ( new ApdDatabaseService() )->updateAsins();
+		$result .= ( new ApdDatabaseService() )->updateAsins();
 
 		if ( $result === false ) {
 

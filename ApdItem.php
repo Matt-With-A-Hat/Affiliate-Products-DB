@@ -18,6 +18,13 @@ class ApdItem {
 	);
 
 	/**
+	 * the cronjobs' name for updating the asins table
+	 *
+	 * @var string
+	 */
+	protected static $cronjobName = 'asin';
+
+	/**
 	 * the products table where the item can be found
 	 *
 	 * @var
@@ -73,6 +80,13 @@ class ApdItem {
 	 */
 	public static function getItemFields() {
 		return self::$itemFields;
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getCronjobName() {
+		return self::$cronjobName;
 	}
 
 	/**

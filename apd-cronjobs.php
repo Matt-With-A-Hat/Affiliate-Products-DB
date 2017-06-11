@@ -58,17 +58,16 @@ add_filter( 'cron_schedules', 'cron_add_minute' );
  */
 function apdcronjob_trigger() {
 
-	//----------------------- for testing -----------------------
-//	$interval = 1;
-//	if ( ! wp_next_scheduled( 'apdcronjob' ) ) {
-//		echo "IN";
-//		wp_schedule_event( time(), $interval, 'apdcronjob' );
-//	}
+	//cache cronjob
+	$name = ApdAmazonCache::getCronjobName();
+	$interval = ( new ApdAmazonCacheDatabase() )->getOption( 'interval_minutes' );
+	$cronjob  = new ApdCronjob( $name, $interval );
+	$cronjob->setCronjob();
 
-	//----------------------- deployment -----------------------
-	$amazonCacheDatabase = new ApdAmazonCacheDatabase();
-	$amazonCacheDatabase->setCronjob( $amazonCacheDatabase->getOption( 'interval_minutes' ) );
-
+	//asin table cronjob
+	$name = ApdItem::getCronjobName();
+	$cronjob = new ApdCronjob( $name, 5 );
+	$cronjob->setCronjob();
 }
 
 add_action( 'wp', 'apdcronjob_trigger' );
@@ -78,58 +77,42 @@ add_action( 'wp', 'apdcronjob_trigger' );
  */
 function apdcronjob_deactivate() {
 
-	$timestamp = wp_next_scheduled( 'apdcronjob' );
-	wp_unschedule_event( $timestamp, 'apdcronjob' );
+	//cache cronjob
+	$name = ApdAmazonCache::getCronjobName();
+	$timestamp = wp_next_scheduled( $name );
+	wp_unschedule_event( $timestamp, $name );
 
+	//asin table cronjob
+	$name = ApdItem::getCronjobName();
+	$timestamp = wp_next_scheduled( $name );
+	wp_unschedule_event( $timestamp, $name );
 }
 
 register_deactivation_hook( APD_BASE_FILE, 'apdcronjob_deactivate' );
 
 /**
- * cronjob trigger function
+ * --------------------------------------------------------------
+ * =Cronjobs
+ * --------------------------------------------------------------
+ *
+ */
+
+/**
+ * cronjob trigger cache update
  */
 function update_amazon_items_cache() {
-
-	//----------------------- for testing -----------------------
-
-//	global $wpdb;
-//
-//	$time      = current_time( 'mysql' );
-//	$tablename = $wpdb->prefix . APD_AMAZON_CACHE_TABLE;
-//
-//	$sql = "INSERT " . $tablename . " SET ASIN = \"" . $time . "\"";
-//	$wpdb->query( $sql );
-
-
-	//----------------------- deployment code -----------------------
-
 	$amazonCacheDatabase = new ApdAmazonCacheDatabase();
 	$amazonCacheDatabase->updateCache();
 }
 
-add_action( 'apdcronjob', 'update_amazon_items_cache' );
-
-
-//echo "<br>";
-//echo "<br>";
-//echo "<br>";
-//echo "<br>";
-
-//$amazonCacheItem = new ApdAmazonCacheItem('B006MWDNVI');
-//$array = $amazonCacheItem->getAmazonCacheItem();
-
-//krumo($array);
+add_action( 'cache', 'update_amazon_items_cache' );
 
 /**
- * // * * ----------------------- [ =for debugging ] -----------------------
+ * cronjob trigger asins table update
  */
-//
-//function tl_save_error() {
-//	update_option( 'plugin_error', ob_get_contents() );
-//}
-//
-//add_action( 'activated_plugin', 'tl_save_error' );
-///* Then to display the error message: */
-//echo get_option( 'plugin_error' );
-///* Or you could do the following: */
-//file_put_contents( 'C:\errors', ob_get_contents() ); // or any suspected variable
+function update_asin_table() {
+	$databaseService = new ApdDatabaseService();
+	$databaseService->updateAsins();
+}
+
+add_action( 'asins', 'update_asin_table' );

@@ -95,33 +95,10 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		return $result;
 	}
 
-	/**
-	 * Creates a new apdcronjob and kills the old one, if the supplied interval is different from
-	 * the current one in options.
-	 *
-	 * If the supplied interval equals the current interval in options, a new apdcronjob will be
-	 * created, if there is no apdcronjob yet.
-	 *
-	 * @param $interval
-	 */
-	public function setCronjob( $interval ) {
-
+	public function setCacheCronjob() {
 		$currentInterval = $this->getOption( 'interval_minutes' );
 
-		if ( $currentInterval != $interval ) {
-			$timestamp = wp_next_scheduled( 'apdcronjob' );
-			wp_unschedule_event( $timestamp, 'apdcronjob' );
-			wp_schedule_event( time(), $interval, 'apdcronjob' );
 
-		} else if ( $currentInterval == $interval ) {
-			if ( ! wp_next_scheduled( 'apdcronjob' ) ) {
-				wp_schedule_event( time(), $interval, 'apdcronjob' );
-			}
-
-		} else if ( APD_DEBUG ) {
-			$error = "Cronjob couldn't be created";
-			print_error( $error, __METHOD__, __LINE__ );
-		}
 	}
 
 	/**
@@ -139,7 +116,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		$lastCheckedId               = ( $lastCheckedId === null ) ? 0 : $lastCheckedId;                     //@todo make column in table have 0 as default. Make ApdDatabase::modifyColumns allow default values
 		$successfulRequests          = $this->getOption( 'successful_requests' );
 		$successfulRequestsThreshold = $this->getOption( 'successful_requests_threshold' );
-
+		$cronjobName                 = ApdAmazonCache::getCronjobName();
 
 		// request info for x items from Amazon API
 		$amazonItems = $this->getAmazonItems( $itemsPerUpdate, $lastCheckedId );
@@ -151,7 +128,8 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 			$this->setOptions( $options );
 
 			// create a new cronjob with increased interval
-			$this->setCronjob( $currentInterval + $incInterval );
+			$cronjob = new ApdCronjob( $currentInterval + $incInterval, $cronjobName );
+			$cronjob->setCronjob();
 
 			// set number of successful requests to 0
 			$options = array( 'successful_requests' => 0 );
@@ -187,7 +165,8 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 				$newInterval = ( $currentInterval < 2 ) ? $currentInterval = 1 : $currentInterval - $decInterval;
 				$options     = array( 'interval_minutes' => $newInterval );
 				$this->setOptions( $options );
-				$this->setCronjob( $newInterval );
+				$cronjob = new ApdCronjob( $cronjobName, $newInterval );
+				$cronjob->setCronjob();
 			}
 		}
 
@@ -239,7 +218,6 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		global $wpdb;
 		$databaseService = new ApdDatabaseService();
 		$productAsins    = $databaseService->getAllAsins();
-
 
 		$sql        = "SELECT Asin FROM $this->tablenameCache";
 		$cacheAsins = $wpdb->get_results( $wpdb->prepare( $sql, '' ) );

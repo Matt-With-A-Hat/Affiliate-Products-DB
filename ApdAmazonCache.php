@@ -97,6 +97,13 @@ class ApdAmazonCache {
 
 	protected $tablenameOptions;
 
+	/**
+	 * the cronjobs' name for updating the cache
+	 *
+	 * @var
+	 */
+	protected static $cronjobName = 'cache';
+
 	public function __construct() {
 		$this->setTablenameCache( APD_AMAZON_CACHE_TABLE );
 		$this->setTablenameOptions( APD_CACHE_OPTIONS_TABLE );
@@ -114,6 +121,13 @@ class ApdAmazonCache {
 	 */
 	public function getTablenameCache() {
 		return $this->tablenameCache;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getCronjobName() {
+		return self::$cronjobName;
 	}
 
 	/**

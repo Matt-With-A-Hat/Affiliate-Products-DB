@@ -137,6 +137,7 @@ require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/SimilarProduct.php';
 require_once( dirname( __FILE__ ) . '/ApdCore.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabaseService.php' );
+require_once( dirname( __FILE__ ) . '/ApdCronjob.php' );
 require_once( dirname( __FILE__ ) . '/ApdCustomerReviews.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonCache.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonCacheDatabase.php' );
@@ -153,8 +154,8 @@ $apdCore = new ApdCore();
 
 //echo "<br><br>";
 
-//$cache = new ApdAmazonCacheDatabase();
-//$cache->updateCache();
+$cache = new ApdAmazonCacheDatabase();
+$cache->updateCache();
 
 //$database = new ApdDatabase('products');
 //$database->updateAsins();
@@ -164,3 +165,6 @@ $apdCore = new ApdCore();
 //krumo($asins);
 //
 //$databaseService->updateAsins();
+
+//krumo(wp_get_schedule('apdcronjob'));
+//krumo(wp_get_schedules());

@@ -166,7 +166,7 @@ class ApdDatabaseService {
 				$sql .= "%s, ";
 			}
 			$sql = rtrim( $sql, " ," ) . ");";
-			$wpdb->query($wpdb->prepare($sql, $diffTable));
+			$wpdb->query( $wpdb->prepare( $sql, $diffTable ) );
 		}
 
 		return (bool) $result;

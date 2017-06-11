@@ -75,6 +75,9 @@ class ApdAmazonCacheItem extends ApdAmazonCache {
 		$this->asin = $asin;
 	}
 
+	/**
+	 * set the array variable
+	 */
 	private function setArray() {
 		global $wpdb;
 		$tablename = $this->getTablenameCache();
@@ -92,6 +95,9 @@ class ApdAmazonCacheItem extends ApdAmazonCache {
 		}
 	}
 
+	/**
+	 * set the associative array variable
+	 */
 	private function setAssocArray() {
 		$fieldsArray = self::getAmazonItemFields();
 		if($this->array === null){
@@ -111,6 +117,9 @@ class ApdAmazonCacheItem extends ApdAmazonCache {
 		$this->assocArray = array_combine( $fieldsArray, $valuesArray );
 	}
 
+	/**
+	 * set the object variable
+	 */
 	public function setObject() {
 		if($this->assocArray === null){
 			$assocArray = $this->setAssocArray();

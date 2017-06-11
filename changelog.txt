@@ -1,9 +1,19 @@
+= 0.1.7 =
+@Matt
+some design fixes
+redesign of ApdItem class
+product table doesn't habe to be supplied with shortcode anymore. Instead the tool
+finds the corresponding item itself through the new asin table
+new class ApdCronjob to handle cronjobs
+
 = 0.1.6 =
+@Matt
 smalltable design
 cache bugfixes:
 - catched wrong item rating return from Amazon API
 - no empty price lables anymore
 
 = 0.1.5 =
+@Matt
 Extended template engine with loop-function, making it possible to loop through Amazon products in an HTML-template.
 New template "smalltable"
