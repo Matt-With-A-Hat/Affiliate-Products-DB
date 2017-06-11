@@ -142,16 +142,17 @@ class ApdDatabaseService {
 	 */
 	function updateAsins() {
 		global $wpdb;
-		$asins     = $this->getAllAsins( true );
-		$asinTable = add_table_prefix( APD_ASIN_TABLE );
+		$asins       = $this->getAllAsins( true );
+		$asinTable   = add_table_prefix( APD_ASIN_TABLE );
+		$currentTime = current_time( 'mysql' );
 
 		//add asins of products that don't exist in asins table yet
-		$sql = "REPLACE INTO $asinTable (`asin`, `table`) VALUES ";
+		$sql = "REPLACE INTO $asinTable (`asin`, `table`, `last_edit`) VALUES ";
 		foreach ( $asins as $asin ) {
-			$sql .= "('$asin[asin]', '$asin[table]'), ";
+			$sql .= "('$asin[asin]', '$asin[table]', '$currentTime'), ";
 		}
 		$sql    = rtrim( $sql, " ," ) . ";";
-		$result = $wpdb->query( $sql );
+		$result = $wpdb->query( $wpdb->prepare($sql,'') );
 
 		//remove asins of products that have been deleted
 		$productsAsins = $this->getAllAsins();

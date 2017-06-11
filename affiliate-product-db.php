@@ -154,8 +154,8 @@ $apdCore = new ApdCore();
 
 //echo "<br><br>";
 
-$cache = new ApdAmazonCacheDatabase();
-$cache->updateCache();
+//$cache = new ApdAmazonCacheDatabase();
+//$cache->updateCache();
 
 //$database = new ApdDatabase('products');
 //$database->updateAsins();
