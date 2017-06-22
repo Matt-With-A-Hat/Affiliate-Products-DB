@@ -48,18 +48,6 @@ class ApdDatabase {
 	}
 
 	/**
-	 * sets the tablename and adds WP table prefix if it's missing
-	 *
-	 * @param mixed $tablename
-	 */
-	public function setTablename( $tablename ) {
-
-		$wpdb = $this->db;
-
-		$this->tablename = add_table_prefix( $tablename );
-	}
-
-	/**
 	 * return all fields of a table with this info:
 	 * field, type, null, key, default, extra (auto increment etc.)
 	 *
@@ -231,6 +219,18 @@ class ApdDatabase {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * sets the tablename and adds WP table prefix if it's missing
+	 *
+	 * @param mixed $tablename
+	 */
+	public function setTablename( $tablename ) {
+
+		$wpdb = $this->db;
+
+		$this->tablename = add_table_prefix( $tablename );
 	}
 
 	/**
@@ -687,10 +687,12 @@ class ApdDatabase {
 
 		//create table if it doesn't exist yet
 		$result = true;
+		$new    = false;
 		if ( $this->tableExists() === false ) {
 
 			$fields = $this->getCsvFields( $csv );
 			$result .= $this->createTable( 'products', $fields );
+			$new = true;
 
 		} else if ( APD_DEBUG_DEV === true ) {
 
@@ -698,12 +700,17 @@ class ApdDatabase {
 			$result .= $this->dropTable();
 			$fields = $this->getCsvFields( $csv );
 			$result .= $this->createTable( 'products', $fields );
-
+			$new = true;
 		}
 
 		$result .= $this->insertCsv( $csv );
 		$result .= $this->removeRedundantValues();
 		$result .= ( new ApdDatabaseService() )->updateAsins();
+
+		if ( $new ) {
+			$this->addColumn( 'PostId', 'int' );
+			$this->addColumn( 'Permalink', 'text' );
+		}
 
 		if ( $result === false ) {
 
@@ -716,4 +723,23 @@ class ApdDatabase {
 		return $result;
 	}
 
+	/**
+	 * Adds a column to the table
+	 *
+	 * @return bool
+	 */
+	public function addColumn( $columnname, $datatype ) {
+		global $wpdb;
+
+		$sql    = "ALTER TABLE $this->tablename ADD `$columnname` $datatype";
+		$result = $wpdb->query( $wpdb->prepare( $sql, '' ) );
+		if ( $result ) {
+			return true;
+		} else {
+			$error = "Couldn't create column $columnname in $this->tablename";
+			print_error( $error, __METHOD__, __LINE__ );
+
+			return false;
+		}
+	}
 }

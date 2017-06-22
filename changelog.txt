@@ -6,6 +6,10 @@ product table doesn't habe to be supplied with shortcode anymore. Instead the to
 finds the corresponding item itself through the new asin table
 new class ApdCronjob to handle cronjobs
 
+@todo
+product tables need an etxra column for related posts
+function that generated posts for items from product tables
+
 = 0.1.6 =
 @Matt
 smalltable design

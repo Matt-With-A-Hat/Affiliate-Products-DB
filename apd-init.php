@@ -51,7 +51,7 @@ add_action( 'admin_enqueue_scripts', 'add_apd_admin_scripts' );
  */
 function setup_menu_page() {
 
-	handle_upload_form();
+	$answer = handle_upload_form();
 
 	include( 'apd-setupmenu-tpl.php' );
 
@@ -62,42 +62,81 @@ function setup_menu_page() {
  */
 function handle_upload_form() {
 
-	// First check if the file appears in the _FILES array
-	if ( isset( $_FILES['csv-file'] ) AND $_POST['table-name'] ) {
+	$answer = array( null );
 
-		$csv       = $_FILES['csv-file'];
-		$tablename = $_POST['table-name'];
+	if ( $_POST['upload'] ) {
+		// First check if the file appears in the _FILES array
+		if ( isset( $_FILES['csv-file'] ) AND $_POST['table-name'] ) {
 
-		//check if file is csv an abort if not
-		$csv_name = explode( ".", $csv['name'] );
-		$csv_name = $csv_name[1];
+			$csv       = $_FILES['csv-file'];
+			$tablename = $_POST['table-name'];
 
-		if ( $csv_name != 'csv' ) {
+			//check if file is csv an abort if not
+			$csv_name = explode( ".", $csv['name'] );
+			$csv_name = $csv_name[1];
 
-			echo "Error uploading file: File is not a CSV file";
+			if ( $csv_name != 'csv' ) {
 
-			return false;
+				$answer['text']    = "Error uploading file: File is not a CSV file";
+				$answer['success'] = 'alert-danger';
+
+				return $answer;
+			}
+
+			$apdDB  = new ApdDatabase( $tablename );
+			$result = $apdDB->addCsvToDatabase( $csv );
+
+			if ( $result ) {
+				update_option( 'PRODUCTS_TABLE', $tablename );
+				$answer['text']    = "CSV upload successful. Table $tablename was created.";
+				$answer['success'] = 'alert-success';
+			} else {
+				$answer['text']    = "Something went wrong, while trying to upload the CSV";
+				$answer['success'] = 'alert-danger';
+
+				return $answer;
+			}
+
+			return $answer;
+
+		} else {
+
+			$answer['text']    = "Please fill out missing fields!";
+			$answer['success'] = 'alert-danger';
+
+			return $answer;
 		}
+	} else if ( $_POST['generate-posts'] ) {
+		if ( isset( $_POST['product-tables-selection'] ) AND isset( $_POST['title-column'] ) ) {
+			$tablename   = $_POST['product-tables-selection'];
+			$titleColumn = $_POST['title-column'];
+			$categories  = $_POST['categories'];
+			$content     = $_POST['content'];
 
-		$apdDB = new ApdDatabase( $tablename );
-		$result = $apdDB->addCsvToDatabase( $csv );
+			if ( empty( $categories ) ) {
+				$categories = array( null );
+			} else {
+				$categories = array_map( 'trim', explode( ',', $categories ) );
+			}
 
-		if ( $result ) {
-			update_option( 'PRODUCTS_TABLE', $tablename );
+			if ( empty( $content ) ) {
+				$content = '';
+			}
 
-			echo "CSV upload successful. Table $tablename was created.";
+			$postGenerator = new ApdPostGenerator( $tablename, $titleColumn, $categories, $content );
+			$count = $postGenerator->generatePosts();
+
+			$answer['text']    = "$count posts generated successfully";
+			$answer['success'] = 'alert-success';
+
+			return $answer;
+		} else {
+			$answer['text']    = "Please fill in required fields";
+			$answer['success'] = 'alert-danger';
+
+			return $answer;
 		}
-
-		return $result;
-
-	} else {
-
-		echo "Please fill out missing fields!";
-
-		return false;
-
 	}
-
 }
 
 /**
@@ -134,9 +173,9 @@ function apd_options_install() {
 
 	//create asins table
 	$tablename = APD_ASIN_TABLE;
-	$database = new ApdDatabase($tablename);
-	$database->createTableFromArray(ApdItem::getItemFields(), 'core');
-	$database->modifyColumns(ApdItem::getUniqueItemFields(), 'unique');
+	$database  = new ApdDatabase( $tablename );
+	$database->createTableFromArray( ApdItem::getItemFields(), 'core' );
+	$database->modifyColumns( ApdItem::getUniqueItemFields(), 'unique' );
 
 	//create amazon items table
 	$tablename = APD_AMAZON_CACHE_TABLE;
@@ -153,11 +192,11 @@ function apd_options_install() {
 
 register_activation_hook( APD_BASE_FILE, 'apd_options_install' );
 
-function load_fonts(){
-	wp_register_style('apdGoogleFonts', 'https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Roboto:400,400i,700,700i');
-	wp_enqueue_style('apdGoogleFonts');
+function load_fonts() {
+	wp_register_style( 'apdGoogleFonts', 'https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Roboto:400,400i,700,700i' );
+	wp_enqueue_style( 'apdGoogleFonts' );
 }
 
-add_action('wp_print_styles','load_fonts');
+add_action( 'wp_print_styles', 'load_fonts' );
 
 //add_action('wp', 'apd_options_install');

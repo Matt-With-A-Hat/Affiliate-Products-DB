@@ -3,11 +3,19 @@
 * ====================Setup Menu====================
 * --------------------------------------------------------------
 */
-.apdsetupmenu label {
-  font-weight: 300; }
-.apdsetupmenu .apdsetupmenu {
+.apdsetupmenu {
   margin-top: 30px; }
-.apdsetupmenu .form-description {
-  margin: 20px 0 10px 0; }
+  .apdsetupmenu h1 {
+    font-size: 24px; }
+  .apdsetupmenu h2 {
+    font-size: 18px; }
+  .apdsetupmenu label {
+    font-weight: 300;
+    text-transform: uppercase; }
+  .apdsetupmenu .form-group {
+    margin-top: 20px; }
+  .apdsetupmenu .hint {
+    padding: 10px;
+    background: lightgray; }
 
 /*# sourceMappingURL=setupmenu.css.map */

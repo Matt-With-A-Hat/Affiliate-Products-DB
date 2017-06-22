@@ -121,7 +121,7 @@ function field_is_null( $field ) {
  *
  * @return string
  */
-function apd_shortcode_handler( $atts, $asin = null) {
+function apd_shortcode_handler( $atts, $asin = null ) {
 
 	if ( $atts[2] === 'disabled' ) {
 		return false;
@@ -134,7 +134,7 @@ function apd_shortcode_handler( $atts, $asin = null) {
 
 		return false;
 	} else {
-		$tpl       = $atts[0];
+		$tpl = $atts[0];
 	}
 
 	//catch asin arrays
@@ -237,9 +237,20 @@ function add_table_prefix( $tablename ) {
 
 }
 
+function remove_table_prefix( $tablename ) {
+	global $wpdb;
+	$apdTablePrefix = APD_TABLE_PREFIX;
+	$wpPrefix       = $wpdb->prefix;
+
+	$tablename = str_replace( $apdTablePrefix, '', $tablename );
+	$tablename = str_replace( $wpPrefix, '', $tablename );
+
+	return $tablename;
+}
+
 function print_error( $error, $function, $line ) {
 
-	if(APD_DEBUG){
+	if ( APD_DEBUG ) {
 		echo "Error in " . $function . " line " . $line . ": " . $error . "<br>\n";
 	}
 

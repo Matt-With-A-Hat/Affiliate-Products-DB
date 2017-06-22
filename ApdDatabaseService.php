@@ -2,7 +2,12 @@
 
 class ApdDatabaseService {
 
-	protected $tablename;
+	/**
+	 * the name of the table where all the plugins create tablenames are listed
+	 *
+	 * @var
+	 */
+	protected $tableListTable;
 
 	/**
 	 * all columns of the table-list table
@@ -27,7 +32,7 @@ class ApdDatabaseService {
 	 * ApdDatabaseService constructor.
 	 */
 	public function __construct() {
-		$this->setTablename( APD_TABLE_LIST_TABLE );
+		$this->setTableListTable( APD_TABLE_LIST_TABLE );
 	}
 
 	/**
@@ -45,10 +50,10 @@ class ApdDatabaseService {
 	}
 
 	/**
-	 * @param mixed $tablename
+	 * @param mixed $tableListTable
 	 */
-	public function setTablename( $tablename ) {
-		$this->tablename = add_table_prefix( $tablename );
+	public function setTableListTable( $tableListTable ) {
+		$this->tableListTable = add_table_prefix( $tableListTable );
 	}
 
 	/**
@@ -62,7 +67,7 @@ class ApdDatabaseService {
 		$column1 = $this->listFields[0];
 		$column2 = $this->listFields[1];
 
-		$sql    = "SELECT * FROM $this->tablename WHERE $column1 = %s";
+		$sql    = "SELECT * FROM $this->tableListTable WHERE $column1 = %s";
 		$result = $wpdb->get_var( $wpdb->prepare( $sql, $newTable ) );
 
 		if ( $result ) {
@@ -75,10 +80,10 @@ class ApdDatabaseService {
 			$column2 => $purpose
 		);
 
-		$return = $wpdb->insert( $this->tablename, $array );
+		$return = $wpdb->insert( $this->tableListTable, $array );
 
 		if ( $result === false ) {
-			$error = "Error when trying to insert data into $this->tablename";
+			$error = "Error when trying to insert data into $this->tableListTable";
 		}
 	}
 
@@ -91,10 +96,28 @@ class ApdDatabaseService {
 
 		global $wpdb;
 
-		$sql    = "SELECT * FROM $this->tablename WHERE purpose = %s";
+		$sql    = "SELECT * FROM $this->tableListTable WHERE purpose = %s";
 		$result = $wpdb->get_col( $wpdb->prepare( $sql, 'products' ), 1 );
 
 		return $result;
+	}
+
+	/**
+	 * get every asin of the specified table
+	 *
+	 * @param $tablename
+	 *
+	 * @return array|null|object
+	 */
+	public function getAsins( $tablename ) {
+
+		global $wpdb;
+		$tablename = add_table_prefix($tablename);
+		$sql   = "SELECT Asin FROM $tablename";
+		$asins = $wpdb->get_results( $wpdb->prepare( $sql, '' ), ARRAY_N );
+		$asins = array_filter( array_values_recursive( $asins ) );
+
+		return $asins;
 	}
 
 	/**
@@ -152,7 +175,7 @@ class ApdDatabaseService {
 			$sql .= "('$asin[asin]', '$asin[table]', '$currentTime'), ";
 		}
 		$sql    = rtrim( $sql, " ," ) . ";";
-		$result = $wpdb->query( $wpdb->prepare($sql,'') );
+		$result = $wpdb->query( $wpdb->prepare( $sql, '' ) );
 
 		//remove asins of products that have been deleted
 		$productsAsins = $this->getAllAsins();

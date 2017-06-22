@@ -114,6 +114,10 @@ require( dirname( __FILE__ ) . '/apd-functions.php' );
  */
 require dirname( __FILE__ ) . '/apd-init.php';
 
+/**
+ * early loading of WordPress functions
+ */
+require_once( ABSPATH . "wp-includes/pluggable.php" );      //required for PostGenerator to work
 
 /**
  * AsaZend library
@@ -144,6 +148,7 @@ require_once( dirname( __FILE__ ) . '/ApdAmazonCacheDatabase.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonCacheItem.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonItem.php' );
 require_once( dirname( __FILE__ ) . '/ApdItem.php' );
+require_once( dirname( __FILE__ ) . '/ApdPostGenerator.php' );
 
 /**
  * cronjob functions
@@ -161,10 +166,10 @@ $apdCore = new ApdCore();
 //$database->updateAsins();
 
 //$databaseService = new ApdDatabaseService();
-//$asins = $databaseService->getAllAsins(true);
+//$asins = $databaseService->getAsins('products');
 //krumo($asins);
 //
 //$databaseService->updateAsins();
 
-//krumo(wp_get_schedule('apdcronjob'));
-//krumo(wp_get_schedules());
+//$postGenerator = new ApdPostGenerator('products', 'Longname');
+//$postGenerator->generatePosts();
