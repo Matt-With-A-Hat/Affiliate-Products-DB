@@ -404,11 +404,6 @@ class ApdCore {
 	 */
 	public function divideTemplateIntoBlocks( $tpl ) {
 
-		if ( ! is_array( $tpl ) ) {
-			$error = "Supplied parameter is not an array";
-			print_error( $error, __METHOD__, __LINE__ );
-		}
-
 		$htmlArray = array();
 
 		while ( $tpl != '' ) {
