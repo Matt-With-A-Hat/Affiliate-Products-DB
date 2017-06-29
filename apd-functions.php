@@ -138,8 +138,9 @@ function apd_shortcode_handler( $atts, $asin = null ) {
 	}
 
 	//catch asin arrays
-	if ( preg_match( "/ /", $asin ) ) {
-		$asin = explode( " ", $asin );
+	$allowedDelimiters = "/[ ,;]/";
+	if ( preg_match( $allowedDelimiters, $asin ) ) {
+		$asin = preg_split( $allowedDelimiters, $asin );
 	}
 
 	return apd_get_item( $asin, $tpl );

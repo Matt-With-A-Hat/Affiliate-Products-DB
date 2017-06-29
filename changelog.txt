@@ -1,3 +1,8 @@
+= 0.1.8 =
+@Matt
+product posts can be generated from database now
+shortcode handler accepts ',' and ';' as delimiters now (no space)
+
 = 0.1.7 =
 @Matt
 some design fixes
