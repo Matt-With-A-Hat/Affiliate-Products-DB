@@ -26,7 +26,7 @@
                                                 <span class="details-promotion">{$Promo}</span>
                                                 <a href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">
                                                     <!--<img class="img-responsive" src="{MediumImageUrl}">-->
-                                                    <img class="img-responsive" src="{$LargeImageUrl}">
+                                                    <img class="img-responsive" title="{$Longname}" alt="{$Longname}" src="{$LargeImageUrl}">
 
                                                 </a>
                                                 <!--@todo the urls of every image of the image set-->
@@ -312,7 +312,7 @@
 
                                                                         <tr class="category">
                                                                             <td>Mähwerk</td>
-                                                                            <td>20%</td>
+                                                                            <td>15%</td>
                                                                             <td>Note {$RotaryMowerRating}</td>
                                                                         </tr>
                                                                         <tr>
@@ -339,7 +339,7 @@
 
                                                                         <tr class="category">
                                                                             <td>Lautstärke</td>
-                                                                            <td>15%</td>
+                                                                            <td>20%</td>
                                                                             <td>Note {$LoudnessRating}</td>
                                                                         </tr>
                                                                         <tr>
@@ -350,13 +350,13 @@
                                                                         <tr class="sum">
                                                                             <td>Summe Punkte</td>
                                                                             <td></td>
-                                                                            <td>{$LoudnessPoints} von {$LoudnessMaxPoints} ({$LoudnessRatingPercent}%)</td>
+                                                                            <td>{$LoudnessPP} von {$LoudnessMaxPoints} ({$LoudnessRatingPercent}%)</td>
                                                                         </tr>
 
 
                                                                         <tr class="category">
                                                                             <td>Akku-Leistung</td>
-                                                                            <td>15%</td>
+                                                                            <td>20%</td>
                                                                             <td>Note {$BatteryPowerRating}</td>
                                                                         </tr>
                                                                         <tr>
@@ -383,7 +383,7 @@
 
                                                                         <tr class="category">
                                                                             <td>Bedienung/Handhabung</td>
-                                                                            <td>20%</td>
+                                                                            <td>30%</td>
                                                                             <td>Note {$HandlingRating}</td>
                                                                         </tr>
                                                                         <tr>
@@ -495,21 +495,21 @@
                                                                         </tr>
 
 
-                                                                        <tr class="category">
-                                                                            <td>Preis-Leistung</td>
-                                                                            <td>15%</td>
-                                                                            <td>Note {$PricePerformanceRatioRating}</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>Preis-Leistungs-Verhältnis</td>
-                                                                            <td>{$PricePerformanceRatioRating}</td>
-                                                                            <td>{$PricePerformanceRatioRatingPercent}</td>
-                                                                        </tr>
-                                                                        <tr class="sum">
-                                                                            <td>Summe Punkte</td>
-                                                                            <td></td>
-                                                                            <td>{$PricePerformanceRatioPoints} von {$PricePerformanceRatioMaxPoints} ({$PricePerformanceRatioRatingPercent}%)</td>
-                                                                        </tr>
+                                                                        <!--<tr class="category">-->
+                                                                            <!--<td>Preis-Leistung</td>-->
+                                                                            <!--<td>15%</td>-->
+                                                                            <!--<td>Note {$PricePerformanceRatioRating}</td>-->
+                                                                        <!--</tr>-->
+                                                                        <!--<tr>-->
+                                                                            <!--<td>Preis-Leistungs-Verhältnis</td>-->
+                                                                            <!--<td>{$PricePerformanceRatioRating}</td>-->
+                                                                            <!--<td>{$PricePerformanceRatioRatingPercent}</td>-->
+                                                                        <!--</tr>-->
+                                                                        <!--<tr class="sum">-->
+                                                                            <!--<td>Summe Punkte</td>-->
+                                                                            <!--<td></td>-->
+                                                                            <!--<td>{$PricePerformanceRatioPP} von {$PricePerformanceRatioMaxPoints} ({$PricePerformanceRatioRatingPercent}%)</td>-->
+                                                                        <!--</tr>-->
 
 
                                                                         <tr class="category">
@@ -551,7 +551,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td>Amazon-Wertung</td>
-                                                                            <td>{$AverageRating} von 5 Sternen</td>
+                                                                            <td>{$RatingStars}</td>
                                                                             <td>-</td>
                                                                         </tr>
 
