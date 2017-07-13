@@ -3,7 +3,8 @@
 /**
  * Class ApdPostGenerator
  *
- * generates posts for all productes of one table
+ * generates posts for products of one table
+ * @todo make this a cronjob that generates posts as soon as new products are added to the database
  */
 class ApdPostGenerator {
 
@@ -26,7 +27,7 @@ class ApdPostGenerator {
 	 *
 	 * @var
 	 */
-	protected $categories;
+	protected $category;
 
 	/**
 	 * the default content the posts should have
@@ -35,10 +36,10 @@ class ApdPostGenerator {
 	 */
 	protected $content;
 
-	public function __construct( $tablename, $titleColumn, array $categories = null, $content = '' ) {
+	public function __construct( $tablename, $titleColumn, $category = null, $content = '' ) {
 		$this->setTablename( $tablename );
 		$this->setTitleColumn( $titleColumn );
-		$this->setCategories( $categories );
+		$this->setCategory( $category );
 		$this->setContent( $content );
 	}
 
@@ -73,15 +74,15 @@ class ApdPostGenerator {
 	/**
 	 * @return mixed
 	 */
-	public function getCategories() {
-		return $this->categories;
+	public function getCategory() {
+		return $this->category;
 	}
 
 	/**
-	 * @param mixed $categories
+	 * @param mixed $category
 	 */
-	public function setCategories( $categories ) {
-		$this->categories = $categories;
+	public function setCategory( $category ) {
+		$this->category = $category;
 	}
 
 	/**
@@ -124,11 +125,11 @@ class ApdPostGenerator {
 	public function generatePosts() {
 		global $wpdb;
 		$items = $this->getItems();
-		$core = new ApdCore();
+		$core  = new ApdCore();
 
 		$count = 0;
 		foreach ( $items as $item ) {
-			$content = $core->parseTpl($item->Asin, $this->content);
+			$content     = $core->parseTpl( $item->Asin, $this->content );
 			$titleColumn = $this->titleColumn;
 			$postarr     = array(
 				'post_content' => $content,
@@ -136,13 +137,26 @@ class ApdPostGenerator {
 				'post_status'  => 'draft',
 			);
 
-			krumo($postarr);
 			$postId = wp_insert_post( $postarr );
 			if ( $postId ) {
-				if ( $this->categories ) {
-					wp_set_post_categories( $this->categories );
+				if ( $this->category ) {
+					wp_set_post_categories( $postId, $this->category );
 				}
-				$permalink = get_permalink($postId, true);
+
+				//do this to generate neat permalink
+				$postarr = array(
+					'ID'          => $postId,
+					'post_status' => 'publish'
+				);
+				wp_update_post( $postarr );
+
+				$postarr = array(
+					'ID'          => $postId,
+					'post_status' => 'draft'
+				);
+				$permalink = get_permalink( $postId, false );
+				wp_update_post( $postarr );
+
 				//insert post ID and permalink into products table
 				$sql  = "UPDATE $this->tablename SET `PostId` = %s, `Permalink` = %s WHERE `Asin` = %s";
 				$args = array(
@@ -150,10 +164,13 @@ class ApdPostGenerator {
 					1 => $permalink,
 					2 => $item->Asin
 				);
-				krumo( $wpdb->prepare( $sql, $args ) );
+//				krumo( $wpdb->prepare( $sql, $args ) );
 				$wpdb->query( $wpdb->prepare( $sql, $args ) );
 			}
 			$count ++;
+//			if ( $count > 3 ) {
+//				break;
+//			}
 		}
 
 		return $count;

@@ -102,6 +102,15 @@ class ApdDatabaseService {
 		return $result;
 	}
 
+	public function getPostCategories() {
+		$args = array(
+			'hide_empty' => 0,
+			'orderby'    => 'name'
+		);
+
+		return $categories = get_categories( $args );
+	}
+
 	/**
 	 * get every asin of the specified table
 	 *
@@ -112,10 +121,10 @@ class ApdDatabaseService {
 	public function getAsins( $tablename ) {
 
 		global $wpdb;
-		$tablename = add_table_prefix($tablename);
-		$sql   = "SELECT Asin FROM $tablename";
-		$asins = $wpdb->get_results( $wpdb->prepare( $sql, '' ), ARRAY_N );
-		$asins = array_filter( array_values_recursive( $asins ) );
+		$tablename = add_table_prefix( $tablename );
+		$sql       = "SELECT Asin FROM $tablename";
+		$asins     = $wpdb->get_results( $wpdb->prepare( $sql, '' ), ARRAY_N );
+		$asins     = array_filter( array_values_recursive( $asins ) );
 
 		return $asins;
 	}

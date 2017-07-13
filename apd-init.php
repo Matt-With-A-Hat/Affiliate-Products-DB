@@ -114,9 +114,9 @@ function handle_upload_form() {
 			$content     = $_POST['content'];
 
 			if ( empty( $categories ) ) {
-				$categories = array( null );
+				$categories = null;
 			} else {
-				$categories = array_map( 'trim', explode( ',', $categories ) );
+
 			}
 
 			if ( empty( $content ) ) {

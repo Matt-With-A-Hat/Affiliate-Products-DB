@@ -1,3 +1,8 @@
+= 0.1.9 =
+@Matt
+product posts are generated with neat-seo-link
+new "big table" template
+
 = 0.1.8 =
 @Matt
 product posts can be generated from database now
@@ -10,10 +15,6 @@ redesign of ApdItem class
 product table doesn't habe to be supplied with shortcode anymore. Instead the tool
 finds the corresponding item itself through the new asin table
 new class ApdCronjob to handle cronjobs
-
-@todo
-product tables need an etxra column for related posts
-function that generated posts for items from product tables
 
 = 0.1.6 =
 @Matt

@@ -52,10 +52,20 @@
 					</div>
 					<div class="row">
 						<div class="col-md-6">
-							<label for="categories">Categories
-								<small>(seperate with comma)</small>
+							<label for="categories">Category
+<!--								<small>(seperate with comma)</small>-->
 							</label>
-							<input type="text" class="form-control" id="categories" name="categories">
+							<select class="form-control" id="categories" name="categories">>
+								<option value=""></option>
+								<?php
+								$databaseService = new ApdDatabaseService();
+								$categories = $databaseService->getPostCategories();
+								foreach ( $categories as $category) {
+									echo "<option value='$category->cat_ID'>$category->cat_name</option>";
+								}
+								?>
+							</select>
+<!--							<input type="text" class="form-control" id="categories" name="categories">-->
 						</div>
 						<div class="col-md-6"></div>
 					</div>
@@ -75,22 +85,26 @@
 
 <?php
 $slug        = 'Worx Landroid S500i';
-$post_id     = 1190;
+$post_id     = 1264;
 $post_status = 'draft';
 $post_type   = 'post';
 $post_parent = 0;
 
-//@todo lastedit
-//Posts beim Generieren in post mode setzen, damit pretty Permalink generiert wird und danach direkt wieder in draft
+$databaseService->getPostCategories();
 
-$permalink = wp_unique_post_slug( $slug, $post_id, $post_status, $post_type, $post_parent );
-krumo($permalink);
-$permalink = get_permalink( 1187, true );
+
+
+//$categories = get_categories( $args );
+//krumo( $categories );
+
+//$permalink = wp_unique_post_slug( $slug, $post_id, $post_status, $post_type, $post_parent );
+//krumo($permalink);
+$permalink = get_permalink( 1413, true );
 krumo( $permalink );
-$permalink = get_permalink( 1187, false );
+$permalink = get_permalink( 1413, false );
 krumo( $permalink );
-$permalink = get_post_permalink( 1159, true );
+$permalink = get_post_permalink( 1413, true );
 krumo( $permalink );
-$permalink = get_post_permalink( 1159, false );
+$permalink = get_post_permalink( 1413, false );
 krumo( $permalink );
 ?>
