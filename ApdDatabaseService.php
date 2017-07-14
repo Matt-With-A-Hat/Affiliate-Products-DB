@@ -57,37 +57,6 @@ class ApdDatabaseService {
 	}
 
 	/**
-	 * @param string $newTable
-	 * @param string $purpose
-	 */
-	public function updateTableList( $newTable, $purpose ) {
-
-		global $wpdb;
-
-		$column1 = $this->listFields[0];
-		$column2 = $this->listFields[1];
-
-		$sql    = "SELECT * FROM $this->tableListTable WHERE $column1 = %s";
-		$result = $wpdb->get_var( $wpdb->prepare( $sql, $newTable ) );
-
-		if ( $result ) {
-			$error = "Table $newTable already exists";
-			print_error( $error, __METHOD__, __LINE__ );
-		}
-
-		$array = array(
-			$column1 => $newTable,
-			$column2 => $purpose
-		);
-
-		$return = $wpdb->insert( $this->tableListTable, $array );
-
-		if ( $result === false ) {
-			$error = "Error when trying to insert data into $this->tableListTable";
-		}
-	}
-
-	/**
 	 * get all the APD tables that store imported products of any kind
 	 *
 	 * @return array
@@ -165,6 +134,81 @@ class ApdDatabaseService {
 		}
 
 		return $asins;
+	}
+
+	/**
+	 * @param string $newTable
+	 * @param string $purpose
+	 */
+	public function updateTableList( $newTable, $purpose ) {
+
+		global $wpdb;
+
+		$column1 = $this->listFields[0];
+		$column2 = $this->listFields[1];
+
+		$sql    = "SELECT * FROM $this->tableListTable WHERE $column1 = %s";
+		$result = $wpdb->get_var( $wpdb->prepare( $sql, $newTable ) );
+
+		if ( $result ) {
+			$error = "Table $newTable already exists";
+			print_error( $error, __METHOD__, __LINE__ );
+		}
+
+		$array = array(
+			$column1 => $newTable,
+			$column2 => $purpose
+		);
+
+		$return = $wpdb->insert( $this->tableListTable, $array );
+
+		if ( $result === false ) {
+			$error = "Error when trying to insert data into $this->tableListTable";
+		}
+	}
+
+	/**
+	 * Check if database core tables exist. If not create them. These tables are necessary for the plugin to work.
+	 *
+	 * This function is meant to catch database inconsistencies, e.g. if a database table was manually deleted by
+	 * accident, or if an update requires a new table that older versions don't have.
+	 */
+	public function checkDatabaseTables() {
+		$tableListTable = new ApdDatabase( APD_TABLE_LIST_TABLE );
+		//create table list
+		if ( ! $tableListTable->tableExists() ) {
+			$tablename = APD_TABLE_LIST_TABLE;
+			$database  = new ApdDatabase( $tablename );
+			$database->createTableFromArray( $this->getListFields(), 'core' );
+			$database->modifyColumns( $this->getUniqueListFields(), 'unique' );
+		}
+
+		$asinTable = new ApdDatabase( APD_ASIN_TABLE );
+		//create asins table
+		if ( ! $asinTable->tableExists() ) {
+			$tablename = APD_ASIN_TABLE;
+			$database  = new ApdDatabase( $tablename );
+			$database->createTableFromArray( ApdItem::getItemFields(), 'core' );
+			$database->modifyColumns( ApdItem::getUniqueItemFields(), 'unique' );
+		}
+
+		$amazonCacheDatabase = new ApdDatabase( APD_AMAZON_CACHE_TABLE );
+		//create amazon items table
+		if ( ! $amazonCacheDatabase->tableExists() ) {
+			$tablename           = APD_AMAZON_CACHE_TABLE;
+			$amazonCacheDatabase = new ApdAmazonCacheDatabase();
+			$database            = new ApdDatabase( $tablename );
+			$database->createTableFromArray( $amazonCacheDatabase->getAmazonCacheColumns(), 'cache' );
+			$database->modifyColumns( $amazonCacheDatabase->getUniqueAmazonCacheColumns(), 'unique' );
+		}
+
+		$cacheOptionsTable = new ApdDatabase( APD_CACHE_OPTIONS_TABLE );
+		//create amazon cache options table
+		if ( ! $cacheOptionsTable->tableExists() ) {
+			$tablename = APD_CACHE_OPTIONS_TABLE;
+			$database  = new ApdDatabase( $tablename );
+			$database->createTableFromArray( $amazonCacheDatabase->getOptionFields(), 'cache' );
+		}
 	}
 
 	/**

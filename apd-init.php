@@ -124,7 +124,7 @@ function handle_upload_form() {
 			}
 
 			$postGenerator = new ApdPostGenerator( $tablename, $titleColumn, $categories, $content );
-			$count = $postGenerator->generatePosts();
+			$count         = $postGenerator->generatePosts();
 
 			$answer['text']    = "$count posts generated successfully";
 			$answer['success'] = 'alert-success';
@@ -161,33 +161,8 @@ add_filter( 'plugin_action_links_' . APD_BASENAME, 'apd_settings_link' );
  * installations routines triggered on plugin activation
  */
 function apd_options_install() {
-	global $wpdb;
-	$amazonCacheDatabase = new ApdAmazonCacheDatabase();
-	$databaseService     = new ApdDatabaseService();
-
-	//create table list
-	$tablename = APD_TABLE_LIST_TABLE;
-	$database  = new ApdDatabase( $tablename );
-	$database->createTableFromArray( $databaseService->getListFields(), 'core' );
-	$database->modifyColumns( $databaseService->getUniqueListFields(), 'unique' );
-
-	//create asins table
-	$tablename = APD_ASIN_TABLE;
-	$database  = new ApdDatabase( $tablename );
-	$database->createTableFromArray( ApdItem::getItemFields(), 'core' );
-	$database->modifyColumns( ApdItem::getUniqueItemFields(), 'unique' );
-
-	//create amazon items table
-	$tablename = APD_AMAZON_CACHE_TABLE;
-	$database  = new ApdDatabase( $tablename );
-	$database->createTableFromArray( $amazonCacheDatabase->getAmazonCacheColumns(), 'cache' );
-	$database->modifyColumns( $amazonCacheDatabase->getUniqueAmazonCacheColumns(), 'unique' );
-
-	//create amazon cache options table
-	$tablename = APD_CACHE_OPTIONS_TABLE;
-	$database  = new ApdDatabase( $tablename );
-	$database->createTableFromArray( $amazonCacheDatabase->getOptionFields(), 'cache' );
-
+	$databaseService = new ApdDatabaseService();
+	$databaseService->checkDatabaseTables();
 }
 
 register_activation_hook( APD_BASE_FILE, 'apd_options_install' );

@@ -164,7 +164,6 @@ class ApdPostGenerator {
 					1 => $permalink,
 					2 => $item->Asin
 				);
-//				krumo( $wpdb->prepare( $sql, $args ) );
 				$wpdb->query( $wpdb->prepare( $sql, $args ) );
 			}
 			$count ++;

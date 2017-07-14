@@ -1,12 +1,6 @@
-= 0.1.9 =
-@Matt
-product posts are generated with neat-seo-link
-new "big table" template
-
 = 0.1.8 =
 @Matt
-product posts can be generated from database now
-shortcode handler accepts ',' and ';' as delimiters now (no space)
+implemented cronjob that checks database consistency. If core tables are missing, because they have been deleted accidentally, they will be added again
 
 = 0.1.7 =
 @Matt
@@ -15,6 +9,10 @@ redesign of ApdItem class
 product table doesn't habe to be supplied with shortcode anymore. Instead the tool
 finds the corresponding item itself through the new asin table
 new class ApdCronjob to handle cronjobs
+product posts can be generated from database now
+shortcode handler accepts ',' and ';' as delimiters now (no space)
+product posts are generated with neat-seo-link
+new "big table" template
 
 = 0.1.6 =
 @Matt

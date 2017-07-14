@@ -46,28 +46,15 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 /**
  * APD Constants & Options
  */
-//D:\xampp\htdocs\mein_rasenroboter\wp-content\plugins\affiliate-product-db/
 define( 'APD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-
-//options-general.php?page=affiliate-product-db.php
 define( 'APD_PLUGIN_URL', 'options-general.php?page=affiliate-product-db.php' );
-
-//affiliate-product-db/affiliate-product-db.php
 define( 'APD_BASENAME', plugin_basename( __FILE__ ) );
-
-//D:\xampp\htdocs\mein_rasenroboter\wp-content\plugins\affiliate-product-db\affiliate-product-db.php
 define( 'APD_BASE_FILE', __FILE__ );
-
-//D:\xampp\htdocs\mein_rasenroboter\wp-content\plugins\affiliate-product-db/lib/
 define( 'APD_LIB_DIR', dirname( __FILE__ ) . '/lib/' );
-
-//affiliate-products-db
 define( 'APD_MENU_SLUG', 'affiliate-products-db' );
-
-define( 'APD_DEBUG', true );
-
+define( 'APD_DEBUG', false );
 //WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
-define( 'APD_DEBUG_DEV', true );
+define( 'APD_DEBUG_DEV', false );
 
 /**
  * Table Names
@@ -78,6 +65,11 @@ define( 'APD_CACHE_OPTIONS_TABLE', 'cache_options' );
 define( 'APD_TABLE_LIST_TABLE', 'table_list' );
 define( 'APD_ASIN_TABLE', 'asin_table' );
 define( 'APD_TABLE_PREFIX', 'apd_' );
+
+/**
+ * Cron Jobs
+ */
+define('APD_DB_CONSISTENCY_CRON','database_consistency');
 
 /**
  * User Constants

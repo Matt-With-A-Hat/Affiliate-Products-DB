@@ -209,8 +209,6 @@ class ApdDatabase {
 
 		$sql = "SELECT * FROM $tablename WHERE id = %s";
 
-//		krumo($wpdb->prepare($sql,$id));
-
 		$result = $wpdb->get_row( $wpdb->prepare( $sql, $id ), $type );
 
 		if ( $fields !== null AND is_array( $result ) ) {
@@ -501,12 +499,9 @@ class ApdDatabase {
 	/**
 	 * check if supplied table exists in wordpress
 	 *
-	 * @param $tablename
-	 *
 	 * @return bool
 	 */
 	public function tableExists() {
-
 		$wpdb      = $this->db;
 		$tablename = $this->tablename;
 
@@ -514,17 +509,12 @@ class ApdDatabase {
 		$existingTables = $wpdb->get_results( $sql, ARRAY_N );
 
 		foreach ( $existingTables as $existingTable ) {
-
 			if ( ! strcasecmp( $existingTable[0], $tablename ) ) {
-
 				return true;
-
 			}
-
 		}
 
 		return false;
-
 	}
 
 

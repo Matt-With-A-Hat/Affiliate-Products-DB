@@ -84,27 +84,27 @@
 </div>
 
 <?php
-$slug        = 'Worx Landroid S500i';
-$post_id     = 1264;
-$post_status = 'draft';
-$post_type   = 'post';
-$post_parent = 0;
-
-$databaseService->getPostCategories();
-
-
-
-//$categories = get_categories( $args );
-//krumo( $categories );
-
-//$permalink = wp_unique_post_slug( $slug, $post_id, $post_status, $post_type, $post_parent );
-//krumo($permalink);
-$permalink = get_permalink( 1413, true );
-krumo( $permalink );
-$permalink = get_permalink( 1413, false );
-krumo( $permalink );
-$permalink = get_post_permalink( 1413, true );
-krumo( $permalink );
-$permalink = get_post_permalink( 1413, false );
-krumo( $permalink );
-?>
+//$slug        = 'Worx Landroid S500i';
+//$post_id     = 1264;
+//$post_status = 'draft';
+//$post_type   = 'post';
+//$post_parent = 0;
+//
+//$databaseService->getPostCategories();
+//
+//
+//
+////$categories = get_categories( $args );
+////krumo( $categories );
+//
+////$permalink = wp_unique_post_slug( $slug, $post_id, $post_status, $post_type, $post_parent );
+////krumo($permalink);
+//$permalink = get_permalink( 1413, true );
+//krumo( $permalink );
+//$permalink = get_permalink( 1413, false );
+//krumo( $permalink );
+//$permalink = get_post_permalink( 1413, true );
+//krumo( $permalink );
+//$permalink = get_post_permalink( 1413, false );
+//krumo( $permalink );
+//?>
