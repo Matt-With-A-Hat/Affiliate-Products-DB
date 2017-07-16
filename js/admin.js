@@ -8,11 +8,5 @@ jQuery(document).ready(function () {
 
         jQuery('#table-name').val(filename);
         console.log(filename);
-
     });
-
-    //test
-    // var iFrameHeight = jQuery(".crIframe").css("height");
-    // console.log(iFrameHeight);
-
 });

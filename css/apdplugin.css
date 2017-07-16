@@ -376,7 +376,12 @@ th {
   * --------------------------------------------------------------
   * =Infobox Body
   * --------------------------------------------------------------
-  */ }
+  */
+  -webkit-transform: 12;
+  -moz-transform: 12;
+  -ms-transform: 12;
+  -o-transform: 12;
+  transform: 12; }
   .affiliate-products-db .vcenter {
     display: inline-block;
     vertical-align: middle;
@@ -443,10 +448,12 @@ th {
     margin-bottom: 30px; }
     .affiliate-products-db .infobox .infobox-bottom-body > .row {
       margin-top: 30px; }
-      .affiliate-products-db .infobox .infobox-bottom-body > .row .tabs .nav-tabs li a {
-        border-left: none; }
-      .affiliate-products-db .infobox .infobox-bottom-body > .row .tabs .nav-tabs li i {
-        margin-right: 5px; }
+      .affiliate-products-db .infobox .infobox-bottom-body > .row .tabs .nav-tabs li {
+        cursor: pointer; }
+        .affiliate-products-db .infobox .infobox-bottom-body > .row .tabs .nav-tabs li a {
+          border-left: none; }
+        .affiliate-products-db .infobox .infobox-bottom-body > .row .tabs .nav-tabs li i {
+          margin-right: 5px; }
       .affiliate-products-db .infobox .infobox-bottom-body > .row .tabs .tab-content {
         border: none; }
   .affiliate-products-db .tab-pane.overview .general-rating-row > div {

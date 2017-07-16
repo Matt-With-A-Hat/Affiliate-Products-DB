@@ -37,11 +37,22 @@ function add_apd_admin_stylesheets() {
 
 add_action( 'admin_enqueue_scripts', 'add_apd_admin_stylesheets' );
 
+
+/**
+ * include frontend scripts
+ */
+function add_apd_scripts() {
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'apd-functions', plugins_url( '/js/frontend.js', __FILE__ ) );
+}
+
+add_action( 'wp_enqueue_scripts', 'add_apd_scripts' );
+
 /**
  * include backend scripts
  */
 function add_apd_admin_scripts() {
-	wp_enqueue_script( 'apd-functions', plugins_url( '/js/functions.js', __FILE__ ) );
+	wp_enqueue_script( 'apd-functions', plugins_url( '/js/admin.js', __FILE__ ) );
 }
 
 add_action( 'admin_enqueue_scripts', 'add_apd_admin_scripts' );

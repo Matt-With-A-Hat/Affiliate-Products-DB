@@ -184,6 +184,7 @@
         .tabs {
           .nav-tabs {
             li {
+              cursor: pointer;
               a {
                 border-left: none;
               }
@@ -199,6 +200,12 @@
       }
     }
   }
+  
+  -webkit-transform: abs(012);
+  -moz-transform: abs(012);
+  -ms-transform: abs(012);
+  -o-transform: abs(012);
+  transform: abs(012);
   
   .tab-pane.overview {
     .general-rating-row {

@@ -54,7 +54,7 @@ define( 'APD_LIB_DIR', dirname( __FILE__ ) . '/lib/' );
 define( 'APD_MENU_SLUG', 'affiliate-products-db' );
 define( 'APD_DEBUG', false );
 //WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
-define( 'APD_DEBUG_DEV', false );
+define( 'APD_DEBUG_DEV', true );
 
 /**
  * Table Names
