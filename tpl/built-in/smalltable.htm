@@ -30,7 +30,7 @@
                     <td>Modell</td>
                     {loop-start}
                     <td class="text-center {$PromoClass}">
-                        <span><a class="neat-link" href="{$Permalink}" title="{$Title}" target="_blank" rel="nofollow">{$Longname}</a><br></span>
+                        <span><a class="neat-link" href="{$Permalink}" title="{$Title}" target="_blank" rel="nofollow">{$Longname}<span class="affiliate-hint">*</span></a><br></span>
                     </td>
                     {loop-end}
                 </tr>
@@ -53,7 +53,7 @@
                     <td>Preis</td>
                     {loop-start}
                     <td class="text-center {$PromoClass}">
-                        <span><a class="neat-link" href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">EUR {$AmazonPrice}</a><br></span>
+                        <span><a class="neat-link" href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">EUR {$AmazonPrice}<span class="affiliate-hint">*</span></a><br></span>
                         <small>inkl. 19% gesetzlicher MwSt.</small>
                     </td>
                     {loop-end}
@@ -99,7 +99,7 @@
                     {loop-start}
                     <td class="text-center {$PromoClass}">
                         <a class="btn btn-apd-default btn-amazon btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} - Produkt auf amazon.de anschauen">
-                            <i class="fa fa-amazon"></i><span>zu Amazon</span>
+                            <i class="fa fa-amazon"></i><span>zu Amazon<span class="affiliate-hint">*</span></span>
                         </a>
                     </td>
                     {loop-end}
