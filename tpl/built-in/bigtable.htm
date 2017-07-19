@@ -38,7 +38,7 @@
         <table id="bigtable" class="table">
             <thead>
                 <tr>
-                    <th class="text-center invisible intern-ranking">intern_ranking</th>
+                    <th class="text-center invisible">intern_ranking</th>
                     <th class="text-center border-right nowrap">Modell</th>
                     <th class="text-center">günstigster Preis</th>
                     <th class="text-center">Bewertung<br>(Note)</th>
@@ -110,9 +110,11 @@
                     <td class="text-center {$PromoClass}"><span class="overall-rating">{$OverallRating}</span><br><span class="overall-rating-text">{$OverallRatingText}</span></td>
                     <td class="text-center {$PromoClass}">{$OverallRatingPP}</td>
                     <td class="text-center {$PromoClass} border-right">
-                        <div class="center-block small-column">{$RatingStars}<br>({$TotalReviews})</div>
+                        <div class="center-block small-column">
+                            <a class="neat-link" rel="nofollow" target="_blank" title="({$TotalReviews}) auf Amazon" href="{$ProductReviewsURL}">{$RatingStars}<br>({$TotalReviews})</a>
+                        </div>
                         <br>
-                        <a class="btn btn-apd-default btn-amazon btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} - Produkt auf amazon.de anschauen">
+                        <a class="btn btn-apd-default btn-amazon btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Produkt auf amazon.de anschauen">
                             <i class="fa fa-amazon"></i><span>zu Amazon</span>
                         </a>
                     </td>

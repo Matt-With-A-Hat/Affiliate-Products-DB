@@ -1,0 +1,92 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.15/fc-3.2.2/fh-3.1.2/r-2.1.1/sc-1.4.2/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.15/fc-3.2.2/fh-3.1.2/r-2.1.1/sc-1.4.2/datatables.min.js"></script>
+
+<script>
+    jQuery(document).ready(function () {
+        var dataTable = jQuery('#bigtable').DataTable({
+            fixedHeader: true,
+            "paging": false,
+            "order": [[0, "asc"]],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ]
+        });
+        jQuery("#searchbox").on("keyup search input paste cut", function () {
+            dataTable.search(this.value).draw();
+        });
+    });
+    //    jQuery("#searchbox").keyup(function() {
+    //        dataTable.fnFilter(this.value);
+    //    });
+
+</script>
+
+<div class="affiliate-products-db bigtable accessories">
+    <div class="table">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
+                    <input type="text" id="searchbox" class="form-control" placeholder="Suche" aria-describedby="basic-addon1">
+                </div>
+            </div>
+        </div>
+        <table id="bigtable" class="table">
+            <thead>
+                <tr>
+                    <th class="text-center invisible">tags</th>
+                    <th class="text-center invisible">category</th>
+                    <th class="text-center" style="width:220px">Bezeichnung</th>
+                    <th class="text-center">Günstigster Preis</th>
+                    <th class="text-center">Amazon Bewertung</th>
+                    <th class="text-center">Hersteller</th>
+                    <th class="text-center" style="width:220px">Versand</th>
+                </tr>
+            </thead>
+            <tbody>
+                {loop-start}
+                <tr>
+                    <td class="text-center invisible">{$Tags}</td>
+                    <td class="text-center invisible">{$Category}</td>
+                    <td class="model text-center border-right">
+                        <div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div><a class="neat-link" href="{$Permalink}" title="{$Title}">{$Shortname}</a></div>
+                                    <div class="infobox-thumbnail">
+                                        <a href="{$Permalink}" title="{$Title}">
+                                            <img src="{$SmallImageUrl}">
+                                            <!--<img src="http://placehold.it/100x50">-->
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <a class="neat-link" rel="nofollow" target="_blank" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de" href="{$AmazonUrl}">
+                            <span>EUR {$AmazonPrice}</span>
+                        </a>
+                    </td>
+                    <td class="text-center amazon-price">
+                        <div class="center-block small-column">
+                            <a class="neat-link" rel="nofollow" target="_blank" title="({$TotalReviews}) auf Amazon" href="{$ProductReviewsURL}">{$RatingStars}<br>({$TotalReviews})</a>
+                        </div>
+                        <br>
+                        <a class="btn btn-apd-default btn-amazon btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Produkt auf amazon.de anschauen">
+                            <i class="fa fa-amazon"></i><span>zu Amazon</span>
+                        </a>
+                    </td>
+                    <td class="text-center">{$ManufacturerIntern}</td>
+                    <td class="text-center"><a class="nodecoration-link" rel="nofollow" target="_blank" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de" href="{$AmazonUrl}">{$AmazonAvailability} {$PrimePic}</td>
+
+                </tr>
+                {loop-end}
+            </tbody>
+        </table>
+    </div>
+</div>
