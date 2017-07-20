@@ -135,7 +135,7 @@ class ApdAmazonItem extends ApdAmazonCache {
 
 			} else {
 				// empty main price
-				$emptyMainPriceText         = get_option( '_asa_replace_empty_main_price' );
+				$emptyMainPriceText         = APD_EMPTY_PRICE_TEXT;
 				$offerMainPriceCurrencyCode = '';
 				if ( ! empty( $emptyMainPriceText ) ) {
 					$offerMainPriceFormatted = $emptyMainPriceText;
@@ -181,6 +181,13 @@ class ApdAmazonItem extends ApdAmazonCache {
 				}
 			}
 
+			/* =catch empty $AmazonAvailability */
+			if ( isset( $amazonObject->Offers->Offers[0]->Availability ) ) {
+				$AmazonAvailability = $amazonObject->Offers->Offers[0]->Availability;
+			} else {
+				$AmazonAvailability = APD_EMPTY_AVAILABILITY_TEXT;
+			};
+
 			/* =make Amazon Stars prettier */
 			$ratingStarsHtml = '<span class="amazon-stars">';
 			$numberStars     = $customerReviews->averageRating;
@@ -204,8 +211,8 @@ class ApdAmazonItem extends ApdAmazonCache {
 			$ratingStarsHtml .= "</span>";
 
 			/* =catch empty AmazonPrice values */
-			if($amazonPrice === "---"){
-				$amazonPrice = "Derzeit nicht verfügbar.";
+			if ( empty($amazonPrice) OR $amazonPrice == null) {
+				$amazonPrice = APD_EMPTY_PRICE_TEXT;
 			}
 
 			$totalOffers = $amazonObject->Offers->TotalNew + $amazonObject->Offers->TotalUsed +
@@ -249,7 +256,7 @@ class ApdAmazonItem extends ApdAmazonCache {
 				empty( $amazonPriceFormatted ) ? '---' : str_replace( '$', '\$', $amazonPriceFormatted ),
 				empty( $listPriceFormatted ) ? '---' : str_replace( '$', '\$', $listPriceFormatted ),
 				isset( $amazonObject->Offers->Offers[0]->CurrencyCode ) ? $amazonObject->Offers->Offers[0]->CurrencyCode : '',
-				isset( $amazonObject->Offers->Offers[0]->Availability ) ? $amazonObject->Offers->Offers[0]->Availability : '',
+				$AmazonAvailability,
 				$amazonObject->AmazonLogoSmallUrl,
 				$amazonObject->AmazonLogoLargeUrl,
 				$apdCore->handleItemUrl( $amazonObject->DetailPageURL ),

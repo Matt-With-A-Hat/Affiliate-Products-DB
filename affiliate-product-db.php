@@ -80,6 +80,12 @@ define( 'AMAZON_TRACKING_ID', 'wwwmeinrasenr-21' );
 define( 'AMAZON_COUNTRY_CODE', 'DE' );
 define( 'AMAZON_API_CONNECTION_TYPE', 'http' );
 
+/**
+ * User Settings
+ */
+define('APD_EMPTY_PRICE_TEXT', '<p class="text-red">Derzeit nicht verfügbar</p>');
+define('APD_EMPTY_AVAILABILITY_TEXT', '<p class="text-red">Derzeit nicht verfügbar</p>');
+
 //csv import field types
 const BOOLEAN_TYPES = array( 'BOOLEAN', 'BOOL', 'TINYINT(1)' );
 const TRUE_TYPES    = array( 'JA', 'YES', 'TRUE', '1', 1 );
