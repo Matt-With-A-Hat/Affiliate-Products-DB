@@ -211,8 +211,8 @@ class ApdAmazonItem extends ApdAmazonCache {
 			$ratingStarsHtml .= "</span>";
 
 			/* =catch empty AmazonPrice values */
-			if ( empty($amazonPrice) OR $amazonPrice == null) {
-				$amazonPrice = APD_EMPTY_PRICE_TEXT;
+			if ( empty($amazonPriceFormatted) ) {
+				$amazonPriceFormatted = APD_EMPTY_PRICE_TEXT;
 			}
 
 			$totalOffers = $amazonObject->Offers->TotalNew + $amazonObject->Offers->TotalUsed +
