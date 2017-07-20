@@ -6,7 +6,7 @@
         var dataTable = jQuery('#bigtable').DataTable({
             fixedHeader: true,
             "paging": false,
-            "order": [[0, "asc"]],
+            "order": [[2, "asc"]],
             "columnDefs": [
                 {
                     "targets": [0],
@@ -30,8 +30,14 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
+                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
                     <input type="text" id="searchbox" class="form-control" placeholder="Suche" aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
+                    <input type="text" id="selection" class="form-control" placeholder="Suche" aria-describedby="basic-addon1">
                 </div>
             </div>
         </div>
@@ -69,7 +75,7 @@
                     </td>
                     <td class="text-center">
                         <a class="neat-link" rel="nofollow" target="_blank" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de" href="{$AmazonUrl}">
-                            <span>EUR {$AmazonPrice}</span>
+                            <span>EUR {$AmazonPrice}<span class="affiliate-hint">*</span></span>
                         </a>
                     </td>
                     <td class="text-center amazon-price">
@@ -78,11 +84,11 @@
                         </div>
                         <br>
                         <a class="btn btn-apd-default btn-amazon btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Produkt auf amazon.de anschauen">
-                            <i class="fa fa-amazon"></i><span>zu Amazon</span>
+                            <i class="fa fa-amazon"></i><span>zu Amazon<span class="affiliate-hint">*</span></span>
                         </a>
                     </td>
                     <td class="text-center">{$ManufacturerIntern}</td>
-                    <td class="text-center"><a class="nodecoration-link" rel="nofollow" target="_blank" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de" href="{$AmazonUrl}">{$AmazonAvailability} {$PrimePic}</td>
+                    <td class="text-center"><a class="nodecoration-link" rel="nofollow" target="_blank" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de" href="{$AmazonUrl}">{$AmazonAvailability} {$PrimePic}</a><span class="affiliate-hint">*</span></td>
 
                 </tr>
                 {loop-end}
