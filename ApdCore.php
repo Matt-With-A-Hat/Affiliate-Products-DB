@@ -269,7 +269,6 @@ class ApdCore {
 			$amazonArray = $amazonItem->getArray();
 		}
 
-
 		if ( is_array( $amazonArray ) ) {
 			$placeholders = $this->getTplPlaceholders( ApdAmazonItem::getAmazonItemFields(), true );
 			$html         = preg_replace( $placeholders, $amazonArray, $tpl );
@@ -284,9 +283,9 @@ class ApdCore {
 
 		$tpl = $html;
 
-		$apdItem  = new ApdItem( $asin );
+		$apdItem   = new ApdItem( $asin );
 		$tablename = $apdItem->getItemTable();
-		$database = new ApdDatabase( $tablename );
+		$database  = new ApdDatabase( $tablename );
 
 		$dbPlaceholders = $database->getTableColumns( false );
 		$tableInfo      = $database->getTableInfo();
@@ -307,21 +306,16 @@ class ApdCore {
 			$advantagesHtml  = '';
 
 			foreach ( $advantagesArray as $advantage ) {
-
 				$advantagesHtml .= "<li>" . $advantage . "</li>";
-
 			}
 			$dbItem->Advantages = $advantagesHtml;
-
 
 			//reformat disadvantage list
 			$disadvantagesArray = explode( "*", $dbItem->Disadvantages );
 			$disadvantagesHtml  = '';
 
 			foreach ( $disadvantagesArray as $disadvantage ) {
-
 				$disadvantagesHtml .= "<li>" . $disadvantage . "</li>";
-
 			}
 			$dbItem->Disadvantages = $disadvantagesHtml;
 
@@ -345,22 +339,45 @@ class ApdCore {
 
 			//convert decimal percent values to percent numbers
 			foreach ( $dbItem as $key => $item ) {
-
 				if ( preg_match( "/percent/i", $key ) ) {
-
 					$dbItem->$key = $item * 100;
-
 				}
-
 			}
 
 			$placeholders = $this->getTplPlaceholders( $dbPlaceholders, true );
-
-			$replace = (array) $dbItem;
-
-			$html = preg_replace( $placeholders, $replace, $tpl );
+			$replace      = (array) $dbItem;
+			$html         = preg_replace( $placeholders, $replace, $tpl );
 
 		}
+
+		//--------------------------------------------------------------
+		// =replace with custom information
+		//--------------------------------------------------------------
+
+		$tpl = $html;
+
+		$placeholders = array(
+			'AutomowerModels'
+		);
+//		krumo($placeholders);
+		//automower models
+		$tablename       = add_table_prefix( 'products' );
+		$columns         = array( 'Longname', 'Tags' );
+		$automowerModels = ( new ApdDatabase( $tablename ) )->getColumns( $columns );
+		$automowerModelsHtml = "";
+		foreach ( $automowerModels as $automowerModel ) {
+			$automowerModelsHtml .= "<li data-tag='$automowerModel[Tags]'>$automowerModel[Longname]</li>";
+		}
+
+		$placeholders = $this->getTplPlaceholders( $placeholders, true );
+		$replace = array(
+			$automowerModelsHtml
+		);
+
+//		krumo($placeholders);
+//		krumo($replace);
+
+		$html = preg_replace( $placeholders, $replace, $tpl );
 
 		return $html;
 
@@ -376,12 +393,12 @@ class ApdCore {
 	 */
 	public function parseMultiTpl( array $asins, $tpl ) {
 
-		$html = '';
+		$html       = '';
 		$codeBlocks = $this->divideTemplateIntoBlocks( $tpl );
 
 		foreach ( $codeBlocks as $key => $codeBlock ) {
-			$blockType = key( $codeBlock );
-			$blockHtml = current( $codeBlock );
+			$blockType = key( $codeBlock ); //$key
+			$blockHtml = current( $codeBlock ); //$codeBlock[$key]
 
 			if ( $blockType == 'loop' ) {
 				$loopHtml = '';
@@ -389,6 +406,8 @@ class ApdCore {
 					$loopHtml .= $this->parseTpl( $asin, $blockHtml );
 				}
 				$blockHtml = $loopHtml;
+			}else{
+				$loopHtml .= $this->parseTpl($blockHtml);
 			}
 
 			$html .= $blockHtml;
@@ -633,7 +652,7 @@ class ApdCore {
 		return $result;
 	}
 
-	public function getApdItem($asin){
+	public function getApdItem( $asin ) {
 //		$amazonItem = (new ApdAmazonCacheItem($asin))->getObject;
 //		$apdItem = (new ApdItem($asin))->getItem();
 	}

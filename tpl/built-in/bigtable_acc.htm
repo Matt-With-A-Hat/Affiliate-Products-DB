@@ -35,10 +35,19 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
-                    <input type="text" id="selection" class="form-control" placeholder="Suche" aria-describedby="basic-addon1">
+
+                <div class="dropdown text-left">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="model-selection" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Passendes Modell
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="model-selection">
+                        <li><a href="#">Separated link</a></li>
+                        <li role="separator" class="divider"></li>
+                        {$AutomowerModels}
+                    </ul>
                 </div>
+
             </div>
         </div>
         <table id="bigtable" class="table">
@@ -75,7 +84,7 @@
                     </td>
                     <td class="text-center">
                         <a class="neat-link" rel="nofollow" target="_blank" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de" href="{$AmazonUrl}">
-                            <span>EUR {$AmazonPrice}<span class="affiliate-hint">*</span></span>
+                            <span>{$AmazonPriceFormatted}<span class="affiliate-hint">*</span></span>
                         </a>
                     </td>
                     <td class="text-center amazon-price">
@@ -88,8 +97,7 @@
                         </a>
                     </td>
                     <td class="text-center">{$ManufacturerIntern}</td>
-                    <td class="text-center"><a class="nodecoration-link" rel="nofollow" target="_blank" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de" href="{$AmazonUrl}">{$AmazonAvailability} {$PrimePic}</a><span class="affiliate-hint">*</span></td>
-
+                    <td class="text-center"><a class="nodecoration-link" rel="nofollow" target="_blank" title="Versandmöglichkeiten bei Amazon" href="{$AmazonUrl}">{$AmazonAvailability} {$PrimePic}</a><span class="affiliate-hint">*</span></td>
                 </tr>
                 {loop-end}
             </tbody>

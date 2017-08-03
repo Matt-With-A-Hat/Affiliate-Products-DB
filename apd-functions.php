@@ -117,9 +117,10 @@ function field_is_null( $field ) {
  *
  * @param array $atts
  * @param string $asin
- * @param string $code
  *
  * @return string
+ * @internal param string $code
+ *
  */
 function apd_shortcode_handler( $atts, $asin = null ) {
 

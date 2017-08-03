@@ -154,13 +154,32 @@ class ApdDatabase {
 
 	}
 
-	public function getColumns( $id, $array ) {
+	/**
+	 * get all the values from a column or multiple columns
+	 *
+	 * @param null $columns
+	 *
+	 * @return array|null|object
+	 */
+	public function getColumns( $columns = null ) {
 		global $wpdb;
 		$tablename = $this->tablename;
+		if(!(is_array($columns))){
+			$columns = array($columns);
+		}
 
-		$sql = "SELECT * FROM $tablename WHERE $id = %s";
+		$fields = '';
+		if ( empty( $columns ) ) {
+			$fields = "*";
+		} else {
+			foreach ( $columns as $field ) {
+				$fields .= $field . ",";
+			}
+			$fields = rtrim( $fields, " ," );
+		}
 
-		$result = $wpdb->get_results( $wpdb->prepare( $sql, $id ), ARRAY_A );
+		$sql = "SELECT $fields FROM $tablename";
+		return $wpdb->get_results( $wpdb->prepare( $sql, "" ), ARRAY_A );
 	}
 
 	/**
