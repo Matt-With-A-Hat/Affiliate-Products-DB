@@ -129,7 +129,7 @@ class ApdPostGenerator {
 
 		$count = 0;
 		foreach ( $items as $item ) {
-			$content     = $core->parseTpl( $item->Asin, $this->content );
+			$content     = $core->parseTpl( $this->content, $item->Asin );
 			$titleColumn = $this->titleColumn;
 			$postarr     = array(
 				'post_content' => $content,
@@ -150,7 +150,7 @@ class ApdPostGenerator {
 				);
 				wp_update_post( $postarr );
 
-				$postarr = array(
+				$postarr   = array(
 					'ID'          => $postId,
 					'post_status' => 'draft'
 				);

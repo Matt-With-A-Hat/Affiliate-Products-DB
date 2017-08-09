@@ -180,9 +180,9 @@ class ApdCore {
 		$tpl_src = $this->getTpl( $tpl );
 
 		if ( is_string( $asin ) ) {
-			$item_html .= $this->parseTpl( $asin, $tpl_src );
+			$item_html .= $this->parseTpl( $tpl_src, $asin );
 		} elseif ( is_array( $asin ) ) {
-			$item_html .= $this->parseMultiTpl( $asin, $tpl_src );
+			$item_html .= $this->parseMultiTpl( $tpl_src, $asin );
 		}
 
 		return $item_html;
@@ -251,133 +251,142 @@ class ApdCore {
 	 *
 	 * @return string
 	 */
-	public function parseTpl( $asin, $tpl ) {
-
-		$asin = trim( $asin );
+	public function parseTpl( $tpl, $asin = null ) {
 
 		$html = '';
-		//--------------------------------------------------------------
-		//=replace with Amazon information
-		//--------------------------------------------------------------
 
-		$amazonCacheItem = new ApdAmazonCacheItem( $asin );
-		$amazonArray     = $amazonCacheItem->getArray();
+//		krumo($tpl);
+//		krumo($asin);
 
-		//if Amazon cache doesn't return anything, get the data directly from Amazon API
-		if ( $amazonArray === null ) {
-			$amazonItem  = new ApdAmazonItem( $this->amazonWbs, $asin );
-			$amazonArray = $amazonItem->getArray();
-		}
+		if ( !empty( $asin ) ) {
 
-		if ( is_array( $amazonArray ) ) {
-			$placeholders = $this->getTplPlaceholders( ApdAmazonItem::getAmazonItemFields(), true );
-			$html         = preg_replace( $placeholders, $amazonArray, $tpl );
-		} else {
-			$error = "Amazon array is empty";
-			print_error( $error, __METHOD__, __LINE__ );
-		}
+			$asin = trim( $asin );
 
-		//--------------------------------------------------------------
-		// =replace with database information
-		//--------------------------------------------------------------
+			//--------------------------------------------------------------
+			//=replace with Amazon information
+			//--------------------------------------------------------------
 
-		$tpl = $html;
+			$amazonCacheItem = new ApdAmazonCacheItem( $asin );
+			$amazonArray     = $amazonCacheItem->getArray();
 
-		$apdItem   = new ApdItem( $asin );
-		$tablename = $apdItem->getItemTable();
-		$database  = new ApdDatabase( $tablename );
-
-		$dbPlaceholders = $database->getTableColumns( false );
-		$tableInfo      = $database->getTableInfo();
-
-		if ( $dbPlaceholders === false OR $tableInfo === false ) {
-			return false;
-		}
-
-		if ( ! empty( array_duplicates( $dbPlaceholders ) ) ) {
-			$dbPlaceholders = array_remove_duplicates( $dbPlaceholders );
-		}
-
-		$dbItem = $apdItem->getItem();
-
-		if ( ! empty( $dbItem ) ) {
-			//reformat advantage list
-			$advantagesArray = explode( "*", $dbItem->Advantages );
-			$advantagesHtml  = '';
-
-			foreach ( $advantagesArray as $advantage ) {
-				$advantagesHtml .= "<li>" . $advantage . "</li>";
+			//if Amazon cache doesn't return anything, get the data directly from Amazon API
+			if ( $amazonArray === null ) {
+				$amazonItem  = new ApdAmazonItem( $this->amazonWbs, $asin );
+				$amazonArray = $amazonItem->getArray();
 			}
-			$dbItem->Advantages = $advantagesHtml;
 
-			//reformat disadvantage list
-			$disadvantagesArray = explode( "*", $dbItem->Disadvantages );
-			$disadvantagesHtml  = '';
-
-			foreach ( $disadvantagesArray as $disadvantage ) {
-				$disadvantagesHtml .= "<li>" . $disadvantage . "</li>";
+			if ( is_array( $amazonArray ) ) {
+				$placeholders = $this->getTplPlaceholders( ApdAmazonItem::getAmazonItemFields(), true );
+				$html         = preg_replace( $placeholders, $amazonArray, $tpl );
+			} else {
+				$error = "Amazon array is empty";
+				print_error( $error, __METHOD__, __LINE__ );
 			}
-			$dbItem->Disadvantages = $disadvantagesHtml;
 
-			//convert bool values to checkbox
-			$i = 0;
-			foreach ( $dbItem as $key => $item ) {
+			//--------------------------------------------------------------
+			// =replace with database information
+			//--------------------------------------------------------------
 
-				$fieldType = $tableInfo[ $i ++ ]['Type'];
+			$tpl = $html;
 
-				if ( type_is_boolean( $fieldType ) ) {
+			$apdItem   = new ApdItem( $asin );
+			$tablename = $apdItem->getItemTable();
+			$database  = new ApdDatabase( $tablename );
 
-					if ( field_is_true( $item ) ) {
-						$dbItem->$key = '<i class="check"></i>';
-					} else if ( field_is_false( $item ) ) {
-						$dbItem->$key = '<i class="times"></i>';
+			$dbPlaceholders = $database->getTableColumns( false );
+			$tableInfo      = $database->getTableInfo();
+
+			if ( $dbPlaceholders === false OR $tableInfo === false ) {
+				return false;
+			}
+
+			if ( ! empty( array_duplicates( $dbPlaceholders ) ) ) {
+				$dbPlaceholders = array_remove_duplicates( $dbPlaceholders );
+			}
+
+			$dbItem = $apdItem->getItem();
+
+			if ( ! empty( $dbItem ) ) {
+				//reformat advantage list
+				$advantagesArray = explode( "*", $dbItem->Advantages );
+				$advantagesHtml  = '';
+
+				foreach ( $advantagesArray as $advantage ) {
+					$advantagesHtml .= "<li>" . $advantage . "</li>";
+				}
+				$dbItem->Advantages = $advantagesHtml;
+
+				//reformat disadvantage list
+				$disadvantagesArray = explode( "*", $dbItem->Disadvantages );
+				$disadvantagesHtml  = '';
+
+				foreach ( $disadvantagesArray as $disadvantage ) {
+					$disadvantagesHtml .= "<li>" . $disadvantage . "</li>";
+				}
+				$dbItem->Disadvantages = $disadvantagesHtml;
+
+				//convert bool values to checkbox
+				$i = 0;
+				foreach ( $dbItem as $key => $item ) {
+
+					$fieldType = $tableInfo[ $i ++ ]['Type'];
+
+					if ( type_is_boolean( $fieldType ) ) {
+
+						if ( field_is_true( $item ) ) {
+							$dbItem->$key = '<i class="check"></i>';
+						} else if ( field_is_false( $item ) ) {
+							$dbItem->$key = '<i class="times"></i>';
+						}
+
 					}
 
 				}
 
-			}
-
-			//convert decimal percent values to percent numbers
-			foreach ( $dbItem as $key => $item ) {
-				if ( preg_match( "/percent/i", $key ) ) {
-					$dbItem->$key = $item * 100;
+				//convert decimal percent values to percent numbers
+				foreach ( $dbItem as $key => $item ) {
+					if ( preg_match( "/percent/i", $key ) ) {
+						$dbItem->$key = $item * 100;
+					}
 				}
+
+//				krumo($dbItem);
+
+				$placeholders = $this->getTplPlaceholders( $dbPlaceholders, true );
+				$replace      = (array) $dbItem;
+				$html         = preg_replace( $placeholders, $replace, $tpl );
+
 			}
-
-			$placeholders = $this->getTplPlaceholders( $dbPlaceholders, true );
-			$replace      = (array) $dbItem;
-			$html         = preg_replace( $placeholders, $replace, $tpl );
-
 		}
 
 		//--------------------------------------------------------------
 		// =replace with custom information
 		//--------------------------------------------------------------
 
-		$tpl = $html;
-
-		$placeholders = array(
-			'AutomowerModels'
-		);
-//		krumo($placeholders);
-		//automower models
-		$tablename       = add_table_prefix( 'products' );
-		$columns         = array( 'Longname', 'Tags' );
-		$automowerModels = ( new ApdDatabase( $tablename ) )->getColumns( $columns );
-		$automowerModelsHtml = "";
-		foreach ( $automowerModels as $automowerModel ) {
-			$automowerModelsHtml .= "<li data-tag='$automowerModel[Tags]'>$automowerModel[Longname]</li>";
-		}
-
-		$placeholders = $this->getTplPlaceholders( $placeholders, true );
-		$replace = array(
-			$automowerModelsHtml
-		);
-
-//		krumo($placeholders);
-//		krumo($replace);
-
-		$html = preg_replace( $placeholders, $replace, $tpl );
+//		$tpl = $html;
+//
+//		$placeholders = array(
+//			'AutomowerModels'
+//		);
+////		krumo($placeholders);
+//		//automower models
+//		$tablename           = add_table_prefix( 'products' );
+//		$columns             = array( 'Longname', 'Tags' );
+//		$automowerModels     = ( new ApdDatabase( $tablename ) )->getColumns( $columns );
+//		$automowerModelsHtml = "";
+//		foreach ( $automowerModels as $automowerModel ) {
+//			$automowerModelsHtml .= "<li data-tag='$automowerModel[Tags]'>$automowerModel[Longname]</li>";
+//		}
+//
+//		$placeholders = $this->getTplPlaceholders( $placeholders, true );
+//		$replace      = array(
+//			$automowerModelsHtml
+//		);
+//
+////		krumo($placeholders);
+////		krumo($replace);
+//
+//		$html = preg_replace( $placeholders, $replace, $tpl );
 
 		return $html;
 
@@ -391,23 +400,29 @@ class ApdCore {
 	 *
 	 * @return string
 	 */
-	public function parseMultiTpl( array $asins, $tpl ) {
+	public function parseMultiTpl( $tpl, array $asins ) {
 
 		$html       = '';
 		$codeBlocks = $this->divideTemplateIntoBlocks( $tpl );
 
 		foreach ( $codeBlocks as $key => $codeBlock ) {
-			$blockType = key( $codeBlock ); //$key
-			$blockHtml = current( $codeBlock ); //$codeBlock[$key]
+
+//			krumo(key($codeBlock));
+//			krumo($key);
+//			krumo(current($codeBlock));
+//			krumo($codeBlock[$key]);
+
+			$blockType = key( $codeBlock ); //$key of $codeBlock array (as opposed to $key of foreach)
+			$blockHtml = current( $codeBlock ); //$codeBlock[$key] of $codeBlock array (as opposed to $value of foreach, which is the array)
 
 			if ( $blockType == 'loop' ) {
 				$loopHtml = '';
 				foreach ( $asins as $asin ) {
-					$loopHtml .= $this->parseTpl( $asin, $blockHtml );
+					$loopHtml .= $this->parseTpl( $blockHtml, $asin );
 				}
 				$blockHtml = $loopHtml;
-			}else{
-				$loopHtml .= $this->parseTpl($blockHtml);
+			} else {
+//				$blockHtml = $this->parseTpl( $blockHtml );     //produces DOM bug
 			}
 
 			$html .= $blockHtml;
