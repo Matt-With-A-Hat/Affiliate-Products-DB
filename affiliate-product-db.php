@@ -95,8 +95,8 @@ const NULL_TYPES    = array( '', 'NULL', null );
 /**
  * Krumo
  */
-if ( ! class_exists( 'krumo' ) ) {
-	require dirname( __FILE__ ) . '/krumo_0.2.1a/class.krumo.php';
+if ( is_local() ) {
+	require_once dirname( __FILE__ ) . '/vendor/mmucklo/krumo/class.krumo.php';
 }
 
 /**
@@ -164,8 +164,11 @@ $apdCore = new ApdCore();
 echo "<br><br>";
 //
 //krumo('test');
-$item = (new ApdApi())->getItemByAsin('B015OORTL4');
-krumo($item);
+$Api  = new ApdApi();
+$item = $Api->getItemByAsin( 'B015OORTL4' );
+krumo( $item );
+$item = $Api->getItemByPostId( '1543' );
+krumo( $item );
 
 //$databaseService = new ApdDatabaseService();
 //$databaseService->updateAsins();

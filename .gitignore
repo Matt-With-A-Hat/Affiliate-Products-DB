@@ -65,3 +65,4 @@ git.untracked/
 
 #Ignore debug tools
 krumo*/
+/vendor/

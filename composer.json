@@ -1,0 +1,6 @@
+{
+    "name": "matthias/affiliate-products-db",
+    "require-dev": {
+        "mmucklo/krumo": "^0.5.7"
+    }
+}
