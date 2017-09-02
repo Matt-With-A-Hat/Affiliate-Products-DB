@@ -69,7 +69,7 @@ define( 'APD_TABLE_PREFIX', 'apd_' );
 /**
  * Cron Jobs
  */
-define('APD_DB_CONSISTENCY_CRON','database_consistency');
+define( 'APD_DB_CONSISTENCY_CRON', 'database_consistency' );
 
 /**
  * User Constants
@@ -83,8 +83,8 @@ define( 'AMAZON_API_CONNECTION_TYPE', 'http' );
 /**
  * User Settings
  */
-define('APD_EMPTY_PRICE_TEXT', '<span class="text-red">Derzeit nicht verfügbar</span>');
-define('APD_EMPTY_AVAILABILITY_TEXT', '<span class="text-red">Derzeit nicht verfügbar</span>');
+define( 'APD_EMPTY_PRICE_TEXT', '<span class="text-red">Derzeit nicht verfügbar</span>' );
+define( 'APD_EMPTY_AVAILABILITY_TEXT', '<span class="text-red">Derzeit nicht verfügbar</span>' );
 
 //csv import field types
 const BOOLEAN_TYPES = array( 'BOOLEAN', 'BOOL', 'TINYINT(1)' );
@@ -95,7 +95,9 @@ const NULL_TYPES    = array( '', 'NULL', null );
 /**
  * Krumo
  */
-require dirname( __FILE__ ) . '/krumo_0.2.1a/class.krumo.php';
+if ( ! class_exists( 'krumo' ) ) {
+	require dirname( __FILE__ ) . '/krumo_0.2.1a/class.krumo.php';
+}
 
 /**
  * Debug
