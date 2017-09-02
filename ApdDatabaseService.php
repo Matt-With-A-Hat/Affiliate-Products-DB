@@ -188,8 +188,8 @@ class ApdDatabaseService {
 		if ( ! $asinTable->tableExists() ) {
 			$tablename = APD_ASIN_TABLE;
 			$database  = new ApdDatabase( $tablename );
-			$database->createTableFromArray( ApdItem::getItemFields(), 'core' );
-			$database->modifyColumns( ApdItem::getUniqueItemFields(), 'unique' );
+			$database->createTableFromArray( ApdCustomItem::getItemFields(), 'core' );
+			$database->modifyColumns( ApdCustomItem::getUniqueItemFields(), 'unique' );
 		}
 
 		$amazonCacheDatabase = new ApdDatabase( APD_AMAZON_CACHE_TABLE );

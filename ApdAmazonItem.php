@@ -47,7 +47,7 @@ class ApdAmazonItem extends ApdAmazonCache {
 		) );
 
 		$this->array      = $this->refineAmazonItem();
-		$this->arrayAssoc = $this->matchWithFields();
+		$this->arrayAssoc = $this->matchValuesWithFields();
 	}
 
 	/**
@@ -310,7 +310,11 @@ class ApdAmazonItem extends ApdAmazonCache {
 		}
 	}
 
-	public function matchWithFields() {
+	/**
+	 * Match the returned items values from Amazon with the defined AmazonItemFields.
+	 * @return array
+	 */
+	public function matchValuesWithFields() {
 		$fieldsArray = self::getAmazonItemFields();
 		$valuesArray = $this->array;
 

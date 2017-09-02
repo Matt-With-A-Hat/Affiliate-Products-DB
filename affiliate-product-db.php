@@ -147,7 +147,8 @@ require_once( dirname( __FILE__ ) . '/ApdAmazonCache.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonCacheDatabase.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonCacheItem.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonItem.php' );
-require_once( dirname( __FILE__ ) . '/ApdItem.php' );
+require_once( dirname( __FILE__ ) . '/ApdCustomItem.php' );
+require_once( dirname( __FILE__ ) . '/ApdApi.php' );
 require_once( dirname( __FILE__ ) . '/ApdPostGenerator.php' );
 
 /**
@@ -157,7 +158,13 @@ require dirname( __FILE__ ) . '/apd-cronjobs.php';
 
 $apdCore = new ApdCore();
 
-//echo "<br><br>";
+/**
+ * =For testing
+ */
+echo "<br><br>";
+//
+//krumo('test');
+$Api = (new ApdApi())->getItemByAsin('B007RCTRGM');
 
 //$cache = new ApdAmazonCacheDatabase();
 //$cache->updateCache();

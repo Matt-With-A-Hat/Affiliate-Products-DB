@@ -255,9 +255,6 @@ class ApdCore {
 
 		$html = '';
 
-//		krumo($tpl);
-//		krumo($asin);
-
 		if ( !empty( $asin ) ) {
 
 			$asin = trim( $asin );
@@ -267,17 +264,17 @@ class ApdCore {
 			//--------------------------------------------------------------
 
 			$amazonCacheItem = new ApdAmazonCacheItem( $asin );
-			$amazonArray     = $amazonCacheItem->getArray();
+			$amazonItemArray = $amazonCacheItem->getArray();
 
 			//if Amazon cache doesn't return anything, get the data directly from Amazon API
-			if ( $amazonArray === null ) {
-				$amazonItem  = new ApdAmazonItem( $this->amazonWbs, $asin );
-				$amazonArray = $amazonItem->getArray();
+			if ( $amazonItemArray === null ) {
+				$amazonItem      = new ApdAmazonItem( $this->amazonWbs, $asin );
+				$amazonItemArray = $amazonItem->getArray();
 			}
 
-			if ( is_array( $amazonArray ) ) {
+			if ( is_array( $amazonItemArray ) ) {
 				$placeholders = $this->getTplPlaceholders( ApdAmazonItem::getAmazonItemFields(), true );
-				$html         = preg_replace( $placeholders, $amazonArray, $tpl );
+				$html         = preg_replace( $placeholders, $amazonItemArray, $tpl );
 			} else {
 				$error = "Amazon array is empty";
 				print_error( $error, __METHOD__, __LINE__ );
@@ -289,9 +286,9 @@ class ApdCore {
 
 			$tpl = $html;
 
-			$apdItem   = new ApdItem( $asin );
-			$tablename = $apdItem->getItemTable();
-			$database  = new ApdDatabase( $tablename );
+			$apdCustomItem = new ApdCustomItem( $asin );
+			$tablename     = $apdCustomItem->getItemTable();
+			$database      = new ApdDatabase( $tablename );
 
 			$dbPlaceholders = $database->getTableColumns( false );
 			$tableInfo      = $database->getTableInfo();
@@ -304,39 +301,39 @@ class ApdCore {
 				$dbPlaceholders = array_remove_duplicates( $dbPlaceholders );
 			}
 
-			$dbItem = $apdItem->getItem();
+			$customItemObject = $apdCustomItem->getObject();
 
-			if ( ! empty( $dbItem ) ) {
+			if ( ! empty( $customItemObject ) ) {
 				//reformat advantage list
-				$advantagesArray = explode( "*", $dbItem->Advantages );
+				$advantagesArray = explode( "*", $customItemObject->Advantages );
 				$advantagesHtml  = '';
 
 				foreach ( $advantagesArray as $advantage ) {
 					$advantagesHtml .= "<li>" . $advantage . "</li>";
 				}
-				$dbItem->Advantages = $advantagesHtml;
+				$customItemObject->Advantages = $advantagesHtml;
 
 				//reformat disadvantage list
-				$disadvantagesArray = explode( "*", $dbItem->Disadvantages );
+				$disadvantagesArray = explode( "*", $customItemObject->Disadvantages );
 				$disadvantagesHtml  = '';
 
 				foreach ( $disadvantagesArray as $disadvantage ) {
 					$disadvantagesHtml .= "<li>" . $disadvantage . "</li>";
 				}
-				$dbItem->Disadvantages = $disadvantagesHtml;
+				$customItemObject->Disadvantages = $disadvantagesHtml;
 
 				//convert bool values to checkbox
 				$i = 0;
-				foreach ( $dbItem as $key => $item ) {
+				foreach ( $customItemObject as $key => $item ) {
 
 					$fieldType = $tableInfo[ $i ++ ]['Type'];
 
 					if ( type_is_boolean( $fieldType ) ) {
 
 						if ( field_is_true( $item ) ) {
-							$dbItem->$key = '<i class="check"></i>';
+							$customItemObject->$key = '<i class="check"></i>';
 						} else if ( field_is_false( $item ) ) {
-							$dbItem->$key = '<i class="times"></i>';
+							$customItemObject->$key = '<i class="times"></i>';
 						}
 
 					}
@@ -344,16 +341,14 @@ class ApdCore {
 				}
 
 				//convert decimal percent values to percent numbers
-				foreach ( $dbItem as $key => $item ) {
+				foreach ( $customItemObject as $key => $item ) {
 					if ( preg_match( "/percent/i", $key ) ) {
-						$dbItem->$key = $item * 100;
+						$customItemObject->$key = $item * 100;
 					}
 				}
 
-//				krumo($dbItem);
-
 				$placeholders = $this->getTplPlaceholders( $dbPlaceholders, true );
-				$replace      = (array) $dbItem;
+				$replace      = (array) $customItemObject;
 				$html         = preg_replace( $placeholders, $replace, $tpl );
 
 			}
@@ -669,7 +664,7 @@ class ApdCore {
 
 	public function getApdItem( $asin ) {
 //		$amazonItem = (new ApdAmazonCacheItem($asin))->getObject;
-//		$apdItem = (new ApdItem($asin))->getItem();
+//		$apdItem = (new ApdCustomItem($asin))->getItem();
 	}
 
 }

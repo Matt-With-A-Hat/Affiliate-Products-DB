@@ -111,7 +111,7 @@ class ApdPostGenerator {
 
 		$items = array();
 		foreach ( $asins as $asin ) {
-			$items[] = ( new ApdItem( $asin ) )->getItem();
+			$items[] = ( new ApdCustomItem( $asin ) )->getObject();
 		}
 
 		return $items;

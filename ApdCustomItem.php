@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Class ApdItem
+ * Class ApdCustomItem
  *
  * The class representing custom items that were uploaded to the database.
  */
-class ApdItem {
+class ApdCustomItem {
 
 	protected static $uniqueItemFields = array(
 		'asin'
@@ -46,11 +46,36 @@ class ApdItem {
 	 */
 	protected $asin;
 
+	/**
+	 * The refined array version of the custom item object
+	 *
+	 * @var array|bool|null|object|void
+	 */
+	protected $array;
+
+	/**
+	 * The refined associative array version of the custom item object
+	 *
+	 * @var array|bool|null|object|void
+	 */
+	protected $arrayAssoc;
+
+	/**
+	 * The custom item object
+	 *
+	 * @var array|bool|null|object|void
+	 */
+	protected $object;
+
 	function __construct( $asin ) {
 
 		$this->setAsinTable();
 		$this->setAsin( $asin );
 		$this->setItemTable();
+
+		$this->array      = $this->getItem( ARRAY_N );
+		$this->arrayAssoc = $this->getItem( ARRAY_A );
+		$this->object     = $this->getItem();
 
 	}
 
@@ -104,6 +129,48 @@ class ApdItem {
 	}
 
 	/**
+	 * @return array|bool|null|object|void
+	 */
+	public function getArray() {
+		return $this->array;
+	}
+
+	/**
+	 * @param array|bool|null|object|void $array
+	 */
+	public function setArray( $array ) {
+		$this->array = $array;
+	}
+
+	/**
+	 * @return array|bool|null|object|void
+	 */
+	public function getArrayAssoc() {
+		return $this->arrayAssoc;
+	}
+
+	/**
+	 * @param array|bool|null|object|void $arrayAssoc
+	 */
+	public function setArrayAssoc( $arrayAssoc ) {
+		$this->arrayAssoc = $arrayAssoc;
+	}
+
+	/**
+	 * @return array|bool|null|object|void
+	 */
+	public function getObject() {
+		return $this->object;
+	}
+
+	/**
+	 * @param array|bool|null|object|void $object
+	 */
+	public function setObject( $object ) {
+		$this->object = $object;
+	}
+
+	/**
 	 * get the item tablename from the asin table
 	 */
 	public function setItemTable() {
@@ -133,12 +200,12 @@ class ApdItem {
 	 * @internal param $asin
 	 *
 	 */
-	public function getItem() {
+	private function getItem( $output = OBJECT ) {
 
 		global $wpdb;
 		$database         = new ApdDatabase( $this->itemTable );
 		$sql              = "SELECT * FROM $this->itemTable WHERE Asin = %s";
-		$database->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $this->asin ), OBJECT );
+		$database->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $this->asin ), $output );
 
 		if ( empty( $database->dbItem ) ) {
 			if ( APD_DEBUG ) {
