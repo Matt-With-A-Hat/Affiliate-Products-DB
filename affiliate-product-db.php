@@ -93,13 +93,6 @@ const FALSE_TYPES   = array( 'NEIN', 'NO', 'FALSE', '0', 0 );
 const NULL_TYPES    = array( '', 'NULL', null );
 
 /**
- * Krumo
- */
-if ( is_local() ) {
-	require_once dirname( __FILE__ ) . '/vendor/mmucklo/krumo/class.krumo.php';
-}
-
-/**
  * Debug
  */
 require dirname( __FILE__ ) . '/debug.php';
@@ -113,6 +106,13 @@ require( dirname( __FILE__ ) . '/apd-functions.php' );
  * functions for initializing plugin
  */
 require dirname( __FILE__ ) . '/apd-init.php';
+
+/**
+ * Krumo
+ */
+if ( isLocalInstallation() ) {
+	require_once dirname( __FILE__ ) . '/vendor/mmucklo/krumo/class.krumo.php';
+}
 
 /**
  * early loading of WordPress functions
