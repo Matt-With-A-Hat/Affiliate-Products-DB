@@ -8,11 +8,13 @@
 class ApdCustomItem {
 
 	protected static $uniqueItemFields = array(
-		'asin'
+		'asin',
+		'post_id'
 	);
 
 	protected static $itemFields = array(
 		'asin',
+		'post_id',
 		'table',
 		'last_edit'
 	);

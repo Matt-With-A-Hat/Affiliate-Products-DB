@@ -9,6 +9,8 @@ Class ApdApi {
 	 * get an item with every value from the custom database and from amazon by its asin
 	 *
 	 * @param $asin
+	 *
+	 * @return array
 	 */
 	function getItemByAsin( $asin ) {
 		$amazonCacheItem = new ApdAmazonCacheItem( $asin );
@@ -16,6 +18,11 @@ Class ApdApi {
 
 		$amazonCacheItemArrayA = $amazonCacheItem->getAssocArray();
 		$apdCustomItemArrayA   = $apdCustomItem->getArrayAssoc();
+
+		krumo($amazonCacheItemArrayA);
+		krumo($apdCustomItemArrayA);
+
+		return array_merge( $amazonCacheItemArrayA, $apdCustomItemArrayA );
 	}
 
 	/**
@@ -24,5 +31,6 @@ Class ApdApi {
 	 * @param $postId
 	 */
 	function getItemByPostId( $postId ) {
+		
 	}
 }

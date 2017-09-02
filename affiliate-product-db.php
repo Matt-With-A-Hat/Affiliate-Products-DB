@@ -164,7 +164,13 @@ $apdCore = new ApdCore();
 echo "<br><br>";
 //
 //krumo('test');
-$Api = (new ApdApi())->getItemByAsin('B007RCTRGM');
+$item = (new ApdApi())->getItemByAsin('B015OORTL4');
+krumo($item);
+
+//$databaseService = new ApdDatabaseService();
+//$databaseService->updateAsins();
+//$databaseService->getAllAsins(true);
+//$databaseService->getAllAsins(false);
 
 //$cache = new ApdAmazonCacheDatabase();
 //$cache->updateCache();

@@ -101,39 +101,43 @@ class ApdDatabaseService {
 	/**
 	 * get every asin from all product tables as array
 	 *
-	 * @param bool $assoc if supplied, function returns an associative array with the name
-	 * of the table where the asin was found
+	 * @param bool $extend if supplied, function returns an array with the name
+	 * of the table where the asin was found and the associated post ID
 	 *
 	 * @return array
 	 */
-	public function getAllAsins( $assoc = false ) {
+	public function getAllAsins( $extend = false ) {
 
 		global $wpdb;
 		$tables = $this->getProductTables();
 
-		$asins      = array();
 		$asinsArray = array();
 		foreach ( $tables as $table ) {
-			$sql                  = "SELECT Asin FROM $table";
-			$asins                = $wpdb->get_results( $wpdb->prepare( $sql, '' ), ARRAY_N );
-			$asinsArray[ $table ] = array_filter( array_values_recursive( $asins ) );
+			$sql   = "SELECT Asin, PostId FROM $table";
+			$asins = $wpdb->get_results( $wpdb->prepare( $sql, '' ), ARRAY_N );
+
+//			$asinsArray[ $table ]  = array_filter( array_values_recursive( $asins ) );
+			$asinsArray[ $table ] = array_filter( $asins );
 		}
 
-		if ( $assoc ) {
-			$asins = array();
-			foreach ( $asinsArray as $key => $array ) {
-				foreach ( $array as $item ) {
-					$asins[] = array(
-						'table' => $key,
-						'asin'  => $item
-					);
-				}
+		$extendedAsinsArray = array();
+		$simpleAsinsArray   = array();
+		foreach ( $asinsArray as $key => $asins ) {
+			foreach ( $asins as $asin ) {
+				$simpleAsinsArray[]   = $asin[0];
+				$extendedAsinsArray[] = array(
+					'table'   => $key,
+					'asin'    => $asin[0],
+					'post_id' => $asin[1]
+				);
 			}
-		} else {
-			$asins = array_filter( array_values_recursive( $asinsArray ) );
 		}
 
-		return $asins;
+		if ( $extend ) {
+			return $extendedAsinsArray;
+		} else {
+			return $simpleAsinsArray;
+		}
 	}
 
 	/**
@@ -216,16 +220,16 @@ class ApdDatabaseService {
 	 *
 	 * @return bool
 	 */
-	function updateAsins() {
+	public function updateAsins() {
 		global $wpdb;
 		$asins       = $this->getAllAsins( true );
 		$asinTable   = add_table_prefix( APD_ASIN_TABLE );
 		$currentTime = current_time( 'mysql' );
 
 		//add asins of products that don't exist in asins table yet
-		$sql = "REPLACE INTO $asinTable (`asin`, `table`, `last_edit`) VALUES ";
+		$sql = "REPLACE INTO $asinTable (`asin`, `post_id`, `table`, `last_edit`) VALUES ";
 		foreach ( $asins as $asin ) {
-			$sql .= "('$asin[asin]', '$asin[table]', '$currentTime'), ";
+			$sql .= "('$asin[asin]', '$asin[post_id]', '$asin[table]', '$currentTime'), ";
 		}
 		$sql    = rtrim( $sql, " ," ) . ";";
 		$result = $wpdb->query( $wpdb->prepare( $sql, '' ) );
