@@ -164,11 +164,11 @@ $apdCore = new ApdCore();
 echo "<br><br>";
 //
 //krumo('test');
-$Api  = new ApdApi();
-$item = $Api->getItemByAsin( 'B015OORTL4' );
-krumo( $item );
-$item = $Api->getItemByPostId( '1543' );
-krumo( $item );
+//$Api  = new ApdApi();
+//$item = $Api->getItemByAsin( 'B015OORTL4' );
+//krumo( $item );
+//$item = $Api->getItemByPostId( '1543' );
+//krumo( $item );
 
 //$databaseService = new ApdDatabaseService();
 //$databaseService->updateAsins();

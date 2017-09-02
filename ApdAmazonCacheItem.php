@@ -101,7 +101,7 @@ class ApdAmazonCacheItem extends ApdAmazonCache {
 	private function setAssocArray() {
 		$fieldsArray = self::getAmazonItemFields();
 		if($this->array === null){
-			$valuesArray = $this->setArray();
+			$this->setArray();
 		}else{
 			$valuesArray = $this->getArray();
 		}
