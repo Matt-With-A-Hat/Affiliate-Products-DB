@@ -14,14 +14,14 @@ class ApdAmazonCacheItem extends ApdAmazonCache {
 	 *
 	 * @var
 	 */
-	private $array;
+	private $arrayN;
 
 	/**
 	 * The item from the database stored as associative array
 	 *
 	 * @var
 	 */
-	private $assocArray;
+	private $arrayA;
 
 	/**
 	 * The item from the database stored as object
@@ -50,15 +50,15 @@ class ApdAmazonCacheItem extends ApdAmazonCache {
 	/**
 	 * @return mixed
 	 */
-	public function getArray() {
-		return $this->array;
+	public function getArrayN() {
+		return $this->arrayN;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getAssocArray() {
-		return $this->assocArray;
+	public function getArrayA() {
+		return $this->arrayA;
 	}
 
 	/**
@@ -89,9 +89,9 @@ class ApdAmazonCacheItem extends ApdAmazonCache {
 		if ( is_array( $result ) ) {
 			array_shift( $result );
 
-			$this->array = $result;
+			$this->arrayN = $result;
 		} else {
-			$this->array = null;
+			$this->arrayN = null;
 		}
 	}
 
@@ -100,10 +100,10 @@ class ApdAmazonCacheItem extends ApdAmazonCache {
 	 */
 	private function setAssocArray() {
 		$fieldsArray = self::getAmazonItemFields();
-		if($this->array === null){
+		if( $this->arrayN === null){
 			$this->setArray();
 		}else{
-			$valuesArray = $this->getArray();
+			$valuesArray = $this->getArrayN();
 		}
 
 		if ( $fieldsArray === null ) {
@@ -114,17 +114,17 @@ class ApdAmazonCacheItem extends ApdAmazonCache {
 			print_error( $error, __METHOD__, __LINE__ );
 		}
 
-		$this->assocArray = array_combine( $fieldsArray, $valuesArray );
+		$this->arrayA = array_combine( $fieldsArray, $valuesArray );
 	}
 
 	/**
 	 * set the object variable
 	 */
 	public function setObject() {
-		if($this->assocArray === null){
+		if( $this->arrayA === null){
 			$assocArray = $this->setAssocArray();
 		}else{
-			$assocArray = $this->getAssocArray();
+			$assocArray = $this->getArrayA();
 		}
 		$this->object = (object) $assocArray;
 	}

@@ -161,7 +161,7 @@ $apdCore = new ApdCore();
 /**
  * =For testing
  */
-echo "<br><br>";
+//echo "<br><br>";
 //
 //krumo('test');
 //$Api  = new ApdApi();

@@ -16,11 +16,8 @@ Class ApdApi {
 		$amazonCacheItem = new ApdAmazonCacheItem( $asin );
 		$apdCustomItem   = new ApdCustomItem( $asin );
 
-		$amazonCacheItemArrayA = $amazonCacheItem->getAssocArray();
-		$apdCustomItemArrayA   = $apdCustomItem->getArrayAssoc();
-
-//		krumo($amazonCacheItemArrayA);
-//		krumo($apdCustomItemArrayA);
+		$amazonCacheItemArrayA = $amazonCacheItem->getArrayA();
+		$apdCustomItemArrayA   = $apdCustomItem->getArrayA();
 
 		return array_merge( $amazonCacheItemArrayA, $apdCustomItemArrayA );
 	}
@@ -36,7 +33,6 @@ Class ApdApi {
 		global $wpdb;
 		$tableList = add_table_prefix(APD_ASIN_TABLE);
 		$sql = "SELECT `asin` FROM $tableList WHERE post_id = $postId";
-		krumo($sql);
 		$asin = $wpdb->get_var( $wpdb->prepare( $sql, '' ) );
 
 		return $this->getItemByAsin($asin);

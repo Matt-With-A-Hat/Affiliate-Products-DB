@@ -264,7 +264,7 @@ class ApdCore {
 			//--------------------------------------------------------------
 
 			$amazonCacheItem = new ApdAmazonCacheItem( $asin );
-			$amazonItemArray = $amazonCacheItem->getArray();
+			$amazonItemArray = $amazonCacheItem->getArrayN();
 
 			//if Amazon cache doesn't return anything, get the data directly from Amazon API
 			if ( $amazonItemArray === null ) {

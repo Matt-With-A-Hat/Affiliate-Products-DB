@@ -53,14 +53,14 @@ class ApdCustomItem {
 	 *
 	 * @var array|bool|null|object|void
 	 */
-	protected $array;
+	protected $arrayN;
 
 	/**
 	 * The refined associative array version of the custom item object
 	 *
 	 * @var array|bool|null|object|void
 	 */
-	protected $arrayAssoc;
+	protected $arrayA;
 
 	/**
 	 * The custom item object
@@ -75,9 +75,9 @@ class ApdCustomItem {
 		$this->setAsin( $asin );
 		$this->setItemTable();
 
-		$this->array      = $this->getItem( ARRAY_N );
-		$this->arrayAssoc = $this->getItem( ARRAY_A );
-		$this->object     = $this->getItem();
+		$this->arrayN = $this->getItem( ARRAY_N );
+		$this->arrayA = $this->getItem( ARRAY_A );
+		$this->object = $this->getItem();
 
 	}
 
@@ -133,29 +133,29 @@ class ApdCustomItem {
 	/**
 	 * @return array|bool|null|object|void
 	 */
-	public function getArray() {
-		return $this->array;
+	public function getArrayN() {
+		return $this->arrayN;
 	}
 
 	/**
-	 * @param array|bool|null|object|void $array
+	 * @param array|bool|null|object|void $arrayN
 	 */
-	public function setArray( $array ) {
-		$this->array = $array;
+	public function setArrayN( $arrayN ) {
+		$this->arrayN = $arrayN;
 	}
 
 	/**
 	 * @return array|bool|null|object|void
 	 */
-	public function getArrayAssoc() {
-		return $this->arrayAssoc;
+	public function getArrayA() {
+		return $this->arrayA;
 	}
 
 	/**
-	 * @param array|bool|null|object|void $arrayAssoc
+	 * @param array|bool|null|object|void $arrayA
 	 */
-	public function setArrayAssoc( $arrayAssoc ) {
-		$this->arrayAssoc = $arrayAssoc;
+	public function setArrayA( $arrayA ) {
+		$this->arrayA = $arrayA;
 	}
 
 	/**
