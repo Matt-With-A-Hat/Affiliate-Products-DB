@@ -301,54 +301,12 @@ class ApdCore {
 				$dbPlaceholders = array_remove_duplicates( $dbPlaceholders );
 			}
 
-			$customItemObject = $apdCustomItem->getObject();
+			$customItemObject = $apdCustomItem->getArrayR();
 
 			if ( ! empty( $customItemObject ) ) {
-				//reformat advantage list
-				$advantagesArray = explode( "*", $customItemObject->Advantages );
-				$advantagesHtml  = '';
-
-				foreach ( $advantagesArray as $advantage ) {
-					$advantagesHtml .= "<li>" . $advantage . "</li>";
-				}
-				$customItemObject->Advantages = $advantagesHtml;
-
-				//reformat disadvantage list
-				$disadvantagesArray = explode( "*", $customItemObject->Disadvantages );
-				$disadvantagesHtml  = '';
-
-				foreach ( $disadvantagesArray as $disadvantage ) {
-					$disadvantagesHtml .= "<li>" . $disadvantage . "</li>";
-				}
-				$customItemObject->Disadvantages = $disadvantagesHtml;
-
-				//convert bool values to checkbox
-				$i = 0;
-				foreach ( $customItemObject as $key => $item ) {
-
-					$fieldType = $tableInfo[ $i ++ ]['Type'];
-
-					if ( type_is_boolean( $fieldType ) ) {
-
-						if ( field_is_true( $item ) ) {
-							$customItemObject->$key = '<i class="check"></i>';
-						} else if ( field_is_false( $item ) ) {
-							$customItemObject->$key = '<i class="times"></i>';
-						}
-
-					}
-
-				}
-
-				//convert decimal percent values to percent numbers
-				foreach ( $customItemObject as $key => $item ) {
-					if ( preg_match( "/percent/i", $key ) ) {
-						$customItemObject->$key = $item * 100;
-					}
-				}
 
 				$placeholders = $this->getTplPlaceholders( $dbPlaceholders, true );
-				$replace      = (array) $customItemObject;
+				$replace      = $customItemObject;
 				$html         = preg_replace( $placeholders, $replace, $tpl );
 
 			}

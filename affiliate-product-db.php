@@ -161,7 +161,7 @@ $apdCore = new ApdCore();
 /**
  * =For testing
  */
-//echo "<br><br>";
+echo "<br><br><br><br>";
 //
 //krumo('test');
 //$Api  = new ApdApi();
@@ -174,6 +174,11 @@ $apdCore = new ApdCore();
 //$databaseService->updateAsins();
 //$databaseService->getAllAsins(true);
 //$databaseService->getAllAsins(false);
+
+$apdCustomItem = new ApdCustomItem( 'B006MWDNVI' );
+$x = $apdCustomItem->getArrayR();
+krumo($x);
+
 
 //$cache = new ApdAmazonCacheDatabase();
 //$cache->updateCache();

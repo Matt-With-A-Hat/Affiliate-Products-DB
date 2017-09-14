@@ -63,11 +63,25 @@ class ApdCustomItem {
 	protected $arrayA;
 
 	/**
+	 * The refined associative array version with changes made to the content, such as HTML integration
+	 *
+	 * @var
+	 */
+	protected $arrayR;
+
+	/**
 	 * The custom item object
 	 *
 	 * @var array|bool|null|object|void
 	 */
 	protected $object;
+
+	/**
+	 * The refined object version with changes made to the content, such as HTML integration
+	 *
+	 * @var
+	 */
+	protected $objectR;
 
 	function __construct( $asin ) {
 
@@ -75,9 +89,11 @@ class ApdCustomItem {
 		$this->setAsin( $asin );
 		$this->setItemTable();
 
-		$this->arrayN = $this->getItem( ARRAY_N );
-		$this->arrayA = $this->getItem( ARRAY_A );
-		$this->object = $this->getItem();
+		$this->arrayN  = $this->getItem( ARRAY_N );
+		$this->arrayA  = $this->getItem( ARRAY_A );
+		$this->object  = $this->getItem();
+		$this->objectR = $this->getRefinedObject();
+		$this->arrayR  = $this->getRefinedArray();
 
 	}
 
@@ -173,6 +189,34 @@ class ApdCustomItem {
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function getArrayR() {
+		return $this->arrayR;
+	}
+
+	/**
+	 * @param mixed $arrayR
+	 */
+	public function setArrayR( $arrayR ) {
+		$this->arrayR = $arrayR;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getObjectR() {
+		return $this->objectR;
+	}
+
+	/**
+	 * @param mixed $objectR
+	 */
+	public function setObjectR( $objectR ) {
+		$this->objectR = $objectR;
+	}
+
+	/**
 	 * get the item tablename from the asin table
 	 */
 	public function setItemTable() {
@@ -219,5 +263,64 @@ class ApdCustomItem {
 		}
 
 		return $database->dbItem;
+	}
+
+	private function getRefinedObject() {
+
+		$database  = new ApdDatabase( $this->itemTable );
+		$tableInfo = $database->getTableInfo();
+		$customItemObject = $this->getObject();
+
+		$advantagesArray = explode( "*", $customItemObject->Advantages );
+		$advantagesHtml  = '';
+
+		foreach ( $advantagesArray as $advantage ) {
+			$advantagesHtml .= "<li>" . $advantage . "</li>";
+		}
+		$customItemObject->Advantages = $advantagesHtml;
+
+		//reformat disadvantage list
+		$disadvantagesArray = explode( "*", $customItemObject->Disadvantages );
+		$disadvantagesHtml  = '';
+
+		foreach ( $disadvantagesArray as $disadvantage ) {
+			$disadvantagesHtml .= "<li>" . $disadvantage . "</li>";
+		}
+		$customItemObject->Disadvantages = $disadvantagesHtml;
+
+		//convert bool values to checkbox
+		$i = 0;
+		foreach ( $customItemObject as $key => $item ) {
+
+			$fieldType = $tableInfo[ $i ++ ]['Type'];
+
+			if ( type_is_boolean( $fieldType ) ) {
+
+				if ( field_is_true( $item ) ) {
+					$customItemObject->$key = '<i class="check"></i>';
+				} else if ( field_is_false( $item ) ) {
+					$customItemObject->$key = '<i class="times"></i>';
+				}
+
+			}
+
+		}
+
+		//convert decimal percent values to percent numbers
+		foreach ( $customItemObject as $key => $item ) {
+			if ( preg_match( "/percent/i", $key ) ) {
+				$customItemObject->$key = $item * 100;
+			}
+		}
+
+		return $customItemObject;
+	}
+
+	private function getRefinedArray() {
+		if ( empty( $this->objectR ) ) {
+			return (array) $this->getRefinedObject();
+		} else {
+			return (array) $this->objectR;
+		}
 	}
 }
