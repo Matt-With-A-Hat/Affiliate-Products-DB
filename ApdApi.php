@@ -17,7 +17,7 @@ Class ApdApi {
 		$apdCustomItem   = new ApdCustomItem( $asin );
 
 		$amazonCacheItemArrayA = $amazonCacheItem->getArrayA();
-		$apdCustomItemArrayA   = $apdCustomItem->getArrayA();
+		$apdCustomItemArrayA   = $apdCustomItem->getArrayR();
 
 		return array_merge( $amazonCacheItemArrayA, $apdCustomItemArrayA );
 	}
@@ -31,10 +31,26 @@ Class ApdApi {
 	 */
 	public function getItemByPostId( $postId ) {
 		global $wpdb;
-		$tableList = add_table_prefix(APD_ASIN_TABLE);
-		$sql = "SELECT `asin` FROM $tableList WHERE post_id = $postId";
-		$asin = $wpdb->get_var( $wpdb->prepare( $sql, '' ) );
+		$asintable = add_table_prefix( APD_ASIN_TABLE );
+		$sql       = "SELECT `asin` FROM $asintable WHERE post_id = $postId";
+		$asin      = $wpdb->get_var( $wpdb->prepare( $sql, '' ) );
 
-		return $this->getItemByAsin($asin);
+		return $this->getItemByAsin( $asin );
+	}
+
+	/**
+	 * get the bestseller of the provided table
+	 *
+	 * @param $tablename
+	 *
+	 * @return array
+	 */
+	public function getBestseller( $tablename ) {
+		global $wpdb;
+		$tablename = add_table_prefix( $tablename );
+		$sql       = "SELECT `asin` FROM $tablename WHERE `PromoClass`= 'bestseller'";
+		$asin      = $wpdb->get_var( $wpdb->prepare( $sql, '' ) );
+
+		return $this->getItemByAsin( $asin );
 	}
 }

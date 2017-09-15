@@ -152,6 +152,12 @@ require_once( dirname( __FILE__ ) . '/ApdApi.php' );
 require_once( dirname( __FILE__ ) . '/ApdPostGenerator.php' );
 
 /**
+ * =Widgets
+ */
+require_once( dirname( __FILE__ ) . '/inc/BestsellerWidget.php' );
+
+
+/**
  * cronjob functions
  */
 require dirname( __FILE__ ) . '/apd-cronjobs.php';
@@ -161,7 +167,7 @@ $apdCore = new ApdCore();
 /**
  * =For testing
  */
-echo "<br><br><br><br>";
+//echo "<br><br><br><br>";
 //
 //krumo('test');
 //$Api  = new ApdApi();
@@ -175,10 +181,9 @@ echo "<br><br><br><br>";
 //$databaseService->getAllAsins(true);
 //$databaseService->getAllAsins(false);
 
-$apdCustomItem = new ApdCustomItem( 'B006MWDNVI' );
-$x = $apdCustomItem->getArrayR();
-krumo($x);
-
+//$apdCustomItem = new ApdCustomItem( 'B006MWDNVI' );
+//$x = $apdCustomItem->getArrayR();
+//krumo($x);
 
 //$cache = new ApdAmazonCacheDatabase();
 //$cache->updateCache();
