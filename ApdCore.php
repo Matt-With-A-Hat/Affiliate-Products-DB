@@ -338,6 +338,7 @@ class ApdCore {
 		/**
 		 * =Manufacturer description
 		 */
+//		@todo get this from database and implement backend area where manufacturers can be added
 		$manufacturerDescription = '';
 		$manufacturerLogo = '';
 		if ( ! empty( $asin ) ) {
@@ -379,8 +380,8 @@ class ApdCore {
 			$manufacturerLogo
 		);
 
-		krumo( $placeholders );
-		krumo( $replace );
+//		krumo( $placeholders );
+//		krumo( $replace );
 
 		$html = preg_replace( $placeholders, $replace, $tpl );
 

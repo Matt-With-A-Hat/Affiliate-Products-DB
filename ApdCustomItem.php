@@ -267,10 +267,13 @@ class ApdCustomItem {
 
 	private function getRefinedObject() {
 
-		$database  = new ApdDatabase( $this->itemTable );
-		$tableInfo = $database->getTableInfo();
+		$database         = new ApdDatabase( $this->itemTable );
+		$tableInfo        = $database->getTableInfo();
 		$customItemObject = $this->getObject();
 
+		/**
+		 * =Reformat advantages list
+		 */
 		$advantagesArray = explode( "*", $customItemObject->Advantages );
 		$advantagesHtml  = '';
 
@@ -279,7 +282,9 @@ class ApdCustomItem {
 		}
 		$customItemObject->Advantages = $advantagesHtml;
 
-		//reformat disadvantage list
+		/**
+		 * =Reformat disadvantages list
+		 */
 		$disadvantagesArray = explode( "*", $customItemObject->Disadvantages );
 		$disadvantagesHtml  = '';
 
@@ -288,7 +293,31 @@ class ApdCustomItem {
 		}
 		$customItemObject->Disadvantages = $disadvantagesHtml;
 
-		//convert bool values to checkbox
+		/**
+		 * =Reformat scope of delivery
+		 * creates two adjacent columns in bootstrap
+		 */
+		$deliveryArray = explode( "*", $customItemObject->ScopeOfDelivery );
+		$deliveryHtml  = '<div class="row"><div class="col-md-6"><ul class="list-pro">{$column1}</ul></div><div class="col-md-6"><ul class="list-pro">{$column2}</ul></div></div>';
+		$columnSize    = ceil( sizeof( $deliveryArray ) / 2 );
+		$i             = 0;
+		$column1       = '';
+		$column2       = '';
+		foreach ( $deliveryArray as $deliveryItem ) {
+			if ( $i < $columnSize ) {
+				$column1 .= "<li>$deliveryItem</li>";
+			} else {
+				$column2 .= "<li>$deliveryItem</li>";
+			}
+			$i ++;
+		}
+		$deliveryHtml = preg_replace( '{$column1}', $column1, $deliveryHtml );
+		$deliveryHtml = preg_replace( '{$column2}', $column2, $deliveryHtml );
+		$customItemObject->ScopeOfDelivery = $deliveryHtml;
+
+		/**
+		 * =Convert bool values to checkbox
+		 */
 		$i = 0;
 		foreach ( $customItemObject as $key => $item ) {
 
