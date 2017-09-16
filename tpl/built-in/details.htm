@@ -147,14 +147,15 @@
                             <div class="row">
                                 <div class="tabs">
                                     <ul class="nav nav-tabs">
-                                        <li class="tablinks active {$Asin}" data-toggle="overview-{$Asin}"><a><i class="fa fa-list"></i> Übersicht</a></li>
-                                        <li class="tablinks {$Asin}" data-toggle="details-{$Asin}"><a><i class="fa fa-bar-chart-o"></i> Details</a></li>
+                                        <li class="tablinks active {$Asin}" data-toggle="overview-{$Asin}"><a><i class="fa fa-info"></i> Übersicht</a></li>
+                                        <li class="tablinks {$Asin}" data-toggle="details-{$Asin}"><a><i class="fa fa-list"></i> Details</a></li>
                                         <li class="tablinks {$Asin}" data-toggle="reviews-{$Asin}"><a><i class="fa fa-star-half-full"></i>Rezensionen</a></li>
+                                        <li class="tablinks {$Asin}" data-toggle="manufacturer-{$Asin}"><a><i class="fa fa-gear"></i>Hersteller</a></li>
                                     </ul>
                                     <div class="tab-content">
 
                                         <!--Übersicht-->
-                                        <div class="tab-pane active tabcontent overview {$Asin}" id="overview-{$Asin}">
+                                        <div class="tab-pane active box--normal tabcontent overview {$Asin}" id="overview-{$Asin}">
 
                                             <!--General rating-->
                                             <div class="general-rating-row">
@@ -496,19 +497,19 @@
 
 
                                                                         <!--<tr class="category">-->
-                                                                            <!--<td>Preis-Leistung</td>-->
-                                                                            <!--<td>15%</td>-->
-                                                                            <!--<td>Note {$PricePerformanceRatioRating}</td>-->
+                                                                        <!--<td>Preis-Leistung</td>-->
+                                                                        <!--<td>15%</td>-->
+                                                                        <!--<td>Note {$PricePerformanceRatioRating}</td>-->
                                                                         <!--</tr>-->
                                                                         <!--<tr>-->
-                                                                            <!--<td>Preis-Leistungs-Verhältnis</td>-->
-                                                                            <!--<td>{$PricePerformanceRatioRating}</td>-->
-                                                                            <!--<td>{$PricePerformanceRatioRatingPercent}</td>-->
+                                                                        <!--<td>Preis-Leistungs-Verhältnis</td>-->
+                                                                        <!--<td>{$PricePerformanceRatioRating}</td>-->
+                                                                        <!--<td>{$PricePerformanceRatioRatingPercent}</td>-->
                                                                         <!--</tr>-->
                                                                         <!--<tr class="sum">-->
-                                                                            <!--<td>Summe Punkte</td>-->
-                                                                            <!--<td></td>-->
-                                                                            <!--<td>{$PricePerformanceRatioPP} von {$PricePerformanceRatioMaxPoints} ({$PricePerformanceRatioRatingPercent}%)</td>-->
+                                                                        <!--<td>Summe Punkte</td>-->
+                                                                        <!--<td></td>-->
+                                                                        <!--<td>{$PricePerformanceRatioPP} von {$PricePerformanceRatioMaxPoints} ({$PricePerformanceRatioRatingPercent}%)</td>-->
                                                                         <!--</tr>-->
 
 
@@ -569,13 +570,33 @@
 
                                         <!--Rezensionen-->
                                         <div class="tab-pane tabcontent reviews {$Asin}" id="reviews-{$Asin}">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <iframe src="{$IFrameUrl}" frameborder="0"></iframe>
-                                                </div> <!-- col-sm-12 -->
-                                            </div> <!-- row -->
+                                            <div class="reviews-box">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <iframe src="{$IFrameUrl}" frameborder="0"></iframe>
+                                                    </div> <!-- col-sm-12 -->
+                                                </div> <!-- row -->
+                                            </div>
                                         </div>
                                         <!--Rezensionen Ende-->
+
+                                        <!--Hersteller-->
+                                        <div class="tab-pane box--normal tabcontent reviews {$Asin}" id="manufacturer-{$Asin}">
+                                            <div class="manufacturer-box">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <h3 class="text-center">Hersteller</h3>
+                                                    </div>
+                                                    <div class="col-sm-4 text-center">
+                                                        <img class="img-responsive" src="{$ManufacturerLogo}" alt="">
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <p class="hyphenate">{$ManufacturerDescription}</p>
+                                                    </div>
+                                                </div> <!-- row -->
+                                            </div>
+                                        </div>
+                                        <!--Hersteller Ende-->
 
                                     </div>
                                 </div> <!-- tab-content -->

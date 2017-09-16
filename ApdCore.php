@@ -255,7 +255,7 @@ class ApdCore {
 
 		$html = '';
 
-		if ( !empty( $asin ) ) {
+		if ( ! empty( $asin ) ) {
 
 			$asin = trim( $asin );
 
@@ -316,30 +316,73 @@ class ApdCore {
 		// =replace with custom information
 		//--------------------------------------------------------------
 
-//		$tpl = $html;
-//
-//		$placeholders = array(
-//			'AutomowerModels'
-//		);
-////		krumo($placeholders);
-//		//automower models
-//		$tablename           = add_table_prefix( 'products' );
-//		$columns             = array( 'Longname', 'Tags' );
-//		$automowerModels     = ( new ApdDatabase( $tablename ) )->getColumns( $columns );
-//		$automowerModelsHtml = "";
-//		foreach ( $automowerModels as $automowerModel ) {
-//			$automowerModelsHtml .= "<li data-tag='$automowerModel[Tags]'>$automowerModel[Longname]</li>";
-//		}
-//
-//		$placeholders = $this->getTplPlaceholders( $placeholders, true );
-//		$replace      = array(
-//			$automowerModelsHtml
-//		);
-//
-////		krumo($placeholders);
-////		krumo($replace);
-//
-//		$html = preg_replace( $placeholders, $replace, $tpl );
+		$tpl = $html;
+
+		$placeholders = array(
+			'AutomowerModels',
+			'ManufacturerDescription',
+			'ManufacturerLogo'
+		);
+
+		/**
+		 * =Automower models
+		 */
+		$tablename           = add_table_prefix( 'products' );
+		$columns             = array( 'Longname', 'Tags' );
+		$automowerModels     = ( new ApdDatabase( $tablename ) )->getColumns( $columns );
+		$automowerModelsHtml = "";
+		foreach ( $automowerModels as $automowerModel ) {
+			$automowerModelsHtml .= "<li data-tag='$automowerModel[Tags]'>$automowerModel[Longname]</li>";
+		}
+
+		/**
+		 * =Manufacturer description
+		 */
+		$manufacturerDescription = '';
+		$manufacturerLogo = '';
+		if ( ! empty( $asin ) ) {
+			$customItemObject = ( new ApdCustomItem( $asin ) )->getObjectR();
+			if ( ! empty( $manufacturer = $customItemObject->Manufacturer ) ) {
+				switch ( $manufacturer ) {
+					case "Gardena":
+						$manufacturerDescription = "Wie die meisten Hersteller von Gartengeräten hat auch die Firma Gardena seit einiger Zeit mehrere Rasenroboter in ihrem Sortiment. Die Firma Gardena ist seit 2006 ein Tochterunternehmen der schwedischen Husqvarna-Gruppe und profitiert dadurch von deren langjähriger Erfahrung bezüglich autonomer Rasenroboter.";
+						$manufacturerLogo = get_template_directory_uri()."/img/logos/gardena-logo.png";
+						break;
+					case "Husqvarna":
+						$manufacturerDescription = "Die schwedische Firma Husqvarna (Husqvarna Group) ist ein Hersteller von Motorgeräten für die Forstwirtschaft sowie Garten und Landschaftspflege. Dazu zählen Motorsägen und Schneidgerade wie auch Diamantwerkzeuge für das Baugewerbe und die Steinindustrie. Außerdem gilt Husqvarna als Pionier auf dem Gebiet der autonomen Rasenroboter.";
+						$manufacturerLogo = get_template_directory_uri()."/img/logos/husqvarna-logo.png";
+						break;
+					case "Bosch":
+						$manufacturerDescription = "Die Robert Bosch GmbH ist ein im Jahr 1886 gegründetes multinationales deutsches Unternehmen. Bekannt als Automobilzulieferer, Hersteller von Elektrowerkzeugen und Haushaltsgeräten, produziert Bosch seit einigen Jahren erfolgreich die Indego Mähroboter Reihe.";
+						$manufacturerLogo = get_template_directory_uri()."/img/logos/bosch-logo.png";
+						break;
+					case "Wolf":
+						$manufacturerDescription = "Das Unternehmen Wolf wurde ursprünglich 1922 gegründet und wurde 2009 durch MTD Products übernommen. Der Mutterkonzern MTD Inc. gilt nach eigenen Angaben als weltweit größter Hersteller von Motorgartengeräten. Dieses Know-How kommt ihrer Robo-Scooter Reihe zugute, welche durch ihre durchweg guten Bewertungen glänzen.";
+						$manufacturerLogo = get_template_directory_uri()."/img/logos/wolf-logo.png";
+						break;
+					case "Robomow":
+						$manufacturerDescription = "";
+						$manufacturerLogo = get_template_directory_uri()."/img/logos/robomow-logo.png";
+						break;
+					case "Worx":
+						$manufacturerDescription = "WORX ist eine Rasen- und Gartengerätereihe, die von der chinesischen Firma Positec Tool Corporation produziert und vertrieben wird. Gegründet wurde die Firma in Suzhou, China, jedoch liegt der Hauptsitz in Charlotte, North Carolina, USA. WORX wird unter anderem für große Einzelhandelskette wie Canadian Tire, Costco und Walmart vertrieben.";
+						$manufacturerLogo = get_template_directory_uri()."/img/logos/worx-logo.png";
+						break;
+				}
+			}
+		}
+
+		$placeholders = $this->getTplPlaceholders( $placeholders, true );
+		$replace      = array(
+			$automowerModelsHtml,
+			$manufacturerDescription,
+			$manufacturerLogo
+		);
+
+		krumo( $placeholders );
+		krumo( $replace );
+
+		$html = preg_replace( $placeholders, $replace, $tpl );
 
 		return $html;
 

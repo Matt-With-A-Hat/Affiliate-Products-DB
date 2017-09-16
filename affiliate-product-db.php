@@ -47,6 +47,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
  * APD Constants & Options
  */
 define( 'APD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'APD_PLUGIN_PATH', plugin_dir_url( __FILE__ ) );
 define( 'APD_PLUGIN_URL', 'options-general.php?page=affiliate-product-db.php' );
 define( 'APD_BASENAME', plugin_basename( __FILE__ ) );
 define( 'APD_BASE_FILE', __FILE__ );
