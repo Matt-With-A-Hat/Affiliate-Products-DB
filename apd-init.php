@@ -87,7 +87,6 @@ function handle_upload_form() {
 			$csv_name = $csv_name[1];
 
 			if ( $csv_name != 'csv' ) {
-
 				$answer['text']    = "Error uploading file: File is not a CSV file";
 				$answer['success'] = 'alert-danger';
 
@@ -97,12 +96,17 @@ function handle_upload_form() {
 			$apdDB  = new ApdDatabase( $tablename );
 			$result = $apdDB->addCsvToDatabase( $csv );
 
-			if ( $result ) {
-				update_option( 'PRODUCTS_TABLE', $tablename );
-				$answer['text']    = "CSV upload successful. Table $tablename was created.";
+			if ( $result === 1 ) {
+				$answer['text']    = "CSV upload successful. Table <strong><em>\"$tablename\"</em></strong> was <strong>created</strong>.";
+				$answer['success'] = 'alert-success';
+			} else if ( $result === 2 ) {
+				$answer['text']    = "Existing table <strong><em>\"$tablename\"</em></strong> was <strong>replaced</strong> with new one (debug mode).";
+				$answer['success'] = 'alert-success';
+			}else if($result ===3){
+				$answer['text']    = "Existing table <strong><em>\"$tablename\"</em></strong> has been <strong>updated</strong> with content from CSV file.";
 				$answer['success'] = 'alert-success';
 			} else {
-				$answer['text']    = "Something went wrong, while trying to upload the CSV";
+				$answer['text']    = "<strong>Something went wrong</strong>, while trying to upload the CSV";
 				$answer['success'] = 'alert-danger';
 
 				return $answer;

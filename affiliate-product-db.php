@@ -56,7 +56,7 @@ define( 'APD_MENU_SLUG', 'affiliate-products-db' );
 define( 'APD_DEBUG', false );
 //WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
 define( 'APD_DEBUG_DEV', true );
-define( 'APD_REPLACE_TABLES', true );
+define( 'APD_REPLACE_TABLES', false );
 
 /**
  * Table Names
