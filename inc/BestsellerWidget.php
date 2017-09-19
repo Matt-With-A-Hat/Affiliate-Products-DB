@@ -51,7 +51,7 @@ class BestsellerWidget extends WP_Widget {
 			</div>
 			<div class="widget--text">
 				<ul class="list-pro">
-					<?= $bestseller->Advantages; ?>
+					<?= $bestseller->AdvantagesNarrow; ?>
 				</ul>
 			</div>
 			<a class="btn btn-apd-default btn-block" target="_self" rel="nofollow" href="<?= $bestseller->Permalink;?>" title="<?= $bestseller->Longname;?> Produktbeschreibung lesen"><span>Produktbeschreibung</span></a>

@@ -99,21 +99,21 @@ span.amazon-stars {
   font-size: 18px;
 }
 
-.list-pro {
-  li:before {
-    @include font-awesome("\f0fe");
-    font-size: 14px;
-    color: $success-1;
-  }
-}
-
-.list-con {
-  li:before {
-    @include font-awesome("\f146");
-    font-size: 14px;
-    color: $danger;
-  }
-}
+//.list-pro {
+//  li:before {
+//    @include font-awesome("\f0fe");
+//    font-size: 14px;
+//    color: $success-1;
+//  }
+//}
+//
+//.list-con {
+//  li:before {
+//    @include font-awesome("\f146");
+//    font-size: 14px;
+//    color: $danger;
+//  }
+//}
 
 .check:before {
   @include font-awesome("\f00c");

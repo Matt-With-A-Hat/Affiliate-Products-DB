@@ -251,11 +251,12 @@ function array_remove_duplicates( array $array ) {
  */
 function array_remove_tail( array $array, $character ) {
 	foreach ( $array as $key => $item ) {
-		$pos           = strrpos( $item, $character );
-		if($pos !== false){
-			$array[ $key ] = substr( $item, 0, $pos);
+		$pos = strrpos( $item, $character );
+		if ( $pos !== false ) {
+			$array[ $key ] = substr( $item, 0, $pos );
 		}
 	}
+
 	return $array;
 }
 
@@ -363,4 +364,29 @@ function str_replace_first( $needle, $replace, $haystack ) {
 	} else {
 		return false;
 	}
+}
+
+/**
+ * get names of all of an objects accessible fields as an array
+ *
+ * @param $item (only objects and arrays with one level)
+ *
+ * @return array
+ */
+function get_fields( $item ) {
+	if ( is_object( $item ) ) {
+		$fields = get_object_vars( $item );
+		$result = array();
+		foreach ( $fields as $key => $field ) {
+			$result[] = $key;
+		}
+	} else if ( is_array( $item ) ) {
+		foreach ( $item as $key => $field ) {
+			$result[] = $key;
+		}
+	} else{
+		return false;
+	}
+
+	return $result;
 }

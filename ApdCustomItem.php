@@ -83,6 +83,13 @@ class ApdCustomItem {
 	 */
 	protected $objectR;
 
+	/**
+	 * the objects fields
+	 *
+	 * @var
+	 */
+	protected $objectFields;
+
 	function __construct( $asin ) {
 
 		$this->setAsinTable();
@@ -217,6 +224,20 @@ class ApdCustomItem {
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function getObjectFields() {
+		return $this->objectFields;
+	}
+
+	/**
+	 * @param mixed $objectFields
+	 */
+	public function setObjectFields( $objectFields ) {
+		$this->objectFields = $objectFields;
+	}
+
+	/**
 	 * get the item tablename from the asin table
 	 */
 	public function setItemTable() {
@@ -265,55 +286,72 @@ class ApdCustomItem {
 		return $database->dbItem;
 	}
 
+	/**
+	 * refine values and return object
+	 *
+	 * @return array|bool|null|object|void
+	 */
 	private function getRefinedObject() {
-
 		$database         = new ApdDatabase( $this->itemTable );
-		$tableInfo        = $database->getTableInfo();
+		$tableinfo        = $database->getTableInfo();
 		$customItemObject = $this->getObject();
 
+//		/**
+//		 * =Reformat advantages list
+//		 */
+//		$advantagesArray = explode( "*", $customItemObject->Advantages );
+//		$advantagesHtml  = '';
+//
+//		foreach ( $advantagesArray as $advantage ) {
+//			$advantagesHtml .= "<li>" . $advantage . "</li>";
+//		}
+//		$customItemObject->Advantages = $advantagesHtml;
+//
+//		/**
+//		 * =Reformat disadvantages list
+//		 */
+//		$disadvantagesArray = explode( "*", $customItemObject->Disadvantages );
+//		$disadvantagesHtml  = '';
+//
+//		foreach ( $disadvantagesArray as $disadvantage ) {
+//			$disadvantagesHtml .= "<li>" . $disadvantage . "</li>";
+//		}
+//		$customItemObject->Disadvantages = $disadvantagesHtml;
+
 		/**
-		 * =Reformat advantages list
-		 */
-		$advantagesArray = explode( "*", $customItemObject->Advantages );
-		$advantagesHtml  = '';
-
-		foreach ( $advantagesArray as $advantage ) {
-			$advantagesHtml .= "<li>" . $advantage . "</li>";
-		}
-		$customItemObject->Advantages = $advantagesHtml;
-
-		/**
-		 * =Reformat disadvantages list
-		 */
-		$disadvantagesArray = explode( "*", $customItemObject->Disadvantages );
-		$disadvantagesHtml  = '';
-
-		foreach ( $disadvantagesArray as $disadvantage ) {
-			$disadvantagesHtml .= "<li>" . $disadvantage . "</li>";
-		}
-		$customItemObject->Disadvantages = $disadvantagesHtml;
-
-		/**
-		 * =Reformat scope of delivery
+		 * =Reformat list values
 		 * creates two adjacent columns in bootstrap
 		 */
-		$deliveryArray = explode( "*", $customItemObject->ScopeOfDelivery );
-		$deliveryHtml  = '<div class="row"><div class="col-md-6"><ul class="list-pro">{$column1}</ul></div><div class="col-md-6"><ul class="list-pro">{$column2}</ul></div></div>';
-		$columnSize    = ceil( sizeof( $deliveryArray ) / 2 );
-		$i             = 0;
-		$column1       = '';
-		$column2       = '';
-		foreach ( $deliveryArray as $deliveryItem ) {
-			if ( $i < $columnSize ) {
-				$column1 .= "<li>$deliveryItem</li>";
-			} else {
-				$column2 .= "<li>$deliveryItem</li>";
+		foreach ( $customItemObject as $key => $value ) {
+			if ( preg_match( '/(List:)/', $value ) ) {
+				$value = str_replace( "List:", "", $value );
+				$list  = explode( "*", $value );
+
+				$HtmlListWide   = '<div class="row"><div class="col-md-6"><ul>{$column1}</ul></div><div class="col-md-6"><ul>{$column2}</ul></div></div>';
+				$HtmlListNarrow = '<div class="row"><div class="col-md-12"><ul>{$columnNarrow}</ul></div></div>';
+				$columnSize     = ceil( sizeof( $list ) / 2 );
+				$i              = 0;
+				$column1        = '';
+				$column2        = '';
+				$columnNarrow   = '';
+				foreach ( $list as $listitem ) {
+					if ( $i < $columnSize ) {
+						$column1 .= "<li>$listitem</li>";
+					} else {
+						$column2 .= "<li>$listitem</li>";
+					}
+					$columnNarrow .= "<li>$listitem</li>";
+					$i ++;
+				}
+				$HtmlListWide   = preg_replace( '/{\$column1}/', $column1, $HtmlListWide );
+				$HtmlListWide   = preg_replace( '/{\$column2}/', $column2, $HtmlListWide );
+				$HtmlListNarrow = preg_replace( '/{\$columnNarrow}/', $columnNarrow, $HtmlListNarrow );
+
+				$customItemObject->$key = $HtmlListWide;
+				$newkey                   = $key . "Narrow";
+				$customItemObject->$newkey = $HtmlListNarrow;
 			}
-			$i ++;
 		}
-		$deliveryHtml = preg_replace( '/{\$column1}/', $column1, $deliveryHtml );
-		$deliveryHtml = preg_replace( '/{\$column2}/', $column2, $deliveryHtml );
-		$customItemObject->ScopeOfDelivery = $deliveryHtml;
 
 		/**
 		 * =Convert bool values to checkbox
@@ -321,10 +359,12 @@ class ApdCustomItem {
 		$i = 0;
 		foreach ( $customItemObject as $key => $item ) {
 
-			$fieldType = $tableInfo[ $i ++ ]['Type'];
+			$fieldType = $tableinfo[ $i ++ ]['Type'];
 
 			if ( type_is_boolean( $fieldType ) ) {
 
+				krumo($item);
+				krumo(field_is_true( $item ));
 				if ( field_is_true( $item ) ) {
 					$customItemObject->$key = '<i class="check"></i>';
 				} else if ( field_is_false( $item ) ) {

@@ -287,21 +287,9 @@ class ApdCore {
 			$tpl = $html;
 
 			$apdCustomItem = new ApdCustomItem( $asin );
-			$tablename     = $apdCustomItem->getItemTable();
-			$database      = new ApdDatabase( $tablename );
-
-			$dbPlaceholders = $database->getTableColumns( false );
-			$tableInfo      = $database->getTableInfo();
-
-			if ( $dbPlaceholders === false OR $tableInfo === false ) {
-				return false;
-			}
-
-			if ( ! empty( array_duplicates( $dbPlaceholders ) ) ) {
-				$dbPlaceholders = array_remove_duplicates( $dbPlaceholders );
-			}
 
 			$customItemObject = $apdCustomItem->getArrayR();
+			$dbPlaceholders = get_fields($customItemObject);
 
 			if ( ! empty( $customItemObject ) ) {
 
