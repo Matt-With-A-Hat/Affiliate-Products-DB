@@ -311,8 +311,8 @@ class ApdCustomItem {
 			}
 			$i ++;
 		}
-		$deliveryHtml = preg_replace( '{$column1}', $column1, $deliveryHtml );
-		$deliveryHtml = preg_replace( '{$column2}', $column2, $deliveryHtml );
+		$deliveryHtml = preg_replace( '/{\$column1}/', $column1, $deliveryHtml );
+		$deliveryHtml = preg_replace( '/{\$column2}/', $column2, $deliveryHtml );
 		$customItemObject->ScopeOfDelivery = $deliveryHtml;
 
 		/**
