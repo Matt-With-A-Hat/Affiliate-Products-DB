@@ -587,8 +587,6 @@ class ApdDatabase {
 		array_shift( $csvArray );
 
 		$result = true;
-		krumo($csvArray);
-		krumo($csvFieldInfo);
 		foreach ( $csvArray as $keyrow => $csvRow ) {
 			$sql = "UPDATE " . $tablename . " SET ";
 			foreach ( $csvRow as $key => $csvField ) {
@@ -621,11 +619,11 @@ class ApdDatabase {
 	function refineValue( $value, $fieldtype ) {
 		if ( type_is_boolean( $fieldtype ) ) {
 			if ( field_is_true( $value ) ) {
-				$value = 'TRUE';
+				$value = 1;
 			} else if ( field_is_false( $value ) ) {
-				$value = 'FALSE';
+				$value = 0;
 			} else {
-				$value = 'NULL';
+				$value = null;
 			}
 			$value = esc_sql( $value );
 		} else {

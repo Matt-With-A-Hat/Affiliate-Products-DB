@@ -362,9 +362,6 @@ class ApdCustomItem {
 			$fieldType = $tableinfo[ $i ++ ]['Type'];
 
 			if ( type_is_boolean( $fieldType ) ) {
-
-				krumo($item);
-				krumo(field_is_true( $item ));
 				if ( field_is_true( $item ) ) {
 					$customItemObject->$key = '<i class="check"></i>';
 				} else if ( field_is_false( $item ) ) {
