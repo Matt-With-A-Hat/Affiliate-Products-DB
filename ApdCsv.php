@@ -112,7 +112,6 @@ class ApdCsv {
 		$fieldinfo = array();
 
 		$i = 0;
-		krumo( $csvFields );
 		foreach ( $csvFields as $csvField ) {
 			$fieldinfo[ $i ] = array(
 				'Name' => $csvField,
