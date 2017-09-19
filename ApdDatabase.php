@@ -116,45 +116,6 @@ class ApdDatabase {
 	}
 
 	/**
-	 * path to csv file or $_FILE array of csv file
-	 *
-	 * @param $csv
-	 *
-	 * @return array of fields
-	 */
-	public function getCsvFields( $csv ) {
-
-		if ( is_array( $csv ) ) {
-			$csv = $csv['tmp_name'];
-		}
-
-		$file = new SplFileObject( $csv );
-
-		$fileDelimiter = $this->getFileDelimiter( $csv );
-
-		$fields = $file->fgetcsv( $fileDelimiter );
-
-		return $fields;
-
-	}
-
-	/**
-	 * @param $file
-	 *
-	 * @return mixed
-	 */
-	public function getFileDelimiter( $csv ) {
-
-		$file = new SplFileObject( $csv );
-
-		$control   = $file->getCsvControl();
-		$delimiter = $control[0];
-
-		return $delimiter;
-
-	}
-
-	/**
 	 * get all the values from a column or multiple columns
 	 *
 	 * @param null $columns
@@ -610,28 +571,29 @@ class ApdDatabase {
 		if ( is_array( $csv ) ) {
 			$csv = $csv['tmp_name'];
 		}
-		$csvFields = array_remove_tail( $this->getCsvFields( $csv ), "_" );
+		$apdCsv       = new ApdCsv( $csv );
+		$csvFieldInfo = $apdCsv->getFieldInfo( $tablename );
+		$csvFields = array_remove_tail( $apdCsv->getCsvFields(), "_" );
 		$asinIndex = array_search( 'Asin', $csvFields );
 
-		$wpdb        = $this->db;
-		$csv         = new SplFileObject( $csv );
-		$tableFields = $this->getTableColumns();
-		$tableInfo   = $this->getTableInfo();
+		$wpdb = $this->db;
+		$csv  = new SplFileObject( $csv );
 
 		$csv->setFlags( SplFileObject::READ_CSV );
 		$csvArray = array();
 		foreach ( $csv as $row ) {
 			$csvArray[] = $row;
 		}
-
 		array_shift( $csvArray );
 
 		$result = true;
+		krumo($csvArray);
+		krumo($csvFieldInfo);
 		foreach ( $csvArray as $keyrow => $csvRow ) {
 			$sql = "UPDATE " . $tablename . " SET ";
 			foreach ( $csvRow as $key => $csvField ) {
-				$fieldtype  = $tableInfo[ $key + 1 ]['Type'];
-				$columnname = $tableFields[ $key + 1 ];
+				$fieldtype  = $csvFieldInfo[ $key ]['Type'];
+				$columnname = $csvFieldInfo[ $key ]['Name'];
 				$value      = $this->refineValue( $csvField, $fieldtype );
 				$sql .= "$columnname = $value, ";
 			}
@@ -639,6 +601,10 @@ class ApdDatabase {
 			$sql .= " WHERE Asin = " . $this->refineValue( $csvRow[ $asinIndex ], 'text' );
 			$sql .= ";";
 			$result .= $wpdb->query( $sql );
+
+			if ( $csvRow[ $asinIndex ] == 'B006MWDNVI' ) {
+				krumo( $sql );
+			}
 		}
 
 		return $result;
@@ -729,11 +695,10 @@ class ApdDatabase {
 			$csv = $csv['tmp_name'];
 		}
 
-		//@TODO also check if columns already exist in table
-
 		//create table if it doesn't exist yet
 		$new       = false;
-		$csvFields = $this->getCsvFields( $csv );
+		$apdCsv    = new ApdCsv( $csv );
+		$csvFields = $apdCsv->getCsvFields();
 
 		if ( ! $this->tableExists() ) {
 			//create new table if it doesn't exist yet

@@ -142,6 +142,7 @@ require_once APD_LIB_DIR . 'AsaZend/Service/Amazon/SimilarProduct.php';
  */
 require_once( dirname( __FILE__ ) . '/ApdCore.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabase.php' );
+require_once( dirname( __FILE__ ) . '/ApdCsv.php' );
 require_once( dirname( __FILE__ ) . '/ApdDatabaseService.php' );
 require_once( dirname( __FILE__ ) . '/ApdCronjob.php' );
 require_once( dirname( __FILE__ ) . '/ApdCustomerReviews.php' );
