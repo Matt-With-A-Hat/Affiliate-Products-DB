@@ -1,0 +1,94 @@
+<div class="box--normal scope-of-delivery">
+    <h2>Technische Daten</h2>
+    <a class="anchor" id="technische-daten"></a>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="product--box">
+                <div class="product--image-box">
+                    <div class="image--bestseller">{$Promo}</div>
+                    <div class="product--teaser">
+                        <a href="{$AmazonUrl}" title="{$Longname}" target="_blank" rel="nofollow"><img class="image-responsive" src="{$MediumImageUrl}" alt="{$Longname}"></a>
+                        <div class="text-center">
+                            <a class="neat-link" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen" target="_blank" rel="nofollow">{$RatingStars}</a>
+                        </div>
+                        <h3>{$Longname}</h3>
+                        <div class="text-center product--price">
+                            <a class="neat-link" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen" target="_blank" rel="nofollow">{$AmazonPriceFormatted}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="spacing-top-20"></div>
+                <a class="btn btn-apd-default btn-block" target="_self" rel="nofollow" href="{$Permalink}" title="{$Longname} Produktbeschreibung lesen"><span>Produktbeschreibung</span></a>
+                <a class="btn btn-apd-default btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen"><i class="fa fa-amazon"></i><span>zu Amazon<span class="affiliate-hint">*</span></span></a>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <table class="table">
+                <tr>
+                    <th class="category">Abmessungen</th>
+                    <!--<th></th>-->
+                </tr>
+                <tr>
+                    <td>Länge</td>
+                    <td>{$SizeLengthCm} cm</td>
+                </tr>
+                <tr>
+                    <td>Breite</td>
+                    <td>{$SizeWidthCm} cm</td>
+                </tr>
+                <tr>
+                    <td>Höhe</td>
+                    <td>{$SizeHeightCm} cm</td>
+                </tr>
+                <tr>
+                    <td>Gewicht</td>
+                    <td>{$WeightKg} Kg</td>
+                </tr>
+                <tr>
+                    <td>Lautstärke</td>
+                    <td>{$LoudnessDb} dB</td>
+                </tr>
+            </table>
+            <table class="table">
+                <tr>
+                    <th class="category">Mähwerk</th>
+                    <!--<th></th>-->
+                </tr>
+                <tr>
+                    <td>Arbeitsleistung</td>
+                    <td>{$SurfaceArea} &plusmn; 20%</td>
+                </tr>
+                <tr>
+                    <td>Stromverbrauch</td>
+                    <td>k.A.</td>
+                </tr>
+                <tr>
+                    <td>Schnitthöhe</td>
+                    <td>{$CuttingHeightMinMm} - {$CuttingHeightMaxMm} cm</td>
+                </tr>
+                <tr>
+                    <td>Schnittbreite</td>
+                    <td>{$CuttingWidthCm} cm</td>
+                </tr>
+            </table>
+            <table class="table">
+                <tr>
+                    <th class="category">Batterie</th>
+                    <!--<th></th>-->
+                </tr>
+                <tr>
+                    <td>Typ</td>
+                    <td>{$PowerSource}</td>
+                </tr>
+                <tr>
+                    <td>Laufzeit</td>
+                    <td>{$RunTimeText}</td>
+                </tr>
+                <tr>
+                    <td>Ladezeit</td>
+                    <td>{$ChargingTimeText}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

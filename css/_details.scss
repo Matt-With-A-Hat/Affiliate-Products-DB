@@ -4,7 +4,7 @@
 * --------------------------------------------------------------
 */
 .affiliate-products-db {
-    
+  
   .vcenter {
     display: inline-block;
     vertical-align: middle;
@@ -39,7 +39,6 @@
   //  margin-top: 10px;
   //  margin-bottom: 10px;
   //}
-  
   
   /**
   * --------------------------------------------------------------
@@ -239,7 +238,7 @@
   
   .tab-pane.details {
     .row {
-      table{
+      table {
         margin-bottom: 0;
         tr.category {
           background: $gray-2;
@@ -248,7 +247,7 @@
             font-family: inherit;
           }
         }
-  
+        
         tr {
           td:nth-child(3) {
             font-family: monospace;
@@ -268,8 +267,11 @@
   }
   
   .detailed-rating-row {
-    .row {
+    > .row {
       margin-top: 30px;
+      .progress-bars {
+        margin-top: 22px;
+      }
       .progress {
         margin-bottom: 0;
         
@@ -283,10 +285,10 @@
     }
   }
   
-  .reviews-box{
+  .reviews-box {
     
   }
-  .manufacturer-box{
+  .manufacturer-box {
     
   }
 }

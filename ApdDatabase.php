@@ -599,10 +599,6 @@ class ApdDatabase {
 			$sql .= " WHERE Asin = " . $this->refineValue( $csvRow[ $asinIndex ], 'text' );
 			$sql .= ";";
 			$result .= $wpdb->query( $sql );
-
-			if ( $csvRow[ $asinIndex ] == 'B006MWDNVI' ) {
-				krumo( $sql );
-			}
 		}
 
 		return $result;

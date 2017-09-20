@@ -318,11 +318,11 @@ class ApdCustomItem {
 //		}
 //		$customItemObject->Disadvantages = $disadvantagesHtml;
 
-		/**
-		 * =Reformat list values
-		 * creates two adjacent columns in bootstrap
-		 */
 		foreach ( $customItemObject as $key => $value ) {
+			/**
+			 * =Reformat list values
+			 * creates two adjacent columns in bootstrap
+			 */
 			if ( preg_match( '/(List:)/', $value ) ) {
 				$value = str_replace( "List:", "", $value );
 				$list  = explode( "*", $value );
@@ -347,11 +347,19 @@ class ApdCustomItem {
 				$HtmlListWide   = preg_replace( '/{\$column2}/', $column2, $HtmlListWide );
 				$HtmlListNarrow = preg_replace( '/{\$columnNarrow}/', $columnNarrow, $HtmlListNarrow );
 
-				$customItemObject->$key = $HtmlListWide;
-				$newkey                   = $key . "Narrow";
+				$customItemObject->$key    = $HtmlListWide;
+				$newkey                    = $key . "Narrow";
 				$customItemObject->$newkey = $HtmlListNarrow;
 			}
+
+			/**
+			 * =Reformat english digit format to german
+			 */
+//			if ( preg_match( "/[0-9]{1,9}\.[0-9]{1,9}/", $value ) ) {
+//				$customItemObject->$key = preg_replace( "/\./", ",", $value );
+//			}
 		}
+
 
 		/**
 		 * =Convert bool values to checkbox

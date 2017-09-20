@@ -53,26 +53,26 @@
 					<div class="row">
 						<div class="col-md-6">
 							<label for="categories">Category
-<!--								<small>(seperate with comma)</small>-->
+								<!--								<small>(seperate with comma)</small>-->
 							</label>
 							<select class="form-control" id="categories" name="categories">>
 								<option value=""></option>
 								<?php
 								$databaseService = new ApdDatabaseService();
-								$categories = $databaseService->getPostCategories();
-								foreach ( $categories as $category) {
+								$categories      = $databaseService->getPostCategories();
+								foreach ( $categories as $category ) {
 									echo "<option value='$category->cat_ID'>$category->cat_name</option>";
 								}
 								?>
 							</select>
-<!--							<input type="text" class="form-control" id="categories" name="categories">-->
+							<!--							<input type="text" class="form-control" id="categories" name="categories">-->
 						</div>
 						<div class="col-md-6"></div>
 					</div>
 					<div class="row">
 						<div class="col-md-12">
 							<label for="content">Default content</label>
-							<textarea class="form-control" rows="5" id="content" name="content">[apd-tpl details]{$Asin}[/apd-tpl]</textarea>
+							<textarea class="form-control" rows="20" id="content" name="content"><?= file_get_contents(APD_PLUGIN_PATH . "/inc/tpl/default-post-content.html"); ?></textarea>
 						</div>
 					</div>
 				</div>

@@ -35,21 +35,21 @@ class BestsellerWidget extends WP_Widget {
 //		krumo( $bestseller );
 
 		?>
-		<div class="widget--box">
+		<div class="product--box">
 			<?= $title; ?>
-			<div class="widget--image-box">
+			<div class="product--image-box">
 				<div class="image--bestseller"><?= $bestseller->Promo; ?></div>
-				<div class="widget--image">
+				<div class="product--teaser">
 					<a href="<?= $bestseller->AmazonUrl; ?>" title="<?= $bestseller->Longname; ?>" target="_blank" rel="nofollow"><img class="image-responsive" src="<?= $bestseller->MediumImageUrl; ?>" alt="<?= $bestseller->Longname; ?>"></a>
 					<div class="text-center">
 						<a class="neat-link" href="<?= $bestseller->AmazonUrl; ?>" title="<?= $bestseller->Longname; ?> auf Amazon ansehen" target="_blank" rel="nofollow"><?= $bestseller->RatingStars; ?></a>
 					</div>
-					<div class="text-center widget--price">
+					<div class="text-center product--price">
 						<a class="neat-link" href="<?= $bestseller->AmazonUrl; ?>" title="<?= $bestseller->Longname; ?> auf Amazon ansehen" target="_blank" rel="nofollow"><?= $bestseller->AmazonPriceFormatted; ?></a>
 					</div>
 				</div>
 			</div>
-			<div class="widget--text">
+			<div class="product--text">
 				<ul class="list-pro">
 					<?= $bestseller->AdvantagesNarrow; ?>
 				</ul>
