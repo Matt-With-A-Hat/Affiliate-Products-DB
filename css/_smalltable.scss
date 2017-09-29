@@ -59,13 +59,6 @@
     
     tbody {
       tr {
-        &:nth-child(odd) {
-          background: white;
-        }
-        &:nth-child(even) {
-          background: $gray-2;
-        }
-        
         td {
           position: relative;
           
@@ -84,7 +77,9 @@
         td {
           padding-top: 55px;
           img {
-            max-width: 100px;
+            //max-width: 100px;
+            width: 80%;
+            height: 80%;
           }
         }
       }

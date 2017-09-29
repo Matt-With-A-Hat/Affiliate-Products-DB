@@ -350,7 +350,7 @@ class ApdCore {
 						$manufacturerLogo = get_template_directory_uri()."/img/logos/wolf-logo.png";
 						break;
 					case "Robomow":
-						$manufacturerDescription = "";
+						$manufacturerDescription = "Das israelische Unternehmen Friendly Robotics, welches 1995 in Israel gegründet wurde, hat sich auf die Herstellungen der Rasenmähroboter spezialisiert. Bekannt sind sie durch ihre Robomow Mähroboter Reihe geworden.";
 						$manufacturerLogo = get_template_directory_uri()."/img/logos/robomow-logo.png";
 						break;
 					case "Worx":
