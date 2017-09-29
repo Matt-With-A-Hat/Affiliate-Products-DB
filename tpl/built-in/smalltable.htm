@@ -1,4 +1,4 @@
-<div class="affiliate-products-db smalltable">
+<div class="affiliate-products-db smalltable table--products">
     <div class="table-responsive">
         <table class="table">
             <thead>
@@ -34,6 +34,15 @@
                     </td>
                     {loop-end}
                 </tr>
+                <tr class="price">
+                    <td>Preis</td>
+                    {loop-start}
+                    <td class="text-center {$PromoClass}">
+                        <span><a class="neat-link" href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">EUR {$AmazonPrice}<span class="affiliate-hint">*</span></a><br></span>
+                        <small>inkl. 19% gesetzlicher MwSt.</small>
+                    </td>
+                    {loop-end}
+                </tr>
                 <tr>
                     <td>Gesamt-Note</td>
                     {loop-start}
@@ -47,15 +56,6 @@
                     <td>Amazon Bewertung</td>
                     {loop-start}
                     <td class="text-center {$PromoClass}">{$RatingStars}</td>
-                    {loop-end}
-                </tr>
-                <tr class="price">
-                    <td>Preis</td>
-                    {loop-start}
-                    <td class="text-center {$PromoClass}">
-                        <span><a class="neat-link" href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">EUR {$AmazonPrice}<span class="affiliate-hint">*</span></a><br></span>
-                        <small>inkl. 19% gesetzlicher MwSt.</small>
-                    </td>
                     {loop-end}
                 </tr>
                 <tr>

@@ -44,6 +44,7 @@ class BestsellerWidget extends WP_Widget {
 					<div class="text-center">
 						<a class="neat-link" href="<?= $bestseller->AmazonUrl; ?>" title="<?= $bestseller->Longname; ?> auf Amazon ansehen" target="_blank" rel="nofollow"><?= $bestseller->RatingStars; ?></a>
 					</div>
+					<a class="neat-link" href="<?= $bestseller->Permalink;?>" title="<?= $bestseller->Longname;?> Produktbeschreibung lesen"><h3><?= $bestseller->Longname;?></h3></a>
 					<div class="text-center product--price">
 						<a class="neat-link" href="<?= $bestseller->AmazonUrl; ?>" title="<?= $bestseller->Longname; ?> auf Amazon ansehen" target="_blank" rel="nofollow"><?= $bestseller->AmazonPriceFormatted; ?></a>
 					</div>

@@ -516,10 +516,6 @@ th {
     border-bottom: 2px solid #5bc0de; }
   .affiliate-products-db.smalltable table thead {
     display: none; }
-  .affiliate-products-db.smalltable table tbody tr:nth-child(odd) {
-    background: white; }
-  .affiliate-products-db.smalltable table tbody tr:nth-child(even) {
-    background: #ddd; }
   .affiliate-products-db.smalltable table tbody tr td {
     position: relative; }
     .affiliate-products-db.smalltable table tbody tr td .infobox-thumbnail {
@@ -530,7 +526,8 @@ th {
   .affiliate-products-db.smalltable table tbody tr.image td {
     padding-top: 55px; }
     .affiliate-products-db.smalltable table tbody tr.image td img {
-      max-width: 100px; }
+      width: 80%;
+      height: 80%; }
   .affiliate-products-db.smalltable table tbody tr.amazon-buttons a.btn {
     margin-top: 10px;
     margin-bottom: 10px; }
