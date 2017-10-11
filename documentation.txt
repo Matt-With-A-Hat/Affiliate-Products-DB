@@ -1,0 +1,1 @@
+[apd-tpl <template> [<title>]]<asin>[/apd-tpl]

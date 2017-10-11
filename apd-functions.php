@@ -42,14 +42,14 @@ function path_for_local( $path ) {
  * return the rendered product template
  *
  * @param string $asin
- * @param bool $tpl
+ * @param bool $atts
  *
  * @return string
  */
-function apd_get_item( $asin, $tpl = false ) {
+function apd_get_item( $asin, $atts = false ) {
 	global $apdCore;
 
-	return $apdCore->getElement( $asin, $tpl );
+	return $apdCore->getElement( $asin, $atts );
 }
 
 /**
@@ -128,23 +128,13 @@ function apd_shortcode_handler( $atts, $asin = null ) {
 		return false;
 	}
 
-	if ( count( $atts ) < 1 ) {
-		if ( APD_DEBUG ) {
-			echo "Missing attribute in shortcode: $asin<br>";
-		}
-
-		return false;
-	} else {
-		$tpl = $atts[0];
-	}
-
 	//catch asin arrays
 	$allowedDelimiters = "/[ ,;]/";
 	if ( preg_match( $allowedDelimiters, $asin ) ) {
 		$asin = preg_split( $allowedDelimiters, $asin );
 	}
 
-	return apd_get_item( $asin, $tpl );
+	return apd_get_item( $asin, $atts );
 }
 
 /**
@@ -384,7 +374,7 @@ function get_fields( $item ) {
 		foreach ( $item as $key => $field ) {
 			$result[] = $key;
 		}
-	} else{
+	} else {
 		return false;
 	}
 

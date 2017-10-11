@@ -38,7 +38,7 @@ class BestsellerWidget extends WP_Widget {
 		<div class="product--box">
 			<?= $title; ?>
 			<div class="product--image-box">
-				<div class="image--bestseller"><?= $bestseller->Promo; ?></div>
+				<div class="image--promotion-widget"><?= $bestseller->Promo; ?></div>
 				<div class="product--teaser">
 					<a href="<?= $bestseller->AmazonUrl; ?>" title="<?= $bestseller->Longname; ?>" target="_blank" rel="nofollow"><img class="image-responsive" src="<?= $bestseller->MediumImageUrl; ?>" alt="<?= $bestseller->Longname; ?>"></a>
 					<div class="product--amazon-rating text-center">

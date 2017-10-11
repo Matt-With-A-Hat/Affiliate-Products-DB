@@ -166,23 +166,32 @@ class ApdCore {
 	 * Gets an element specified by the supplied asin, template and tablename.
 	 *
 	 * @param $asin
-	 * @param bool $tpl
+	 * @param $atts
 	 *
 	 * @return string
 	 */
-	public function getElement( $asin, $tpl = false ) {
+	public function getElement( $asin, $atts ) {
 		$item_html = '';
 
-		if ( $tpl == false ) {
-			$tpl = 'sidebar_item';
+		$count = count( $atts );
+		if ( $count < 1 ) {
+			if ( APD_DEBUG ) {
+				echo "Missing attribute in shortcode: $asin<br>";
+			}
+
+			return false;
+		} else if ( $count < 2 ) {
+			$tpl_src = $this->getTpl( $atts[0] );
+		} else if ( $count < 3 ) {
+			$tpl_src = $this->getTpl( $atts[0] );
+			array_shift( $atts );
 		}
 
-		$tpl_src = $this->getTpl( $tpl );
 
 		if ( is_string( $asin ) ) {
-			$item_html .= $this->parseTpl( $tpl_src, $asin );
+			$item_html .= $this->parseTpl( $tpl_src, $asin, $atts );
 		} elseif ( is_array( $asin ) ) {
-			$item_html .= $this->parseMultiTpl( $tpl_src, $asin );
+			$item_html .= $this->parseMultiTpl( $tpl_src, $asin, $atts );
 		}
 
 		return $item_html;
@@ -248,12 +257,16 @@ class ApdCore {
 	 *
 	 * @param $asin
 	 * @param $tpl
+	 * @param $atts
 	 *
 	 * @return string
 	 */
-	public function parseTpl( $tpl, $asin = null ) {
+	public function parseTpl( $tpl, $asin = null, $atts = null ) {
 
-		$html = '';
+		$html = $tpl;
+		//--------------------------------------------------------------
+		//=refine attributes
+		//--------------------------------------------------------------
 
 		if ( ! empty( $asin ) ) {
 
@@ -289,7 +302,7 @@ class ApdCore {
 			$apdCustomItem = new ApdCustomItem( $asin );
 
 			$customItemObject = $apdCustomItem->getArrayR();
-			$dbPlaceholders = get_fields($customItemObject);
+			$dbPlaceholders   = get_fields( $customItemObject );
 
 			if ( ! empty( $customItemObject ) ) {
 
@@ -299,6 +312,23 @@ class ApdCore {
 
 			}
 		}
+
+		//--------------------------------------------------------------
+		// =replace with attributes
+		//--------------------------------------------------------------
+
+		$tpl = $html;
+
+		$placeholders = array(
+			'AttributeTitle'
+		);
+		$placeholders = $this->getTplPlaceholders( $placeholders, true );
+
+		$replace = array(
+			$atts[0] = str_replace( "-", " ", $atts[0] )
+		);
+
+		$html = preg_replace( $placeholders, $replace, $tpl );
 
 		//--------------------------------------------------------------
 		// =replace with custom information
@@ -328,34 +358,34 @@ class ApdCore {
 		 */
 //		@todo get this from database and implement backend area where manufacturers can be added
 		$manufacturerDescription = '';
-		$manufacturerLogo = '';
+		$manufacturerLogo        = '';
 		if ( ! empty( $asin ) ) {
 			$customItemObject = ( new ApdCustomItem( $asin ) )->getObjectR();
 			if ( ! empty( $manufacturer = $customItemObject->Manufacturer ) ) {
 				switch ( $manufacturer ) {
 					case "Gardena":
 						$manufacturerDescription = "Wie die meisten Hersteller von Gartengeräten hat auch die Firma Gardena seit einiger Zeit mehrere Rasenroboter in ihrem Sortiment. Die Firma Gardena ist seit 2006 ein Tochterunternehmen der schwedischen Husqvarna-Gruppe und profitiert dadurch von deren langjähriger Erfahrung bezüglich autonomer Rasenroboter.";
-						$manufacturerLogo = get_template_directory_uri()."/img/logos/gardena-logo.png";
+						$manufacturerLogo        = get_template_directory_uri() . "/img/logos/gardena-logo.png";
 						break;
 					case "Husqvarna":
 						$manufacturerDescription = "Die schwedische Firma Husqvarna (Husqvarna Group) ist ein Hersteller von Motorgeräten für die Forstwirtschaft sowie Garten und Landschaftspflege. Dazu zählen Motorsägen und Schneidgerade wie auch Diamantwerkzeuge für das Baugewerbe und die Steinindustrie. Außerdem gilt Husqvarna als Pionier auf dem Gebiet der autonomen Rasenroboter.";
-						$manufacturerLogo = get_template_directory_uri()."/img/logos/husqvarna-logo.png";
+						$manufacturerLogo        = get_template_directory_uri() . "/img/logos/husqvarna-logo.png";
 						break;
 					case "Bosch":
 						$manufacturerDescription = "Die Robert Bosch GmbH ist ein im Jahr 1886 gegründetes multinationales deutsches Unternehmen. Bekannt als Automobilzulieferer, Hersteller von Elektrowerkzeugen und Haushaltsgeräten, produziert Bosch seit einigen Jahren erfolgreich die Indego Mähroboter Reihe.";
-						$manufacturerLogo = get_template_directory_uri()."/img/logos/bosch-logo.png";
+						$manufacturerLogo        = get_template_directory_uri() . "/img/logos/bosch-logo.png";
 						break;
 					case "Wolf":
 						$manufacturerDescription = "Das Unternehmen Wolf wurde ursprünglich 1922 gegründet und wurde 2009 durch MTD Products übernommen. Der Mutterkonzern MTD Inc. gilt nach eigenen Angaben als weltweit größter Hersteller von Motorgartengeräten. Dieses Know-How kommt ihrer Robo-Scooter Reihe zugute, welche durch ihre durchweg guten Bewertungen glänzen.";
-						$manufacturerLogo = get_template_directory_uri()."/img/logos/wolf-logo.png";
+						$manufacturerLogo        = get_template_directory_uri() . "/img/logos/wolf-logo.png";
 						break;
 					case "Robomow":
 						$manufacturerDescription = "Das israelische Unternehmen Friendly Robotics, welches 1995 in Israel gegründet wurde, hat sich auf die Herstellungen der Rasenmähroboter spezialisiert. Bekannt sind sie durch ihre Robomow Mähroboter Reihe geworden.";
-						$manufacturerLogo = get_template_directory_uri()."/img/logos/robomow-logo.png";
+						$manufacturerLogo        = get_template_directory_uri() . "/img/logos/robomow-logo.png";
 						break;
 					case "Worx":
 						$manufacturerDescription = "WORX ist eine Rasen- und Gartengerätereihe, die von der chinesischen Firma Positec Tool Corporation produziert und vertrieben wird. Gegründet wurde die Firma in Suzhou, China, jedoch liegt der Hauptsitz in Charlotte, North Carolina, USA. WORX wird unter anderem für große Einzelhandelskette wie Canadian Tire, Costco und Walmart vertrieben.";
-						$manufacturerLogo = get_template_directory_uri()."/img/logos/worx-logo.png";
+						$manufacturerLogo        = get_template_directory_uri() . "/img/logos/worx-logo.png";
 						break;
 				}
 			}
@@ -367,9 +397,6 @@ class ApdCore {
 			$manufacturerDescription,
 			$manufacturerLogo
 		);
-
-//		krumo( $placeholders );
-//		krumo( $replace );
 
 		$html = preg_replace( $placeholders, $replace, $tpl );
 
@@ -385,7 +412,7 @@ class ApdCore {
 	 *
 	 * @return string
 	 */
-	public function parseMultiTpl( $tpl, array $asins ) {
+	public function parseMultiTpl( $tpl, array $asins, $atts ) {
 
 		$html       = '';
 		$codeBlocks = $this->divideTemplateIntoBlocks( $tpl );
@@ -403,11 +430,11 @@ class ApdCore {
 			if ( $blockType == 'loop' ) {
 				$loopHtml = '';
 				foreach ( $asins as $asin ) {
-					$loopHtml .= $this->parseTpl( $blockHtml, $asin );
+					$loopHtml .= $this->parseTpl( $blockHtml, $asin, $atts );
 				}
 				$blockHtml = $loopHtml;
 			} else {
-//				$blockHtml = $this->parseTpl( $blockHtml );     //produces DOM bug
+				$blockHtml = $this->parseTpl( $blockHtml, null, $atts );
 			}
 
 			$html .= $blockHtml;
