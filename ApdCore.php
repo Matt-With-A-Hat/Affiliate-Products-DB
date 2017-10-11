@@ -280,7 +280,8 @@ class ApdCore {
 			$amazonItemArray = $amazonCacheItem->getArrayN();
 
 			//if Amazon cache doesn't return anything, get the data directly from Amazon API
-			if ( $amazonItemArray[1] === null ) {
+			//@todo throttle error occurs too often. In case of throttle error, cache should be used
+			if ( $amazonItemArray === null ) {
 				$amazonItem      = new ApdAmazonItem( $this->amazonWbs, $asin );
 				$amazonItemArray = $amazonItem->getArray();
 			}
