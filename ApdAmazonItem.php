@@ -84,7 +84,12 @@ class ApdAmazonItem extends ApdAmazonCache {
 		$amazonObject    = $this->object;
 		$amazonCacheItem = ( new ApdAmazonCacheItem( $amazonObject->ASIN ) )->getObject();
 
-		if ( $amazonObject instanceof AsaZend_Service_Amazon_Item ) {
+		if ( $amazonObject ) {
+
+			if ( ! $amazonObject instanceof AsaZend_Service_Amazon_Item ) {
+				$error = "Item is not an Amazon item";
+				print_error( $error, __METHOD__, __LINE__ );
+			}
 
 			// get the customer rating object
 			$customerReviews = $this->getCustomerReviews( $amazonObject );
@@ -188,9 +193,13 @@ class ApdAmazonItem extends ApdAmazonCache {
 				$AmazonAvailability = APD_EMPTY_AVAILABILITY_TEXT;
 			};
 
+			if ( $amazonCacheItem->Asin == 'B00QRNHGAG' ) {
+				krumo( $customerReviews->averageRating );
+			}
+
 			/* =make Amazon Stars prettier */
 			$ratingStarsHtml = '<span class="amazon-stars">';
-			$numberStars     = $customerReviews->averageRating;
+			$numberStars     = ( $customerReviews->averageRating ) ? $customerReviews->averageRating : 0;
 			$fullStar        = '<i class="fa fa-star"></i>';
 			$halfStar        = '<i class="fa fa-star-half-o"></i>';
 			$emptyStar       = '<i class="fa fa-star-o"></i>';
@@ -211,7 +220,7 @@ class ApdAmazonItem extends ApdAmazonCache {
 			$ratingStarsHtml .= "</span>";
 
 			/* =catch empty AmazonPrice values */
-			if ( empty($amazonPriceFormatted) ) {
+			if ( empty( $amazonPriceFormatted ) ) {
 				$amazonPriceFormatted = APD_EMPTY_PRICE_TEXT;
 			}
 
@@ -225,7 +234,7 @@ class ApdAmazonItem extends ApdAmazonCache {
 
 			$percentageSaved = $amazonObject->PercentageSaved;
 
-			$no_img_url = apd_plugins_url( 'img/no_image.png', __FILE__ );
+			$no_img_url = apd_plugins_url( 'img/no-image.png', __FILE__ );
 
 			$amazonItemArray = array(
 				$amazonObject->ASIN,
@@ -303,7 +312,7 @@ class ApdAmazonItem extends ApdAmazonCache {
 			return $amazonItemArray;
 
 		} else {
-			$error = "Item is not an Amazon item";
+			$error = "Item does not exist";
 			print_error( $error, __METHOD__, __LINE__ );
 
 			return $error;

@@ -122,7 +122,7 @@ function field_is_null( $field ) {
  * @internal param string $code
  *
  */
-function apd_shortcode_handler( $atts, $asin = null ) {
+function apd_tpl_handler( $atts, $asin = null ) {
 
 	if ( $atts[2] === 'disabled' ) {
 		return false;
@@ -135,6 +135,60 @@ function apd_shortcode_handler( $atts, $asin = null ) {
 	}
 
 	return apd_get_item( $asin, $atts );
+}
+
+/**
+ * groups a number of shortcodes and puts it in a box with tabs
+ *
+ * @param $atts
+ * @param $shortcodes
+ *
+ * @return mixed|string
+ */
+function apd_group_handler( $atts, $shortcodes ) {
+	preg_match_all( '/\[apd-tpl(.)*\]/', $shortcodes, $matches );
+	$html       = '';
+	$htmlBefore = '<div class="products-box"><div class="tabs"><ul class="nav nav-tabs">';
+	$htmlAfter  = '</div></div>';
+
+	$i = 0;
+	foreach ( $matches[0] as $match ) {
+		$box = do_shortcode( $match, true );
+		$html .= str_replace( '<br />', '', $box ); //remove unnecessary <br> tags at beginning and end of box that come from WP
+		$atts    = get_shortcode_atts( $match );
+		$titleId = $atts[1];
+		$title   = str_replace( '-', ' ', $titleId );
+		if ( $i == 0 ) {
+			$tablink = "tablink active";
+		} else {
+			$tablink = "tablink";
+		}
+		$htmlBefore .= "<li class='" . $tablink . "' data-toggle='$titleId'><a>$title</a></li>";
+		$i ++;
+	}
+	$htmlBefore .= '</ul>';
+
+	$html = preg_replace( '/active tab-content/', 'tab-content', $html );
+	$html = preg_replace( '/tab-content/', 'active tab-content', $html, 1 );
+
+	$html = $htmlBefore . $html . $htmlAfter;
+
+	return $html;
+}
+
+/**
+ * get the attributes of a shortcode with content
+ *
+ * @param $shortcode
+ *
+ * @return array
+ */
+function get_shortcode_atts( $shortcode ) {
+	preg_match( '/\[apd-tpl([^\]])*/', $shortcode, $match );
+	$atts = explode( ' ', $match[0] );
+	array_shift( $atts );
+
+	return $atts;
 }
 
 /**

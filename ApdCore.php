@@ -280,7 +280,7 @@ class ApdCore {
 			$amazonItemArray = $amazonCacheItem->getArrayN();
 
 			//if Amazon cache doesn't return anything, get the data directly from Amazon API
-			if ( $amazonItemArray === null ) {
+			if ( $amazonItemArray[1] === null ) {
 				$amazonItem      = new ApdAmazonItem( $this->amazonWbs, $asin );
 				$amazonItemArray = $amazonItem->getArray();
 			}
@@ -320,12 +320,14 @@ class ApdCore {
 		$tpl = $html;
 
 		$placeholders = array(
+			'AttributeTitleId',
 			'AttributeTitle'
 		);
 		$placeholders = $this->getTplPlaceholders( $placeholders, true );
 
 		$replace = array(
-			$atts[0] = str_replace( "-", " ", $atts[0] )
+			$rep[0] = $atts[0],
+			$rep[1] = str_replace( "-", " ", $atts[0] )
 		);
 
 		$html = preg_replace( $placeholders, $replace, $tpl );

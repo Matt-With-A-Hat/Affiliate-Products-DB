@@ -3,8 +3,9 @@
 update_option( '_asa_get_rating_alternative', 2 );
 
 // register shortcode handlers
-add_shortcode( 'apd-tpl', 'apd_shortcode_handler' );
-add_shortcode( 'apd-data', 'apd_shortcode_handler' );
+add_shortcode( 'apd-tpl', 'apd_tpl_handler' );
+add_shortcode( 'apd-group', 'apd_group_handler' );
+add_shortcode( 'apd-data', 'apd_tpl_handler' );
 
 /**
  * Hook for adding admin menus
@@ -102,7 +103,7 @@ function handle_upload_form() {
 			} else if ( $result === 2 ) {
 				$answer['text']    = "Existing table <strong><em>\"$tablename\"</em></strong> was <strong>replaced</strong> with new one (debug mode).";
 				$answer['success'] = 'alert-success';
-			}else if($result ===3){
+			} else if ( $result === 3 ) {
 				$answer['text']    = "Existing table <strong><em>\"$tablename\"</em></strong> has been <strong>updated</strong> with content from CSV file.";
 				$answer['success'] = 'alert-success';
 			} else {

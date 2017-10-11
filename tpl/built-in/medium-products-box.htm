@@ -1,4 +1,4 @@
-<div class="medium-products-box">
+<div id="{$AttributeTitleId}" class="medium-products-box active tab-content">
     <h3>{$AttributeTitle}</h3>
     <div class="row">
         {loop-start}
@@ -14,13 +14,12 @@
                             <a class="neat-link" href="{$AmazonUrl}" title="{$Longname}" target="_blank" rel="nofollow">{$RatingStars}</a>
                         </div>
                         <a class="neat-link" href="{$Permalink}" title="{$Longname} Produktbeschreibung lesen"><h4 class="text-center">{$Longname}</h4></a>
-                        <div class="text-center product--price">
-                            <a class="neat-link" href="{$AmazonUrl}" title="Gardena R40Li auf Amazon ansehen" target="_blank" rel="nofollow">{$AmazonPrice}</a>
-                        </div>
-                        <div class="image--promotion">{$Promo}</div>
                     </div>
                 </div>
-                <a class="btn btn-apd-default btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen"><i class="fa fa-amazon"></i><span>zu Amazon<span class="affiliate-hint">*</span></span></a>
+                <div class="text-center product--price">
+                    <a class="neat-link" href="{$AmazonUrl}" title="Gardena R40Li auf Amazon ansehen" target="_blank" rel="nofollow">EUR {$AmazonPrice}</a>
+                    <a class="btn btn-apd-default btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen"><i class="fa fa-amazon"></i><span>zu Amazon<span class="affiliate-hint">*</span></span></a>
+                </div>
             </div>
         </div>
         {loop-end}
