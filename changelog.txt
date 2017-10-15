@@ -1,3 +1,11 @@
+= 0.1.9 =
+updating of tables through uploading CSVs is now possible, even with adding new columns
+new templates medium-products-box, scope-of-delivery and many more
+new shortcode [apd-group] for grouping templates in tab boxes
+design improvement
+new item attributes
+manufacturer description in details template
+
 = 0.1.8 =
 @Matt
 implemented cronjob that checks database consistency. If core tables are missing, because they have been deleted accidentally, they will be added again
