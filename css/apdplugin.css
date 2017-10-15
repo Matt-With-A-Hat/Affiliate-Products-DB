@@ -527,7 +527,8 @@ th {
     padding-top: 55px; }
     .affiliate-products-db.smalltable table tbody tr.image td img {
       width: 80%;
-      height: 80%; }
+      height: 80%;
+      margin: 0 auto; }
   .affiliate-products-db.smalltable table tbody tr.amazon-buttons a.btn {
     margin-top: 10px;
     margin-bottom: 10px; }

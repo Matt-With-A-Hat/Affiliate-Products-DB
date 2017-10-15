@@ -343,7 +343,8 @@ class ApdCore {
 		$placeholders = array(
 			'AutomowerModels',
 			'ManufacturerDescription',
-			'ManufacturerLogo'
+			'ManufacturerLogo',
+			'Time'
 		);
 
 		/**
@@ -358,7 +359,7 @@ class ApdCore {
 		}
 
 		/**
-		 * =Manufacturer description
+		 * =Manufacturer description and logo
 		 */
 //		@todo get this from database and implement backend area where manufacturers can be added
 		$manufacturerDescription = '';
@@ -395,11 +396,17 @@ class ApdCore {
 			}
 		}
 
+		/**
+		 * =Time
+		 */
+		$time = time();
+
 		$placeholders = $this->getTplPlaceholders( $placeholders, true );
 		$replace      = array(
 			$automowerModelsHtml,
 			$manufacturerDescription,
-			$manufacturerLogo
+			$manufacturerLogo,
+			$time
 		);
 
 		$html = preg_replace( $placeholders, $replace, $tpl );

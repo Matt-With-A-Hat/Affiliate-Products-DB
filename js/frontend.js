@@ -14,12 +14,12 @@ jQuery(document).ready(function ($) {
     $('.tablink').click(function () {
         $tabs = $(this).closest('.products-box').find('.tablink');
         $tabcontent = $(this).closest('.products-box').find('.tab-content');
-        console.log($tabcontent);
-
         $(this).addClass('active');
+
         id = $(this).data('toggle');
+        $activetab = $(this).closest('.products-box').find('#' + id);
         $tabs.not($(this)).removeClass('active');
         $tabcontent.removeClass('active');
-        $('#' + id).addClass('active');
+        $activetab.addClass('active');
     });
 });
