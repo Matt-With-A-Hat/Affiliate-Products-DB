@@ -20,8 +20,8 @@ add_action( 'admin_menu', 'setupBackendMenu' );
  * include frontend stylesheets
  */
 function add_apd_stylesheets() {
-	wp_enqueue_style( 'apdplugin', plugins_url( '/css/apdplugin.css', __FILE__ ) );
-	wp_enqueue_style( 'font-awesome', plugins_url( '/css/font-awesome.min.css', __FILE__ ) );
+	wp_enqueue_style( 'apdplugin', plugins_url( '/css/apdplugin.css', __FILE__ ), array(), APD_PLUGIN_VERSION );
+	wp_enqueue_style( 'font-awesome', plugins_url( '/css/font-awesome.min.css', __FILE__ ), array(), APD_PLUGIN_VERSION );
 }
 
 add_action( 'wp_enqueue_scripts', 'add_apd_stylesheets' );
@@ -31,8 +31,8 @@ add_action( 'wp_enqueue_scripts', 'add_apd_stylesheets' );
  */
 function add_apd_admin_stylesheets() {
 	if ( $_GET['page'] == APD_MENU_SLUG ) {
-		wp_enqueue_style( 'bootstrap', plugins_url( '/css/bootstrap.min.css', __FILE__ ) );
-		wp_enqueue_style( 'setupmenu', plugins_url( '/css/setupmenu.css', __FILE__ ) );
+		wp_enqueue_style( 'bootstrap', plugins_url( '/css/bootstrap.min.css', __FILE__ ), array(), APD_PLUGIN_VERSION );
+		wp_enqueue_style( 'setupmenu', plugins_url( '/css/setupmenu.css', __FILE__ ), array(), APD_PLUGIN_VERSION );
 	}
 }
 

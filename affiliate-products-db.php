@@ -8,14 +8,14 @@
  */
 
 /*
-Plugin Name: Affiliate Product DB
+Plugin Name: Affiliate Products DB
 Plugin URI: https://#
 Description: Manage details on all your presented affiliate products of your affiliate site.
 Version: 0.1.5
 Author: Matthias Müller
 Author URI: https://#
 Author email: matthias.mueller88@web.de
-Text Domain: affiliate-product-db
+Text Domain: affiliate-products-db
 Domain Path: /languages
 License: GPL 2
 Donate URI: https://#
@@ -46,6 +46,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 /**
  * APD Constants & Options
  */
+define( 'APD_PLUGIN_VERSION', '0.1.9');
 define( 'APD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APD_PLUGIN_PATH', plugin_dir_url( __FILE__ ) );
 define( 'APD_PLUGIN_URL', 'options-general.php?page=affiliate-product-db.php' );
