@@ -5,138 +5,103 @@
             <div class="infobox">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center infobox-header">
-                        <!--<p class="panel-title">Infobox - <strong><span itemprop="name">Automower 305</span></strong></p>-->
-                        <h3>{$Longname}</h3>
+                        <h3><a class="neat-link" href="{$Permalink}" title="{$Longname} Produktbeschreibung">{$Longname}</a></h3>
                         <a class="anchor" id="produktdetails"></a>
                     </div>
 
                     <div class="panel-body">
 
-                        <div class="row">
-                            <div class="col-sm-offset-6 col-sm-5 col-xs-12 text-center">
-                            </div>
-                        </div>
-
                         <!--Infobox Top-->
                         <div class="infobox-top-body">
-                            <div class="row">
-                                <div class="col-sm-5 text-center vcenter thin-border">
-                                    <div class="image-area">
+                            <div class="col-md-6">
+                                <div class="row infobox--promo">
+                                    <div class="col-md-12">
                                         <div class="row">
-                                            <div class="infobox-thumbnail">
-                                                <span class="details-promotion">{$Promo}</span>
-                                                <a href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">
-                                                    <!--<img class="img-responsive" src="{MediumImageUrl}">-->
-                                                    <img class="img-responsive" title="{$Longname}" alt="{$Longname}" src="{$LargeImageUrl}">
-
+                                            <div class="col-md-12">
+                                                <a class="btn btn-apd-heavy btn-danger btn-lg btn-block" target="_blank" rel="nofollow" href="{$Permalink}" title="Gardena Mähroboter R40Li, 4071-20 - Angebot auf amazon.de ansehen">
+                                                    <span>{$Promo}</span>
                                                 </a>
-                                                <!--@todo the urls of every image of the image set-->
-                                                <!--{imageSet}-->
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="center">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-sm-1"></div>
-
-                                <div class="col-sm-5 col-xs-10 text-center">
-
-                                    <div class="amazon-area">
-                                        <div class="amazon-view-offer">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="img img-responsive">
-                                                        <a class="btn btn-apd-heavy btn-danger btn-lg btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Angebot auf amazon.de ansehen">
-                                                            <i class="fa fa-caret-right"></i><span>Angebot ansehen<span class="affiliate-hint">*</span></span><i class="fa fa-icon-eye"></i>
-                                                        </a>
-                                                    </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="product--box">
+                                            <div class="product--image-box">
+                                                <div class="product--teaser">
+                                                    <a href="{$AmazonUrl}" title="{$Longname}" target="_blank" rel="nofollow"><img class="image-responsive" src="{$MediumImageUrl}" alt="{$Longname}"></a>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="amazon-image">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <!--Angebot Button-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a class="btn btn-apd-heavy btn-danger btn-lg btn-block" target="_blank" rel="nofollow" href="http://www.amazon.de/exec/obidos/ASIN/B006MWDNVI/wwwmeinrasenr-21" title="Gardena Mähroboter R40Li, 4071-20 - Angebot auf amazon.de ansehen">
+                                            <i class="fa fa-caret-right"></i><span>Angebot ansehen<span class="affiliate-hint">*</span></span><i class="fa fa-icon-eye"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--Amazon Logo-->
+                                <div class="row infobox--amazon-logo">
+                                    <div class="col-md-12">
+                                        <a target="_blank" rel="nofollow" href="http://www.amazon.de/exec/obidos/ASIN/B006MWDNVI/wwwmeinrasenr-21" alt="Gardena Mähroboter R40Li, 4071-20 - Bestellung über amazon.de: 100% sicher, zuverlässig, blitzschnell!" title="Gardena Mähroboter R40Li, 4071-20 - Bestellung über amazon.de: 100% sicher, zuverlässig, blitzschnell!">
+                                            <img src="http://www.maehroboter-guru.de/wp-content/plugins/affiliate-products-db/img/amazon_DE.png" scale="0">
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--Listenpreis Tabelle-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="small-table">
                                             <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="img img-responsive">
-                                                        <a target="_blank" rel="nofollow" href="{$AmazonUrl}" alt="{$Title} - Bestellung über amazon.de: 100% sicher, zuverlässig, blitzschnell!" title="{$Title} - Bestellung über amazon.de: 100% sicher, zuverlässig, blitzschnell!">
-                                                            <img src="{$AmazonLogoLargeUrl}">
-                                                        </a>
-                                                    </div>
+                                                <div class="col-xs-5">
+                                                    <span>Listenpreis</span>
+                                                </div>
+                                                <div class="col-xs-7">
+                                                    <span>---</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-5">
+                                                    <span>Angebot</span>
+                                                </div>
+                                                <div class="col-xs-7">
+                                                    <a class="neat-link" rel="nofollow" target="_blank" title="Gardena Mähroboter R40Li, 4071-20 - Aktuelles Angebot: EUR 1.049,00 auf amazon.de" href="http://www.amazon.de/exec/obidos/ASIN/B006MWDNVI/wwwmeinrasenr-21"><span>EUR 1.049,00<span class="affiliate-hint">*</span></span></a>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-xs-5">
+                                                    <span>Versand</span>
+                                                </div>
+                                                <div class="col-xs-7">
+                                                    <span class="text-success" title="Versandkostenfreie Lieferung innerhalb von Deutschland sowie nach Belgien, Niederlande und Österreich">
+                                                        <i class="fa fa-mr fa-thumbs-o-up"></i>kostenlos
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="amazon-table-area">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="img img-responsive">
-                                                        <div class="small-table">
-                                                            <div class="row">
-                                                                <div class="col-xs-5">
-                                                                    <span>Listenpreis</span>
-                                                                </div>
-                                                                <div class="col-xs-7">
-                                                                    <span>{$ListPriceFormatted}</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-xs-5">
-                                                                    <span>Angebot</span>
-                                                                </div>
-                                                                <div class="col-xs-7">
-                                                                    <a rel="nofollow" target="_blank" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de" href="{$AmazonUrl}"><span>EUR {$AmazonPrice}<span class="affiliate-hint">*</span></span></a>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row">
-                                                                <div class="col-xs-5">
-                                                                    <span>Versand</span>
-                                                                </div>
-                                                                <div class="col-xs-7">
-                                                                    <span class="text-success" title="Versandkostenfreie Lieferung innerhalb von Deutschland sowie nach Belgien, Niederlande und Österreich">
-                                                                        <i class="fa fa-thumbs-o-up"></i>kostenlos
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="amazon-price">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="img img-responsive">
-                                                        <a class="btn btn-apd-default btn-danger btn-lg btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de">
-                                                            EUR {$AmazonPrice}
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="amazon-shopping-cart">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="img img-responsive">
-                                                        <div class="row">
-                                                            <div class="col-xs-12">
-                                                                <a class="btn btn-apd-heavy btn-danger btn-md btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Produkt direkt in den Warenkorb auf amazon.de legen">
-                                                                    <i class="fa fa-caret-right"></i><span>In den Warenkorb legen</span><i class="fa fa-shopping-cart"></i><span class="affiliate-hint">*</span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                    </div>
+                                </div>
+                                <!--Preis Button-->
+                                <div class="row infobox--price-button">
+                                    <div class="col-md-12">
+                                        <a class="btn btn-apd-default btn-danger btn-lg btn-block" target="_blank" rel="nofollow" href="http://www.amazon.de/exec/obidos/ASIN/B006MWDNVI/wwwmeinrasenr-21" title="Gardena Mähroboter R40Li, 4071-20 - Aktuelles Angebot: EUR 1.049,00 auf amazon.de">
+                                            EUR 1.049,00<span class="affiliate-hint">*</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!--Warenkorb Button-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a class="btn btn-apd-heavy btn-danger btn-md btn-block" target="_blank" rel="nofollow" href="http://www.amazon.de/exec/obidos/ASIN/B006MWDNVI/wwwmeinrasenr-21" title="Gardena Mähroboter R40Li, 4071-20 - Produkt direkt in den Warenkorb auf amazon.de legen">
+                                            <i class="fa fa-caret-right"></i><span>In den Warenkorb legen</span><i class="fa fa-shopping-cart"></i><span class="affiliate-hint">*</span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
