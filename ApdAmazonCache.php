@@ -82,7 +82,7 @@ class ApdAmazonCache {
 		'ProductReviewsURL',
 		'IFrameUrl',
 		'TrackingId',
-		'AmazonShopURL',
+		'AmazonShopUrl',
 		'SalePriceAmount',
 		'SalePriceCurrencyCode',
 		'SalePriceFormatted',
