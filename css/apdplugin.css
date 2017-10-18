@@ -393,9 +393,6 @@ th {
         font-family: inherit; }
     .affiliate-products-db .tab-pane.details .row table tr td:nth-child(3) {
       font-family: monospace; }
-  .affiliate-products-db .tab-pane.reviews .row iframe {
-    width: 100%;
-    height: 1000px; }
   .affiliate-products-db .detailed-rating-row > .row {
     margin-top: 30px; }
     .affiliate-products-db .detailed-rating-row > .row .progress-bars {
