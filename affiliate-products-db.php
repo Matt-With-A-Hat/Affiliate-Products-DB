@@ -111,6 +111,11 @@ require( dirname( __FILE__ ) . '/apd-functions.php' );
 require dirname( __FILE__ ) . '/apd-init.php';
 
 /**
+ * functions for backend menu
+ */
+require dirname( __FILE__ ) . '/apd-setupmenu.php';
+
+/**
  * Krumo
  */
 if ( isLocalInstallation() ) {

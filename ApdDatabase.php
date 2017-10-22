@@ -76,7 +76,7 @@ class ApdDatabase {
 	}
 
 	/**
-	 * return all columns of a table as an array
+	 * return all column names of a table as an array
 	 * if suffix is false, strip everything after first underscore of column name
 	 *
 	 * @param $tablename

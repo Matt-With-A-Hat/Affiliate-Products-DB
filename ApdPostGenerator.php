@@ -3,7 +3,7 @@
 /**
  * Class ApdPostGenerator
  *
- * generates posts for products of one table
+ * generates posts for products of one table or alternatively of a single product, if the asin is supplied
  * @todo make this a cronjob that generates posts as soon as new products are added to the database
  */
 class ApdPostGenerator {
@@ -36,11 +36,17 @@ class ApdPostGenerator {
 	 */
 	protected $content;
 
-	public function __construct( $tablename, $titleColumn, $category = null, $content = '' ) {
+	/**
+	 * @var
+	 */
+	protected $asin;
+
+	public function __construct( $tablename, $titleColumn, $category = null, $content = '', $asin = null ) {
 		$this->setTablename( $tablename );
 		$this->setTitleColumn( $titleColumn );
 		$this->setCategory( $category );
 		$this->setContent( $content );
+		$this->setAsin( $asin );
 	}
 
 	/**
@@ -100,18 +106,36 @@ class ApdPostGenerator {
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function getAsin() {
+		return $this->asin;
+	}
+
+	/**
+	 * @param mixed $asin
+	 */
+	public function setAsin( $asin ) {
+		$this->asin = $asin;
+	}
+
+	/**
 	 * get all items of the specified table
 	 *
 	 * @return array|bool|null|object|void
 	 */
 	public function getItems() {
 
-		$databaseService = new ApdDatabaseService();
-		$asins           = $databaseService->getAsins( $this->tablename );
+		if ( empty( $this->asin ) ) {
+			$databaseService = new ApdDatabaseService();
+			$asins           = $databaseService->getAsins( $this->tablename );
 
-		$items = array();
-		foreach ( $asins as $asin ) {
-			$items[] = ( new ApdCustomItem( $asin ) )->getObject();
+			$items = array();
+			foreach ( $asins as $asin ) {
+				$items[] = ( new ApdCustomItem( $asin ) )->getObject();
+			}
+		} else {
+			$items[] = ( new ApdCustomItem( $this->asin ) )->getObject();
 		}
 
 		return $items;

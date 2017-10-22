@@ -21,7 +21,6 @@ function isLocalInstallation() {
 
 }
 
-
 /**
  * Refines a path so it can be used on local installations
  *
