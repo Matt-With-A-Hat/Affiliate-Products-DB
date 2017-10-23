@@ -115,7 +115,6 @@ class ApdDatabaseService {
 		foreach ( $tables as $table ) {
 			$sql   = "SELECT Asin, PostId FROM $table";
 			$asins = $wpdb->get_results( $wpdb->prepare( $sql, '' ), ARRAY_N );
-
 //			$asinsArray[ $table ]  = array_filter( array_values_recursive( $asins ) );
 			$asinsArray[ $table ] = array_filter( $asins );
 		}
@@ -227,13 +226,13 @@ class ApdDatabaseService {
 		$currentTime = current_time( 'mysql' );
 
 		//add asins of products that don't exist in asins table yet
-		$sql = "REPLACE INTO $asinTable (`asin`, `post_id`, `table`, `last_edit`) VALUES ";
+		$sql = "REPLACE INTO $asinTable (`asin`, `table`, `last_edit`) VALUES ";
 		foreach ( $asins as $asin ) {
-			$sql .= "('$asin[asin]', '$asin[post_id]', '$asin[table]', '$currentTime'), ";
+			$sql .= "('$asin[asin]', '$asin[table]', '$currentTime'), ";
 		}
 		$sql    = rtrim( $sql, " ," ) . ";";
 		$result = $wpdb->query( $wpdb->prepare( $sql, '' ) );
-
+		krumo( $wpdb->prepare( $sql, '' ) );
 		//remove asins of products that have been deleted
 		$productsAsins = $this->getAllAsins();
 		$sql           = "SELECT Asin FROM $asinTable";
