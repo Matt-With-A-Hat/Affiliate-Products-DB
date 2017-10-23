@@ -4,7 +4,9 @@ class ApdCsv {
 
 	protected $csv;
 
-	protected $file;
+	protected $fileObject;
+
+	protected $array;
 
 	protected $fileDelimiter;
 
@@ -17,10 +19,11 @@ class ApdCsv {
 			$csv = $csv['tmp_name'];
 		}
 		$this->setCsv( $csv );
-		$file = new SplFileObject( $this->csv );
-		$this->setFile( $file );
+		$fileObject = new SplFileObject( $this->csv );
+		$this->setFileObject( $fileObject );
 		$this->setFileDelimiter();
 		$this->setCsvFields();
+		$this->setArray();
 	}
 
 	/**
@@ -40,15 +43,34 @@ class ApdCsv {
 	/**
 	 * @return mixed
 	 */
-	public function getFile() {
-		return $this->file;
+	public function getFileObject() {
+		return $this->fileObject;
 	}
 
 	/**
-	 * @param mixed $file
+	 * @param mixed $fileObject
 	 */
-	public function setFile( $file ) {
-		$this->file = $file;
+	public function setFileObject( $fileObject ) {
+		$this->fileObject = $fileObject;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArray() {
+		return $this->array;
+	}
+
+	/**
+	 *
+	 */
+	public function setArray() {
+		$array = array();
+		$this->fileObject->setFlags( SplFileObject::READ_CSV );
+		foreach ( $this->fileObject as $row ) {
+			$array[] = $row;
+		}
+		$this->array = $array;
 	}
 
 	/**
@@ -65,17 +87,23 @@ class ApdCsv {
 	 */
 	public function setFileDelimiter() {
 
-		$control   = $this->file->getCsvControl();
+		$control   = $this->fileObject->getCsvControl();
 		$delimiter = $control[0];
 
 		$this->fileDelimiter = $delimiter;
 	}
 
 	/**
-	 * @return mixed
+	 * @param bool $noTail
+	 *
+	 * @return array
 	 */
-	public function getCsvFields() {
-		return $this->csvFields;
+	public function getCsvFields( $noTail = false ) {
+		if ( $noTail === false ) {
+			return $this->csvFields;
+		} else {
+			return array_remove_tail( $this->csvFields, "_" );
+		}
 	}
 
 	/**
@@ -85,7 +113,7 @@ class ApdCsv {
 	 */
 	public function setCsvFields() {
 		$fileDelimiter   = $this->getFileDelimiter();
-		$fields          = $this->file->fgetcsv( $fileDelimiter );
+		$fields          = $this->fileObject->fgetcsv( $fileDelimiter );
 		$this->csvFields = $fields;
 	}
 
@@ -103,12 +131,22 @@ class ApdCsv {
 	}
 
 	/**
+	 * Match the fields of the CSV with the corresponding databases table column info.
+	 * It will set a 2D array, containing an array for each CSV field with the respective column type in the database, like so:
+	 *
+	 * Array(2)
+	 *      Name String(15) => ChildProtection
+	 *      Type String(10) => tinyint(1)
+	 * Array(2)
+	 * Array(2)
+	 * ...
+	 *
 	 * @param $tablename
 	 */
 	public function setFieldInfo( $tablename ) {
 		$table     = new ApdDatabase( $tablename );
 		$tableinfo = $table->getTableInfo();
-		$csvFields = array_remove_tail( $this->csvFields, "_" );
+		$csvFields = $this->getCsvFields( true );
 		$fieldinfo = array();
 
 		$i = 0;
@@ -128,18 +166,4 @@ class ApdCsv {
 
 		$this->fieldInfo = $fieldinfo;
 	}
-
-	/**
-	 *
-	 *
-	 * @param $name
-	 *
-	 * @return mixed
-	 */
-//	function getFieldType( $name ) {
-//		$tableinfo = $this->getTableInfo();
-//
-//
-//		return $fieldtype;
-//	}
 }

@@ -494,44 +494,109 @@ class ApdDatabase {
 		return false;
 	}
 
-
 	/**
-	 * Inserts csv content into the specified table
-	 * removes redundant values that are marked as unique via adding "_unique" in a csv-field name
+	 * handles csv file addition to database
+	 * calls function for table creation if necessary
+	 * calls function for inserting csv content to table
 	 *
 	 * @param $csv
 	 * path to csv file or $_FILE array of csv file
 	 *
 	 * @return bool
 	 */
-	public function csvInsert( $csv ) {
-		$tablename = $this->tablename;
+	public function addCsvToDatabase( $csv ) {
+
+		//@TODO check $tablename for injection!
 
 		if ( is_array( $csv ) ) {
 			$csv = $csv['tmp_name'];
 		}
 
-		$wpdb        = $this->db;
-		$csv         = new SplFileObject( $csv );
-		$tableFields = $this->getTableColumns();
-		$tableInfo   = $this->getTableInfo();
+		//create table if it doesn't exist yet
+		$new       = false;
+		$apdCsv    = new ApdCsv( $csv );
+		$csvFields = $apdCsv->getCsvFields();
 
-		$csv->setFlags( SplFileObject::READ_CSV );
-		$csvArray = array();
-		foreach ( $csv as $row ) {
-			$csvArray[] = $row;
+		if ( ! $this->tableExists() ) {
+			//create new table if it doesn't exist yet
+			$fields = $csvFields;
+			$this->createTable( 'products', $fields );
+			$new    = true;
+			$result = 1;
+
+		} else if ( APD_REPLACE_TABLES === true ) {
+			//delete existing table when uploading a new csv
+			$this->dropTable();
+			$fields = $csvFields;
+			$this->createTable( 'products', $fields );
+			$new    = true;
+			$result = 2;
+
+		} else {
+			//add any columns from csv, that are missing in existing table
+			$tableFields = $this->getTableColumns();
+			array_shift( $tableFields );
+			$newFields = array_diff( $apdCsv->getCsvFields( true ), $tableFields );
+
+			//add any new fields from the csv to the existing equivalent database table
+			if ( ! empty( $newFields ) ) {
+				$newFields = array_intersect_key( $csvFields, $newFields ); //get the data type information from original csvFields array
+				foreach ( $newFields as $newField ) {
+					$pos = strrpos( $newField, "_" );
+					if ( $pos !== false ) {
+						$columnname = substr( $newField, 0, $pos );
+						$datatype   = substr( $newField, $pos + 1 );
+					} else {
+						$columnname = $newField;
+						$datatype   = null;
+					}
+					$this->addColumn( $columnname, $datatype );
+				}
+			}
+			$result = 3;
+		}
+		$this->csvInsert( $csv );
+		$this->csvUpdate( $csv );
+		$this->removeRedundantValues();
+		( new ApdDatabaseService() )->updateAsins();
+
+		if ( $new ) {
+			$this->addColumn( 'PostId', 'int' );
+			$this->addColumn( 'Permalink', 'text' );
 		}
 
-		array_shift( $csvArray );
+		return $result;
+	}
 
-		$sql    = "INSERT INTO " . $tablename . " (";
+	/**
+	 * Inserts csv content into the specified table
+	 * removes redundant values that are marked as unique via adding "_unique" in a csv-field name
+	 *
+	 * @param $csvPath
+	 *
+	 * @return bool
+	 * @internal param $csv path to csv file or $_FILE array of csv file* path to csv file or $_FILE array of csv file
+	 *
+	 */
+	public function csvInsert( $csvPath ) {
+		$tablename = $this->tablename;
+
+		if ( is_array( $csvPath ) ) {
+			$csvPath = $csvPath['tmp_name'];
+		}
+
+		$wpdb     = $this->db;
+		$apdCsv   = new ApdCsv( $csvPath );
+		$csvArray = $apdCsv->getArray();
+		array_shift( $csvArray );
+//		$tableFields = $this->getTableColumns();
+		$csvFields    = $apdCsv->getCsvFields( true );
+		$csvFieldInfo = $apdCsv->getFieldInfo( $this->tablename );
+
+		$sql    = "INSERT IGNORE INTO " . $tablename . " (";
 		$values = '';
 
-		foreach ( $tableFields as $key => $tableField ) {
-			//skip csv index?
-			if ( $key == 0 ) {
-				continue;
-			}
+		foreach ( $csvFields as $tableField ) {
 			$sql .= "`" . $tableField . "`, ";
 		}
 
@@ -545,8 +610,7 @@ class ApdDatabase {
 
 			foreach ( $csvRow as $key => $csvField ) {
 
-				//$key + 1 because first column needs to be skipped, which is "id" in excel
-				$fieldtype = $tableInfo[ $key + 1 ]['Type'];
+				$fieldtype = $csvFieldInfo[ $key ]['Type'];
 				$values .= $this->refineValue( $csvField, $fieldtype ) . ",";
 			}
 			$values = rtrim( $values, " ," );
@@ -573,8 +637,8 @@ class ApdDatabase {
 		}
 		$apdCsv       = new ApdCsv( $csv );
 		$csvFieldInfo = $apdCsv->getFieldInfo( $tablename );
-		$csvFields = array_remove_tail( $apdCsv->getCsvFields(), "_" );
-		$asinIndex = array_search( 'Asin', $csvFields );
+		$csvFields    = $apdCsv->getCsvFields( true );
+		$asinIndex    = array_search( 'Asin', $csvFields );
 
 		$wpdb = $this->db;
 		$csv  = new SplFileObject( $csv );
@@ -669,82 +733,6 @@ class ApdDatabase {
 		}
 
 		return false;
-	}
-
-	/**
-	 * handles csv file addition to database
-	 * calls function for table creation if necessary
-	 * calls function for inserting csv content to table
-	 *
-	 * @param $csv
-	 * path to csv file or $_FILE array of csv file
-	 *
-	 * @return bool
-	 */
-	public function addCsvToDatabase( $csv ) {
-
-		//@TODO check $tablename for injection!
-
-		if ( is_array( $csv ) ) {
-			$csv = $csv['tmp_name'];
-		}
-
-		//create table if it doesn't exist yet
-		$new       = false;
-		$apdCsv    = new ApdCsv( $csv );
-		$csvFields = $apdCsv->getCsvFields();
-
-		if ( ! $this->tableExists() ) {
-			//create new table if it doesn't exist yet
-			$fields = $csvFields;
-			$this->createTable( 'products', $fields );
-			$new    = true;
-			$result = 1;
-
-		} else if ( APD_REPLACE_TABLES === true ) {
-			//delete existing table when uploading a new csv
-			$this->dropTable();
-			$fields = $csvFields;
-			$this->createTable( 'products', $fields );
-			$new    = true;
-			$result = 2;
-
-		} else {
-			//add any columns from csv, that are missing in existing table
-			$tableFields = $this->getTableColumns();
-			array_shift( $tableFields );
-			$csvFieldsNoTail = array_remove_tail( $csvFields, "_" );
-			$newFields       = array_diff( $csvFieldsNoTail, $tableFields );
-
-			//add any new fields from the csv to the existing equivalent database table
-			if ( ! empty( $newFields ) ) {
-				$newFields = array_intersect_key( $csvFields, $newFields ); //get the data type information from original csvFields array
-				foreach ( $newFields as $newField ) {
-					$pos = strrpos( $newField, "_" );
-					if ( $pos !== false ) {
-						$columnname = substr( $newField, 0, $pos );
-						$datatype   = substr( $newField, $pos + 1 );
-					} else {
-						$columnname = $newField;
-						$datatype   = null;
-					}
-					$this->addColumn( $columnname, $datatype );
-				}
-			}
-			$result = 3;
-		}
-
-		$this->csvInsert( $csv );
-		$this->csvUpdate( $csv );
-		$this->removeRedundantValues();
-		( new ApdDatabaseService() )->updateAsins();
-
-		if ( $new ) {
-			$this->addColumn( 'PostId', 'int' );
-			$this->addColumn( 'Permalink', 'text' );
-		}
-
-		return $result;
 	}
 
 	/**
