@@ -327,6 +327,9 @@ class ApdCustomItem {
 				$value = str_replace( "List:", "", $value );
 				$list  = explode( "*", $value );
 
+				//if list is empty, put 'k. A.' as one list item
+				( $list[0] === '' ) ? $list[0] = 'k. A.' : true;
+
 				$HtmlListWide   = '<div class="row"><div class="col-md-6"><ul>{$column1}</ul></div><div class="col-md-6"><ul>{$column2}</ul></div></div>';
 				$HtmlListNarrow = '<div class="row"><div class="col-md-12"><ul>{$columnNarrow}</ul></div></div>';
 				$columnSize     = ceil( sizeof( $list ) / 2 );
