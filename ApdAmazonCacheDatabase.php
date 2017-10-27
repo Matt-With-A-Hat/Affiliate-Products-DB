@@ -119,15 +119,16 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		$successfulRequestsThreshold = $this->getOption( 'successful_requests_threshold' );
 		$cronjobName                 = ApdAmazonCache::getCronjobName();
 
-		ApdCore::logContent( '$cronjobName: ' . $cronjobName );
 		ApdCore::logContent( '----------------------------------' );
+		ApdCore::logContent( '$cronjobName: ' . $cronjobName );
+		ApdCore::logContent( '-' );
 		ApdCore::logContent( '$itemsPerUpdate: ' . $itemsPerUpdate );
 		ApdCore::logContent( '$currentInterval: ' . $currentInterval );
 		ApdCore::logContent( '$incInterval: ' . $incInterval );
 		ApdCore::logContent( '$decInterval: ' . $decInterval );
 		ApdCore::logContent( '$lastCheckedId: ' . $lastCheckedId );
 		ApdCore::logContent( '$successfulRequests: ' . $successfulRequests );
-		ApdCore::logContent( '$successfulRequestsThreshold: ' . $successfulRequestsThreshold );
+		ApdCore::logContent( '$successfulRequestsThreshold ' . $successfulRequestsThreshold );
 
 		// request info for x items from Amazon API
 		$amazonItems = $this->getAmazonItems( $itemsPerUpdate, $lastCheckedId );
@@ -196,8 +197,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		$apdCore   = new ApdCore();
 		$amazonWbs = $apdCore->amazonWbs;
 
-		$sql = "SELECT Asin FROM $this->tablenameCache WHERE id >= $startId LIMIT $numberOfRows";
-
+		$sql = "SELECT Asin FROM $this->tablenameCache WHERE `ManualUpdate` != '1' OR `ManualUpdate` IS NULL AND id >= $startId LIMIT $numberOfRows";
 		$asins = $wpdb->get_results( $sql, ARRAY_A );
 
 		if ( count( $asins ) == 0 ) {
@@ -276,7 +276,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		$i     = 0;
 		foreach ( $amazonItems as $amazonItem ) {
 
-			$sql = "UPDATE $this->tablenameCache SET ";
+			$sql = "UPDATE IGNORE $this->tablenameCache SET ";
 
 			foreach ( $amazonItem as $key => $value ) {
 				$sql .= "`$key` = '%s', ";
@@ -288,7 +288,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 				$sql .= ", id = (SELECT @update_id := id)";
 			}
 
-			$sql .= " WHERE `Asin` = '$amazonItem[ASIN]';";
+			$sql .= " WHERE `Asin` = '$amazonItem[ASIN]' AND `ManualUpdate` != '1' OR `ManualUpdate` IS NULL;";
 
 			$result = $wpdb->query( $wpdb->prepare( $sql, $amazonItem ) );
 

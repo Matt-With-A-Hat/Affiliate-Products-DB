@@ -54,9 +54,8 @@ define( 'APD_BASENAME', plugin_basename( __FILE__ ) );
 define( 'APD_BASE_FILE', __FILE__ );
 define( 'APD_LIB_DIR', dirname( __FILE__ ) . '/lib/' );
 define( 'APD_MENU_SLUG', 'affiliate-products-db' );
-define( 'APD_DEBUG', false );
+define( 'APD_DEBUG', true );
 //WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
-define( 'APD_DEBUG_DEV', true );
 define( 'APD_REPLACE_TABLES', false );
 
 /**
@@ -119,7 +118,7 @@ require dirname( __FILE__ ) . '/apd-setupmenu.php';
 /**
  * Krumo
  */
-if ( isLocalInstallation() ) {
+if ( APD_DEBUG ) {
 	require_once dirname( __FILE__ ) . '/vendor/mmucklo/krumo/class.krumo.php';
 }
 
@@ -177,35 +176,23 @@ $apdCore = new ApdCore();
 /**
  * =For testing
  */
-//echo "<br><br><br><br>";
+echo "<br><br><br><br>";
 
 //krumo('test');
 //$Api  = new ApdApi();
-//$item = $Api->getItemByAsin( 'B015OORTL4' );
+//$item = $Api->getItemByAsin( 'B00S4Z8BIQ' );
 //krumo( $item );
 //$item = $Api->getItemByPostId( '1543' );
 //krumo( $item );
+//$asin1       = 'B00S4Z8BIQ';
+//$asin2       = 'B006MWDNVI';
+//$apdCore    = new ApdCore();
+//$amazonWbs  = $apdCore->amazonWbs;
+//$amazonItem = new ApdAmazonItem( $amazonWbs, $asin1 );
+//krumo($amazonItem);
+
+$apdAmazonCacheDatabase = new ApdAmazonCacheDatabase();
+$apdAmazonCacheDatabase->updateCache();
 
 //$databaseService = new ApdDatabaseService();
-//$databaseService->updateAsins();
-//$databaseService->getAllAsins(true);
-//$databaseService->getAllAsins(false);
-
-//$apdCustomItem = new ApdCustomItem( 'B006MWDNVI' );
-//$x = $apdCustomItem->getArrayR();
-//krumo($x);
-
-//$cache = new ApdAmazonCacheDatabase();
-//$cache->updateCache();
-
-//$database = new ApdDatabase('products');
-//$database->updateAsins();
-
-//$databaseService = new ApdDatabaseService();
-//$asins = $databaseService->getAsins('products');
-//krumo($asins);
-//
-//$databaseService->updateAsins();
-
-//$postGenerator = new ApdPostGenerator('products', 'Longname');
-//$postGenerator->generatePosts();
+//$databaseService->checkDatabaseTables();

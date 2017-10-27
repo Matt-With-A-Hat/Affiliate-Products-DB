@@ -179,38 +179,51 @@ class ApdDatabaseService {
 	public function checkDatabaseTables() {
 		$tableListTable = new ApdDatabase( APD_TABLE_LIST_TABLE );
 		//create table list
-		if ( ! $tableListTable->tableExists() ) {
+		if ( ! $tableListTable->checkTableExistence() ) {
 			$tablename = APD_TABLE_LIST_TABLE;
 			$database  = new ApdDatabase( $tablename );
 			$database->createTableFromArray( $this->getListFields(), 'core' );
 			$database->modifyColumns( $this->getUniqueListFields(), 'unique' );
 		}
 
+		/**
+		 * Create asin table if it doesn't exist
+		 */
 		$asinTable = new ApdDatabase( APD_ASIN_TABLE );
-		//create asins table
-		if ( ! $asinTable->tableExists() ) {
-			$tablename = APD_ASIN_TABLE;
-			$database  = new ApdDatabase( $tablename );
-			$database->createTableFromArray( ApdCustomItem::getItemFields(), 'core' );
-			$database->modifyColumns( ApdCustomItem::getUniqueItemFields(), 'unique' );
+
+		if ( ! $asinTable->checkTableExistence() ) {
+			$asinTable->createTableFromArray( ApdCustomItem::getItemFields(), 'core' );
+			$asinTable->modifyColumns( ApdCustomItem::getUniqueItemFields(), 'unique' );
 		}
 
-		$amazonCacheDatabase = new ApdDatabase( APD_AMAZON_CACHE_TABLE );
-		//create amazon items table
-		if ( ! $amazonCacheDatabase->tableExists() ) {
-			$tablename           = APD_AMAZON_CACHE_TABLE;
-			$amazonCacheDatabase = new ApdAmazonCacheDatabase();
-			$database            = new ApdDatabase( $tablename );
-			$database->createTableFromArray( $amazonCacheDatabase->getAmazonCacheColumns(), 'cache' );
-			$database->modifyColumns( $amazonCacheDatabase->getUniqueAmazonCacheColumns(), 'unique' );
+		/**
+		 * Create amazon cache items table if it doesn't exist
+		 * If it does exist, but it's structure doesn't match the classes fields, update it
+		 */
+		$amazonCacheTable    = new ApdDatabase( APD_AMAZON_CACHE_TABLE );
+		$amazonCacheDatabase = new ApdAmazonCacheDatabase();
+		$amazonCacheColumns  = $amazonCacheDatabase->getAmazonCacheColumns();
+
+		if ( ! $amazonCacheTable->checkTableExistence() ) {
+			$amazonCacheTable->createTableFromArray( $amazonCacheDatabase->getAmazonCacheColumns(), 'cache' );
+			$amazonCacheTable->modifyColumns( $amazonCacheColumns, 'unique' );
+		} else if ( ! $amazonCacheTable->checkTableIntegrity( $amazonCacheColumns ) ) {
+			$columnDiff = $amazonCacheTable->getTableDiff( $amazonCacheColumns );
+			$amazonCacheTable->addColumns( $columnDiff, 'text' );
 		}
 
-		$cacheOptionsTable = new ApdDatabase( APD_CACHE_OPTIONS_TABLE );
+		/**
+		 * Create cache options table if it doesn't exist
+		 * If it does exist, but it's structure doesn't match the classes fields, update it
+		 */
+		$cacheOptionsTable   = new ApdDatabase( APD_CACHE_OPTIONS_TABLE );
+		$cacheOptionsColumns = $amazonCacheDatabase->getOptionFields();
 		//create amazon cache options table
-		if ( ! $cacheOptionsTable->tableExists() ) {
-			$tablename = APD_CACHE_OPTIONS_TABLE;
-			$database  = new ApdDatabase( $tablename );
-			$database->createTableFromArray( $amazonCacheDatabase->getOptionFields(), 'cache' );
+		if ( ! $cacheOptionsTable->checkTableExistence() ) {
+			$cacheOptionsTable->createTableFromArray( $cacheOptionsColumns, 'cache' );
+		} else if ( ! $cacheOptionsTable->checkTableIntegrity( $cacheOptionsColumns ) ) {
+			$columnDiff = $cacheOptionsTable->getTableDiff( $cacheOptionsColumns );
+			$cacheOptionsTable->addColumns( $columnDiff, 'text' );
 		}
 	}
 

@@ -71,7 +71,7 @@ class ApdCronjob {
 			}
 
 		} else if ( APD_DEBUG ) {
-			$error = "Cronjob $this->namecouldn't be created";
+			$error = "Cronjob $this->name couldn't be created";
 			print_error( $error, __METHOD__, __LINE__ );
 		}
 	}
