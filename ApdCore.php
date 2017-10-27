@@ -273,8 +273,33 @@ class ApdCore {
 			$asin = trim( $asin );
 
 			//--------------------------------------------------------------
+			// =replace with database information
+			//--------------------------------------------------------------
+
+			$apdCustomItem = new ApdCustomItem( $asin );
+
+			$customItemObject = $apdCustomItem->getArrayR();
+
+			if ( $customItemObject['Disabled'] == 1 ) {
+				//disabled items are being skipped
+				return '';
+			}
+
+			$dbPlaceholders = get_fields( $customItemObject );
+
+			if ( ! empty( $customItemObject ) ) {
+
+				$placeholders = $this->getTplPlaceholders( $dbPlaceholders, true );
+				$replace      = $customItemObject;
+				$html         = preg_replace( $placeholders, $replace, $tpl );
+
+			}
+
+			//--------------------------------------------------------------
 			//=replace with Amazon information
 			//--------------------------------------------------------------
+
+			$tpl = $html;
 
 			$amazonCacheItem = new ApdAmazonCacheItem( $asin );
 			$amazonItemArray = $amazonCacheItem->getArrayN();
@@ -293,25 +318,6 @@ class ApdCore {
 			} else {
 				$error = "Amazon array is empty";
 				print_error( $error, __METHOD__, __LINE__ );
-			}
-
-			//--------------------------------------------------------------
-			// =replace with database information
-			//--------------------------------------------------------------
-
-			$tpl = $html;
-
-			$apdCustomItem = new ApdCustomItem( $asin );
-
-			$customItemObject = $apdCustomItem->getArrayR();
-			$dbPlaceholders   = get_fields( $customItemObject );
-
-			if ( ! empty( $customItemObject ) ) {
-
-				$placeholders = $this->getTplPlaceholders( $dbPlaceholders, true );
-				$replace      = $customItemObject;
-				$html         = preg_replace( $placeholders, $replace, $tpl );
-
 			}
 		}
 

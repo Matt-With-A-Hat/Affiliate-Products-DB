@@ -32,7 +32,7 @@ Class ApdApi {
 	public function getItemByPostId( $postId ) {
 		global $wpdb;
 		$asintable = add_table_prefix( APD_ASIN_TABLE );
-		$sql       = "SELECT `asin` FROM $asintable WHERE post_id = $postId";
+		$sql       = "SELECT `asin` FROM $asintable WHERE post_id = $postId AND `Disabled` = '0'";
 		$asin      = $wpdb->get_var( $wpdb->prepare( $sql, '' ) );
 
 		return $this->getItemByAsin( $asin );
@@ -48,7 +48,7 @@ Class ApdApi {
 	public function getBestseller( $tablename ) {
 		global $wpdb;
 		$tablename = add_table_prefix( $tablename );
-		$sql       = "SELECT `asin` FROM $tablename WHERE `PromoClass`= 'bestseller'";
+		$sql       = "SELECT `asin` FROM $tablename WHERE `PromoClass` = 'bestseller' AND `Disabled` = '0'";
 		$asin      = $wpdb->get_var( $wpdb->prepare( $sql, '' ) );
 
 		return $this->getItemByAsin( $asin );

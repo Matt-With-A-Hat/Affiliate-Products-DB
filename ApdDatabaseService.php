@@ -232,7 +232,6 @@ class ApdDatabaseService {
 		}
 		$sql    = rtrim( $sql, " ," ) . ";";
 		$result = $wpdb->query( $wpdb->prepare( $sql, '' ) );
-		krumo( $wpdb->prepare( $sql, '' ) );
 		//remove asins of products that have been deleted
 		$productsAsins = $this->getAllAsins();
 		$sql           = "SELECT Asin FROM $asinTable";
