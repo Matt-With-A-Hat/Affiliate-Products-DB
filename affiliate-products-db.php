@@ -46,7 +46,7 @@ defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 /**
  * APD Constants & Options
  */
-define( 'APD_PLUGIN_VERSION', '0.1.9');
+define( 'APD_PLUGIN_VERSION', '0.1.9' );
 define( 'APD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APD_PLUGIN_PATH', plugin_dir_url( __FILE__ ) );
 define( 'APD_PLUGIN_URL', 'options-general.php?page=affiliate-product-db.php' );
@@ -73,6 +73,7 @@ define( 'APD_TABLE_PREFIX', 'apd_' );
  * Cron Jobs
  */
 define( 'APD_DB_CONSISTENCY_CRON', 'database_consistency' );
+define( 'APD_LOG_FILE', APD_PLUGIN_DIR . '/apdlog.log' );
 
 /**
  * User Constants
@@ -177,7 +178,7 @@ $apdCore = new ApdCore();
  * =For testing
  */
 //echo "<br><br><br><br>";
-//
+
 //krumo('test');
 //$Api  = new ApdApi();
 //$item = $Api->getItemByAsin( 'B015OORTL4' );

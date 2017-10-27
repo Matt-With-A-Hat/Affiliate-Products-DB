@@ -103,6 +103,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 
 	/**
 	 * Update the Amazon cache
+	 * //@todo make column in table have 0 as default. Make ApdDatabase::modifyColumns allow default values
 	 */
 	public function updateCache() {
 
@@ -113,10 +114,20 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		$incInterval                 = $this->getOption( 'inc_interval_rate_minutes' );
 		$decInterval                 = $this->getOption( 'dec_interval_rate_minutes' );
 		$lastCheckedId               = $this->getOption( 'last_checked_id' );
-		$lastCheckedId               = ( $lastCheckedId === null ) ? 0 : $lastCheckedId;                     //@todo make column in table have 0 as default. Make ApdDatabase::modifyColumns allow default values
+		$lastCheckedId               = ( $lastCheckedId === null ) ? 0 : $lastCheckedId;
 		$successfulRequests          = $this->getOption( 'successful_requests' );
 		$successfulRequestsThreshold = $this->getOption( 'successful_requests_threshold' );
 		$cronjobName                 = ApdAmazonCache::getCronjobName();
+
+		ApdCore::logContent( '$cronjobName: ' . $cronjobName );
+		ApdCore::logContent( '----------------------------------' );
+		ApdCore::logContent( '$itemsPerUpdate: ' . $itemsPerUpdate );
+		ApdCore::logContent( '$currentInterval: ' . $currentInterval );
+		ApdCore::logContent( '$incInterval: ' . $incInterval );
+		ApdCore::logContent( '$decInterval: ' . $decInterval );
+		ApdCore::logContent( '$lastCheckedId: ' . $lastCheckedId );
+		ApdCore::logContent( '$successfulRequests: ' . $successfulRequests );
+		ApdCore::logContent( '$successfulRequestsThreshold: ' . $successfulRequestsThreshold );
 
 		// request info for x items from Amazon API
 		$amazonItems = $this->getAmazonItems( $itemsPerUpdate, $lastCheckedId );

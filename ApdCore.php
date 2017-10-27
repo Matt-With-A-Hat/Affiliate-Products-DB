@@ -690,10 +690,14 @@ class ApdCore {
 		return $result;
 	}
 
-	public function getApdItem( $asin ) {
-//		$amazonItem = (new ApdAmazonCacheItem($asin))->getObject;
-//		$apdItem = (new ApdCustomItem($asin))->getItem();
+	/**
+	 * @param $text
+	 */
+	public static function logContent( $text ) {
+		$datetime = new DateTime();
+		$time     = $datetime->format( 'Y-m-d H:i:s' );
+		$text     = $time . ': ' . $text . "\n";
+		file_put_contents( APD_LOG_FILE, $text, FILE_APPEND );
 	}
-
 }
 
