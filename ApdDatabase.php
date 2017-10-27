@@ -33,6 +33,13 @@ class ApdDatabase {
 	 */
 	protected $tablename;
 
+	/**
+	 * array containing the differing columns of the database and its respective class
+	 *
+	 * @var
+	 */
+	protected $tableDiff = null;
+
 	public function __construct( $tablename ) {
 
 		global $wpdb;
@@ -79,9 +86,11 @@ class ApdDatabase {
 	 * return all column names of a table as an array
 	 * if suffix is false, strip everything after first underscore of column name
 	 *
-	 * @param $tablename
+	 * @param bool $suffix
 	 *
 	 * @return array
+	 * @internal param $tablename
+	 *
 	 */
 	public function getTableColumns( $suffix = true ) {
 
@@ -145,39 +154,12 @@ class ApdDatabase {
 	}
 
 	/**
-	 * Finds the first unique column specified with "unique" in a table
-	 *
-	 * @param $tablename
-	 *
-	 * @return bool|mixed
-	 * @internal param $table
-	 *
-	 */
-//	public function getUniqueColumn() {
-//
-//		$tablename = $this->tablename;
-//		$columns   = $this->getTableColumns( true );
-//
-//		foreach ( $columns as $column ) {
-//			if ( preg_match( "/_unique/", $column ) ) {
-//
-//				return $column;
-//
-//			}
-//
-//		}
-//
-//		return false;
-//
-//	}
-
-	/**
-	 * @param $tablename
 	 * @param $id
 	 * @param array|null $fields if provided, function will only return given fields. Must be set like $key => $field.
 	 * @param string $type
 	 *
 	 * @return array|null|object|void
+	 * @internal param $tablename
 	 */
 	public function getRow( $id, array $fields = null, $type = OBJECT ) {
 
@@ -213,33 +195,24 @@ class ApdDatabase {
 	}
 
 	/**
-	 * gets a row from the database
-	 *
-	 * @param $id
-	 *
-	 * @return array|bool|null|object|void
+	 * @return mixed
 	 */
-	//old get row which didn't make sense here
-	/*public function getRow( $tablename, $id, $type = OBJECT ) {
+	public function getTableDiff( $columns ) {
+		if ( $this->tableDiff === null ) {
+			$this->checkTableIntegrity( $columns );
 
-		global $wpdb;
-
-		$uniqeField   = $this->getUniqueColumn( $tablename );
-		$sql          = "SELECT * FROM $tablename WHERE $uniqeField = %s";
-		$this->dbItem = $wpdb->get_row( $wpdb->prepare( $sql, $id ), $type );
-
-		if ( empty( $this->dbItem ) ) {
-
-			if ( APD_DEBUG ) {
-				echo "Entry does not exist: $id<br>";
-			}
-
-			return false;
-
+			return $this->tableDiff;
+		} else {
+			return $this->tableDiff;
 		}
+	}
 
-		return $this->dbItem;
-	}*/
+	/**
+	 * @param mixed $tableDiff
+	 */
+	public function setTableDiff( $tableDiff ) {
+		$this->tableDiff = $tableDiff;
+	}
 
 	/**
 	 * create a table with the supplied tablename and an array of fields from as csv
@@ -326,7 +299,7 @@ class ApdDatabase {
 			return false;
 		}
 
-		if ( $this->tableExists() ) {
+		if ( $this->checkTableExistence() ) {
 			if ( APD_REPLACE_TABLES ) {
 				$this->dropTable();
 			} else if ( APD_DEBUG ) {
@@ -478,7 +451,7 @@ class ApdDatabase {
 	 *
 	 * @return bool
 	 */
-	public function tableExists() {
+	public function checkTableExistence() {
 		$wpdb      = $this->db;
 		$tablename = $this->tablename;
 
@@ -492,6 +465,25 @@ class ApdDatabase {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param array $classColumns
+	 *
+	 * @return array|bool
+	 */
+	public function checkTableIntegrity( array $classColumns ) {
+		$tableColumns = $this->getTableColumns();
+		array_shift( $tableColumns );
+
+		$diff = array_udiff( $classColumns, $tableColumns, 'strcasecmp' );
+		$this->setTableDiff( $diff );
+
+		if ( empty( $diff ) ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -517,7 +509,7 @@ class ApdDatabase {
 		$apdCsv    = new ApdCsv( $csv );
 		$csvFields = $apdCsv->getCsvFields();
 
-		if ( ! $this->tableExists() ) {
+		if ( ! $this->checkTableExistence() ) {
 			//create new table if it doesn't exist yet
 			$fields = $csvFields;
 			$this->createTable( 'products', $fields );
@@ -760,5 +752,36 @@ class ApdDatabase {
 
 			return false;
 		}
+	}
+
+	/**
+	 * Adds multiple columns to database. Provide array as follows, if second parameter isn't specified.
+	 *
+	 * array = (
+	 *      'column_1' => 'text',
+	 *      'column_2" => 'boolean'
+	 * )
+	 *
+	 * If all columns should have the same datatype, use second parameter instead with simple array
+	 *
+	 * @param array $columns
+	 *
+	 * @return bool|string
+	 */
+	public function addColumns( array $columns, $datatype = null ) {
+		if ( ! is_array( $columns ) ) {
+			$error = "Provided parameter needs to be associative array";
+			print_error( $error, __METHOD__, __LINE__ );
+
+			return false;
+		}
+
+		$result = false;
+		foreach ( $columns as $key => $column ) {
+			( ! $datatype ) ? $datatype = $key : true;
+			$result .= $this->addColumn( $column, $datatype );
+		}
+
+		return $result;
 	}
 }

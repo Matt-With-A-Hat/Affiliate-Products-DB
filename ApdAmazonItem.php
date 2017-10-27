@@ -46,7 +46,13 @@ class ApdAmazonItem extends ApdAmazonCache {
 			'ResponseGroup' => 'ItemAttributes,Images,Offers,OfferListings,Reviews,EditorialReview,Tracks'
 		) );
 
-		$this->array      = $this->refineAmazonItem();
+		$this->array = $this->refineAmazonItem();
+
+		//If amazonWbs has returned an error, Asin will be null in object.
+		//In that case the object still needs an asin, so it can properly be addressed.
+		if ( $this->array[0] === null ) {
+			$this->array[0] = $asin;
+		}
 		$this->arrayAssoc = $this->matchValuesWithFields();
 	}
 
@@ -86,9 +92,28 @@ class ApdAmazonItem extends ApdAmazonCache {
 
 		if ( $amazonObject ) {
 
+			$manualUpdate = '0';
+			$errorMessage = 'Everything OK';
 			if ( ! $amazonObject instanceof AsaZend_Service_Amazon_Item ) {
-				$error = "Item is not an Amazon item";
+				//super ugly hack to access protected member
+				$array   = (array) $amazonObject;
+				$i       = 0;
+				$message = false;
+				foreach ( $array as $key => $item ) {
+					$i ++;
+					if ( $i == 3 ) {
+						$hack    = $item;
+						$message = $hack[0]['Message'];
+					}
+				}
+				if ( $message ) {
+					$error = $message;
+				} else {
+					$error = "Item is not an Amazon item";
+				}
 				print_error( $error, __METHOD__, __LINE__ );
+				$manualUpdate = '1';
+				$errorMessage = $error;
 			}
 
 			// get the customer rating object
@@ -192,10 +217,6 @@ class ApdAmazonItem extends ApdAmazonCache {
 			} else {
 				$AmazonAvailability = APD_EMPTY_AVAILABILITY_TEXT;
 			};
-
-			if ( $amazonCacheItem->Asin == 'B00QRNHGAG' ) {
-				krumo( $customerReviews->averageRating );
-			}
 
 			/* =make Amazon Stars prettier */
 			$ratingStarsHtml = '<span class="amazon-stars">';
@@ -306,7 +327,9 @@ class ApdAmazonItem extends ApdAmazonCache {
 				$offerMainPriceAmount,
 				$offerMainPriceCurrencyCode,
 				$offerMainPriceFormatted,
-				current_time( 'mysql' )
+				current_time( 'mysql' ),
+				$manualUpdate,
+				$errorMessage
 			);
 
 			return $amazonItemArray;

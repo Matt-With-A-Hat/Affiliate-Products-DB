@@ -90,7 +90,9 @@ class ApdAmazonCache {
 		'OffersMainPriceAmount',
 		'OffersMainPriceCurrencyCode',
 		'OffersMainPriceFormattedPrice',
-		'LastCacheUpdate'
+		'LastCacheUpdate',
+		'ManualUpdate',
+		'ErrorMessage'
 	);
 
 	protected $tablenameCache;
