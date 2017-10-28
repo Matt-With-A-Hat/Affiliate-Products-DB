@@ -104,7 +104,7 @@ class ApdAmazonCache {
 	 *
 	 * @var
 	 */
-	protected static $cronjobName = 'amazon_items_cache';
+	protected static $cronjobName = 'apd_amazon_items_cache';
 
 	public function __construct() {
 		$this->setTablenameCache( APD_AMAZON_CACHE_TABLE );

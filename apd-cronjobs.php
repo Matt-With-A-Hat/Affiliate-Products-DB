@@ -65,7 +65,7 @@ function apdcronjob_trigger() {
 	$cronjob->setCronjob();
 
 	//asin table cronjob
-	$name    = ApdCustomItem::getCronjobName();
+	$name    = ApdAsinTable::getCronjobName();
 	$cronjob = new ApdCronjob( $name, 5 );
 	$cronjob->setCronjob();
 
@@ -88,7 +88,7 @@ function apdcronjob_deactivate() {
 	wp_unschedule_event( $timestamp, $name );
 
 	//asin table cronjob
-	$name      = ApdCustomItem::getCronjobName();
+	$name      = ApdAsinTable::getCronjobName();
 	$timestamp = wp_next_scheduled( $name );
 	wp_unschedule_event( $timestamp, $name );
 
@@ -125,7 +125,7 @@ function update_asin_table() {
 	$databaseService->updateAsins();
 }
 
-add_action( ApdCustomItem::getCronjobName(), 'update_asin_table' );
+add_action( ApdAsinTable::getCronjobName(), 'update_asin_table' );
 
 /**
  * cronjob trigger database consistency check

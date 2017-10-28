@@ -341,93 +341,6 @@ class ApdDatabase {
 	}
 
 	/**
-	 * Alter every supplied column from the array with $modify
-	 * You can define a column as unique or change its datatype to bool, text or varchar.
-	 *
-	 * @todo allow default values
-	 *
-	 * @param array $uniqueColumns
-	 * @param $modify
-	 *
-	 * @return bool|false|int
-	 */
-	public function modifyColumns( array $uniqueColumns, $modify ) {
-
-		$tablename = $this->tablename;
-		$allowed   = array(
-			'unique',
-			'bool',
-			'text',
-			'varchar'
-		);
-
-		if ( ! in_array( $modify, $allowed ) ) {
-			$error = "Supplied modify argument not allowed";
-			print_error( $error, __METHOD__, __LINE__ );
-		}
-
-		$tableColumns = $this->getTableColumns();
-
-		if ( empty( $tableColumns ) ) {
-			if ( APD_DEBUG ) {
-				$error = "Tablecolumns $tablename couldn't be loaded";
-				print_error( $error, __METHOD__, __LINE__ );
-			}
-
-			return false;
-		}
-
-		if ( $errorColumns = array_diff( $uniqueColumns, $tableColumns ) ) {
-			if ( APD_DEBUG ) {
-				$errorColumn = reset( $errorColumns );
-				$error       = "$errorColumn is not a column of $tablename";
-				print_error( $error, __METHOD__, __LINE__ );
-			}
-
-			return false;
-		}
-
-		global $wpdb;
-
-		if ( $modify == "unique" ) {
-			//change columns data type to varchar, so unique can be applied to columns
-			$sql = "ALTER TABLE $tablename ";
-			foreach ( $uniqueColumns as $uniqueColumn ) {
-				$sql .= "MODIFY COLUMN $uniqueColumn VARCHAR(255), ";
-			}
-			$sql = rtrim( $sql, " ," );
-
-			$sql .= ";";
-			$sql1 = $sql;
-
-			//alter column so it is unique
-			$sql = "ALTER TABLE $tablename ADD UNIQUE (";
-			foreach ( $uniqueColumns as $uniqueColumn ) {
-				$sql .= "$uniqueColumn, ";
-			}
-			$sql = rtrim( $sql, " ," );
-			$sql .= ");";
-			$sql2 = $sql;
-
-			$result = $wpdb->query( $wpdb->prepare( $sql1, $uniqueColumns ) );
-			$result .= $wpdb->query( $wpdb->prepare( $sql2, $uniqueColumns ) );
-
-		} else {
-			$modify = ( $modify == 'varchar' ) ? 'varchar(255)' : $modify;
-
-			$sql = "ALTER TABLE $tablename ";
-			foreach ( $uniqueColumns as $uniqueColumn ) {
-				$sql .= "MODIFY COLUMN $uniqueColumn $modify, ";
-			}
-			$sql = rtrim( $sql, " ," );
-
-			$result = $wpdb->query( $wpdb->prepare( $sql, $uniqueColumns ) );
-		}
-
-		return $result;
-	}
-
-	/**
 	 * drop a table from database
 	 *
 	 * @param $tablename
@@ -725,6 +638,114 @@ class ApdDatabase {
 		}
 
 		return false;
+	}
+
+	/**
+	 * If different columns should get different modifiers, this can be used instead of modifyColumns.
+	 * Provide array as follows:
+	 *
+	 * array = (
+	 *      'column_1' => 'text',
+	 *      'column_2" => 'boolean'
+	 * )
+	 *
+	 * @param array $modifyColumns
+	 *
+	 * @internal param array $columns
+	 * @internal param array $modify
+	 */
+	public function multiModifyColumns( array $modifyColumns ) {
+		foreach ( $modifyColumns as $column => $modifier ) {
+			$columns = array( $column );
+			$this->modifyColumns( $columns, $modifier );
+		}
+	}
+
+	/**
+	 * Alter every supplied column from the array with $modify
+	 * You can define a column as unique or change its datatype to bool, text or varchar.
+	 *
+	 * @todo allow default values
+	 *
+	 * @param array $columns
+	 * @param $modify
+	 *
+	 * @return bool|false|int
+	 */
+	public function modifyColumns( array $columns, $modify ) {
+
+		$tablename = $this->tablename;
+		$allowed   = array(
+			'unique',
+			'bool',
+			'text',
+			'varchar'
+		);
+
+		if ( ! in_array( $modify, $allowed ) ) {
+			$error = "Supplied modify argument not allowed";
+			print_error( $error, __METHOD__, __LINE__ );
+		}
+
+		$tableColumns = $this->getTableColumns();
+
+		if ( empty( $tableColumns ) ) {
+			if ( APD_DEBUG ) {
+				$error = "Tablecolumns $tablename couldn't be loaded";
+				print_error( $error, __METHOD__, __LINE__ );
+			}
+
+			return false;
+		}
+
+		if ( $errorColumns = array_diff( $columns, $tableColumns ) ) {
+			if ( APD_DEBUG ) {
+				$errorColumn = reset( $errorColumns );
+				$error       = "$errorColumn is not a column of $tablename";
+				print_error( $error, __METHOD__, __LINE__ );
+			}
+
+			return false;
+		}
+
+		global $wpdb;
+
+		if ( $modify == "unique" ) {
+			//change columns data type to varchar, so unique can be applied to columns
+			$sql = "ALTER TABLE $tablename ";
+			foreach ( $columns as $uniqueColumn ) {
+				$sql .= "MODIFY COLUMN $uniqueColumn VARCHAR(255), ";
+			}
+			$sql = rtrim( $sql, " ," );
+
+			$sql .= ";";
+			$sql1 = $sql;
+
+			//alter column so it is unique
+			$sql = "ALTER TABLE $tablename ADD UNIQUE (";
+			foreach ( $columns as $uniqueColumn ) {
+				$sql .= "$uniqueColumn, ";
+			}
+			$sql = rtrim( $sql, " ," );
+			$sql .= ");";
+			$sql2 = $sql;
+
+			$result = $wpdb->query( $wpdb->prepare( $sql1, $columns ) );
+			$result .= $wpdb->query( $wpdb->prepare( $sql2, $columns ) );
+
+		} else {
+			$modify = ( $modify == 'varchar' ) ? 'varchar(255)' : $modify;
+
+			$sql = "ALTER TABLE $tablename ";
+			foreach ( $columns as $uniqueColumn ) {
+				$sql .= "MODIFY COLUMN $uniqueColumn $modify, ";
+			}
+			$sql = rtrim( $sql, " ," );
+
+			$result = $wpdb->query( $wpdb->prepare( $sql, $columns ) );
+		}
+
+		return $result;
 	}
 
 	/**
