@@ -177,7 +177,7 @@ $apdCore = new ApdCore();
 /**
  * =For testing
  */
-echo "<br><br><br><br>";
+//echo "<br><br><br><br>";
 
 //krumo('test');
 //$Api  = new ApdApi();
@@ -195,6 +195,6 @@ echo "<br><br><br><br>";
 //$apdAmazonCacheDatabase = new ApdAmazonCacheDatabase();
 //$apdAmazonCacheDatabase->updateCache();
 
-$databaseService = new ApdDatabaseService();
-$databaseService->checkDatabaseTables();
-$databaseService->updateAsins();
+//$databaseService = new ApdDatabaseService();
+//$databaseService->checkDatabaseTables();
+//$databaseService->updateAsins();
