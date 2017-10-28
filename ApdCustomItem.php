@@ -7,25 +7,6 @@
  */
 class ApdCustomItem {
 
-	protected static $uniqueItemFields = array(
-		'asin',
-		'post_id'
-	);
-
-	protected static $itemFields = array(
-		'asin',
-		'post_id',
-		'table',
-		'last_edit'
-	);
-
-	/**
-	 * the cronjobs' name for updating the asins table
-	 *
-	 * @var string
-	 */
-	protected static $cronjobName = 'asin';
-
 	/**
 	 * the products table where the item can be found
 	 *
@@ -118,26 +99,6 @@ class ApdCustomItem {
 		return $this->itemTable;
 	}
 
-	/**
-	 * @return array
-	 */
-	public static function getUniqueItemFields() {
-		return self::$uniqueItemFields;
-	}
-
-	/**
-	 * @return array
-	 */
-	public static function getItemFields() {
-		return self::$itemFields;
-	}
-
-	/**
-	 * @return string
-	 */
-	public static function getCronjobName() {
-		return self::$cronjobName;
-	}
 
 	/**
 	 * @return string
@@ -244,6 +205,7 @@ class ApdCustomItem {
 		global $wpdb;
 
 		$sql       = "SELECT `table` FROM $this->asinTable WHERE `Asin` = %s";
+//		krumo($wpdb->prepare( $sql, $this->asin ));
 		$itemTable = $wpdb->get_var( $wpdb->prepare( $sql, $this->asin ) );
 
 		if ( ! empty( $itemTable ) ) {

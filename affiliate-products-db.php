@@ -71,7 +71,7 @@ define( 'APD_TABLE_PREFIX', 'apd_' );
 /**
  * Cron Jobs
  */
-define( 'APD_DB_CONSISTENCY_CRON', 'database_consistency' );
+define( 'APD_DB_CONSISTENCY_CRON', 'apd_database_consistency' );
 define( 'APD_LOG_FILE', APD_PLUGIN_DIR . '/apdlog.log' );
 
 /**
@@ -158,6 +158,7 @@ require_once( dirname( __FILE__ ) . '/ApdAmazonCacheItem.php' );
 require_once( dirname( __FILE__ ) . '/ApdAmazonItem.php' );
 require_once( dirname( __FILE__ ) . '/ApdCustomItem.php' );
 require_once( dirname( __FILE__ ) . '/ApdApi.php' );
+require_once( dirname( __FILE__ ) . '/ApdAsinTable.php' );
 require_once( dirname( __FILE__ ) . '/ApdPostGenerator.php' );
 
 /**
@@ -176,7 +177,7 @@ $apdCore = new ApdCore();
 /**
  * =For testing
  */
-//echo "<br><br><br><br>";
+echo "<br><br><br><br>";
 
 //krumo('test');
 //$Api  = new ApdApi();
@@ -194,5 +195,6 @@ $apdCore = new ApdCore();
 //$apdAmazonCacheDatabase = new ApdAmazonCacheDatabase();
 //$apdAmazonCacheDatabase->updateCache();
 
-//$databaseService = new ApdDatabaseService();
-//$databaseService->checkDatabaseTables();
+$databaseService = new ApdDatabaseService();
+$databaseService->checkDatabaseTables();
+$databaseService->updateAsins();

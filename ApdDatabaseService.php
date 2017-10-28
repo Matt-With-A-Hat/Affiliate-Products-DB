@@ -192,8 +192,9 @@ class ApdDatabaseService {
 		$asinTable = new ApdDatabase( APD_ASIN_TABLE );
 
 		if ( ! $asinTable->checkTableExistence() ) {
-			$asinTable->createTableFromArray( ApdCustomItem::getItemFields(), 'core' );
-			$asinTable->modifyColumns( ApdCustomItem::getUniqueItemFields(), 'unique' );
+			$asinTable->createTableFromArray( ApdAsinTable::getItemFields(false), 'core' );
+			$asinTable->multiModifyColumns( ApdAsinTable::getItemFields() );
+			$asinTable->modifyColumns( ApdAsinTable::getUniqueItemFields(), 'unique' );
 		}
 
 		/**
@@ -238,6 +239,8 @@ class ApdDatabaseService {
 		$asinTable   = add_table_prefix( APD_ASIN_TABLE );
 		$currentTime = current_time( 'mysql' );
 
+//		krumo($asins);
+
 		//add asins of products that don't exist in asins table yet
 		$sql = "REPLACE INTO $asinTable (`asin`, `table`, `last_edit`) VALUES ";
 		foreach ( $asins as $asin ) {
@@ -245,6 +248,8 @@ class ApdDatabaseService {
 		}
 		$sql    = rtrim( $sql, " ," ) . ";";
 		$result = $wpdb->query( $wpdb->prepare( $sql, '' ) );
+//		krumo($wpdb->prepare( $sql, '' ));
+
 		//remove asins of products that have been deleted
 		$productsAsins = $this->getAllAsins();
 		$sql           = "SELECT Asin FROM $asinTable";
@@ -252,6 +257,7 @@ class ApdDatabaseService {
 		$tableAsins    = array_filter( array_values_recursive( $tableAsins ) );
 
 		$diffTable = array_diff( $tableAsins, $productsAsins );
+//		krumo($diffTable);
 		if ( ! empty( $diffTable ) ) {
 			$sql = "DELETE FROM $asinTable WHERE `asin` IN (";
 			foreach ( $diffTable as $item ) {
