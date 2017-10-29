@@ -135,6 +135,11 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 
 		// if something went wrong with the request
 		if ( $amazonItems == 'throttle' ) {
+			//apdlog
+			$logtext = "Amazon returned throttle error";
+			ApdCore::logContent( $logtext );
+			//-apdlog
+
 			//set new interval
 			$options = array( 'interval_minutes' => $currentInterval + $incInterval );
 			$this->setOptions( $options );
@@ -151,21 +156,46 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 
 			// else
 		} else {
-
 			// update items in cache with returned amazon items
+
 			$lastUpdatedId = $this->updateCacheProducts( $amazonItems );
+			ApdCore::logContent( '$lastUpdatedId: ' . $lastUpdatedId );
 
 			// set new last updated item
+			//@todo Sometimes an empty row is inserted and mysteriously counts up endlessly, which causes the ID to always be different.
+			//@todo As a workaround, the difference of only 1 will also be catched.
 			$pointerId = 0;
-			if ( $lastCheckedId == $lastUpdatedId ) {
+			if ( $lastUpdatedId === false ) {
+				$pointerId = 0;
+				ApdCore::logContent('$lastUpdatedId === false: No amazon cache item was updated');
+			} else if ( $lastCheckedId == $lastUpdatedId ) {
+				$pointerId = 0;
+				ApdCore::logContent('$lastUpdatedId === lastCheckedId: Cache update has reached end of '.$this->tablenameCache.' table');
+			} else if ( $lastUpdatedId - $lastCheckedId == 1 ) {
+				ApdCore::logContent('$lastUpdatedId - lastCheckedId == 1: Cache update might have reached end of '.$this->tablenameCache.' table');
 				$pointerId = 0;
 			} else if ( $lastUpdatedId !== null ) {
 				$pointerId = $lastUpdatedId;
+				ApdCore::logContent('$lastUpdatedId !== null: Cache update might have reached end of '.$this->tablenameCache.' table');
 			} else if ( $lastUpdatedId === null ) {
 				$pointerId = $lastCheckedId - $currentInterval;
+				ApdCore::logContent('$lastUpdatedId === null: Something went wrong with the cache update');
 			}
+
+			if($lastUpdatedId !== false){
+				//apdlog
+				$logtext = "Updated Products: ";
+				foreach ( $amazonItems as $amazonItem ) {
+					$logtext .= $amazonItem['ASIN'] . ', ';
+				}
+				$logtext = rtrim( $logtext, ' ,' );
+				ApdCore::logContent( $logtext );
+				//-apdlog
+			}
+
 			$options = array( 'last_checked_id' => $pointerId );
 			$this->setOptions( $options );
+			ApdCore::logContent( 'last_checked_id set to: ' . $pointerId );
 
 			// increase number of successful attempts by 1
 			$options = array( 'successful_requests' => $successfulRequests + 1 );
@@ -197,8 +227,9 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		$apdCore   = new ApdCore();
 		$amazonWbs = $apdCore->amazonWbs;
 
-		$sql = "SELECT Asin FROM $this->tablenameCache WHERE `ManualUpdate` != '1' OR `ManualUpdate` IS NULL AND id >= $startId LIMIT $numberOfRows";
+		$sql   = "SELECT Asin FROM $this->tablenameCache WHERE (`ManualUpdate` != '1' OR `ManualUpdate` IS NULL) AND id >= $startId LIMIT $numberOfRows";
 		$asins = $wpdb->get_results( $sql, ARRAY_A );
+		ApdCore::logContent( 'Query for selecting next items to update: ' . $sql );
 
 		if ( count( $asins ) == 0 ) {
 			$options = array( 'last_checked_id' => 0 );
@@ -269,11 +300,12 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 
 		global $wpdb;
 
-		$sql = "SET @update_id := 0;";
-		$wpdb->query( $sql );
+//		$sql = "SET @update_id := 0;";
+//		$wpdb->query( $sql );
 
-		$count = count( $amazonItems );
-		$i     = 0;
+		$count     = count( $amazonItems );
+		$i         = 0;
+		$updatedId = false;
 		foreach ( $amazonItems as $amazonItem ) {
 
 			$sql = "UPDATE IGNORE $this->tablenameCache SET ";
@@ -295,16 +327,21 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 			if ( ! $result ) {
 				$error = "Amazon item $amazonItem[ASIN] couldn't be updated";
 				print_error( $error, __METHOD__, __LINE__ );
+			} else {
+				$asin      = $amazonItem['ASIN'];
+				$sql       = "SELECT id FROM $this->tablenameCache WHERE `ASIN` = '$asin'";
+				$updatedId = $wpdb->get_var( $sql );
 			}
 
 			$i ++;
 		}
 
 		//get last updated item
-		$sql        = "SELECT @update_id;";
-		$lastItemId = $wpdb->get_var( $sql );
+		//prawn to return wrong ids. Better alternative with updatedId
+//		$sql        = "SELECT @update_id;";
+//		$lastItemId = $wpdb->get_var( $sql );
 
-		return $lastItemId;
+		return $updatedId;
 	}
 }
 
