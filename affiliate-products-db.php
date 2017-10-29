@@ -54,9 +54,6 @@ define( 'APD_BASENAME', plugin_basename( __FILE__ ) );
 define( 'APD_BASE_FILE', __FILE__ );
 define( 'APD_LIB_DIR', dirname( __FILE__ ) . '/lib/' );
 define( 'APD_MENU_SLUG', 'affiliate-products-db' );
-define( 'APD_DEBUG', true );
-//WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
-define( 'APD_REPLACE_TABLES', false );
 
 /**
  * Table Names
@@ -96,14 +93,24 @@ const FALSE_TYPES   = array( 'NEIN', 'NO', 'FALSE', '0', 0 );
 const NULL_TYPES    = array( '', 'NULL', null );
 
 /**
- * Debug
- */
-require dirname( __FILE__ ) . '/debug.php';
-
-/**
  * APD Functions
  */
 require( dirname( __FILE__ ) . '/apd-functions.php' );
+
+/**
+ * =Debug Functions & Settings
+ */
+if ( isLocalInstallation() ) {
+	define( 'APD_DEBUG', true );
+	define( 'APD_REPLACE_TABLES', false ); //WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
+} else {
+	define( 'APD_DEBUG', false );
+	define( 'APD_REPLACE_TABLES', false ); //WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
+}
+if ( APD_DEBUG ) {
+	require dirname( __FILE__ ) . '/debug.php';
+	require_once dirname( __FILE__ ) . '/vendor/mmucklo/krumo/class.krumo.php';
+}
 
 /**
  * functions for initializing plugin
@@ -114,13 +121,6 @@ require dirname( __FILE__ ) . '/apd-init.php';
  * functions for backend menu
  */
 require dirname( __FILE__ ) . '/apd-setupmenu.php';
-
-/**
- * Krumo
- */
-if ( APD_DEBUG ) {
-	require_once dirname( __FILE__ ) . '/vendor/mmucklo/krumo/class.krumo.php';
-}
 
 /**
  * early loading of WordPress functions
