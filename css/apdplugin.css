@@ -156,12 +156,6 @@ span.amazon-stars {
   font-weight: 700;
   white-space: nowrap; }
 
-.table-responsive {
-  overflow-x: hidden !important; }
-
-@media (max-width: 900px) {
-  .table-responsive {
-    overflow-x: auto !important; } }
 /* =Base Rules */
 /**
 * --------------------------------------------------------------
