@@ -86,8 +86,8 @@ define( 'AMAZON_API_CONNECTION_TYPE', 'http' );
 /**
  * User Settings
  */
-define( 'APD_EMPTY_PRICE_TEXT', '<span class="text-red">Derzeit nicht verfügbar</span>' );
-define( 'APD_EMPTY_AVAILABILITY_TEXT', '<span class="text-red">Derzeit nicht verfügbar</span>' );
+define( 'APD_EMPTY_PRICE_TEXT', '<span class="text-red not-available">Derzeit nicht verfügbar</span>' );
+define( 'APD_EMPTY_AVAILABILITY_TEXT', '<span class="text-red not-available">Derzeit nicht verfügbar</span>' );
 
 //csv import field types
 const BOOLEAN_TYPES = array( 'BOOLEAN', 'BOOL', 'TINYINT(1)' );

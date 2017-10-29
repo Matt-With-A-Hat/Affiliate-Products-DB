@@ -1,27 +1,29 @@
-<div id="{$AttributeTitleId}" class="medium-products-box active tab-content">
-    <h3>{$AttributeTitle}</h3>
-    <div class="row">
-        {loop-start}
-        <div class="col-md-4">
-            <div class="box--product">
-                <div class="product--image-box">
-                    <div class="product--teaser">
-                        <div class="product--image">
-                            <div class="image--promotion">{$Promo}</div>
-                            <a href="{$AmazonUrl}" title="Gardena R40Li" target="_blank" rel="nofollow"><img class="image-responsive" src="{$MediumImageUrl}" alt="{$Longname}"></a>
+<div class="affiliate-products-db">
+    <div id="{$AttributeTitleId}" class="medium-products-box active tab-content">
+        <h3>{$AttributeTitle}</h3>
+        <div class="row">
+            {loop-start}
+            <div class="col-md-4">
+                <div class="box--product">
+                    <div class="product--image-box">
+                        <div class="product--teaser">
+                            <div class="product--image">
+                                <div class="image--promotion">{$Promo}</div>
+                                <a href="{$AmazonUrl}" title="Gardena R40Li" target="_blank" rel="nofollow"><img class="image-responsive" src="{$MediumImageUrl}" alt="{$Longname}"></a>
+                            </div>
+                            <div class="product--amazon-rating text-center">
+                                <a class="neat-link" href="{$AmazonUrl}" title="{$Longname}" target="_blank" rel="nofollow">{$RatingStars}</a>
+                            </div>
+                            <a class="neat-link" href="{$Permalink}" title="{$Longname} Produktbeschreibung lesen"><h4 class="text-center">{$Longname}</h4></a>
                         </div>
-                        <div class="product--amazon-rating text-center">
-                            <a class="neat-link" href="{$AmazonUrl}" title="{$Longname}" target="_blank" rel="nofollow">{$RatingStars}</a>
-                        </div>
-                        <a class="neat-link" href="{$Permalink}" title="{$Longname} Produktbeschreibung lesen"><h4 class="text-center">{$Longname}</h4></a>
+                    </div>
+                    <div class="text-center product--price">
+                        <a class="neat-link" href="{$AmazonUrl}" title="Gardena R40Li auf Amazon ansehen" target="_blank" rel="nofollow">{$AmazonPriceFormatted}<span class="affiliate-hint">*</span></a>
+                        <a class="btn btn-apd-default btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen"><i class="fa fa-amazon"></i><span>zu Amazon<span class="affiliate-hint">*</span></span></a>
                     </div>
                 </div>
-                <div class="text-center product--price">
-                    <a class="neat-link" href="{$AmazonUrl}" title="Gardena R40Li auf Amazon ansehen" target="_blank" rel="nofollow">EUR {$AmazonPrice}<span class="affiliate-hint">*</span></a>
-                    <a class="btn btn-apd-default btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen"><i class="fa fa-amazon"></i><span>zu Amazon<span class="affiliate-hint">*</span></span></a>
-                </div>
             </div>
+            {loop-end}
         </div>
-        {loop-end}
     </div>
 </div>
