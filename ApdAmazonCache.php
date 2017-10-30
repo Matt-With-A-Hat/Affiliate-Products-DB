@@ -90,6 +90,7 @@ class ApdAmazonCache {
 		'OffersMainPriceAmount',
 		'OffersMainPriceCurrencyCode',
 		'OffersMainPriceFormattedPrice',
+		'PricePerformanceRating',
 		'LastCacheUpdate',
 		'ManualUpdate',
 		'ErrorMessage'

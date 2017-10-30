@@ -698,12 +698,25 @@ class ApdCore {
 
 	/**
 	 * @param $text
+	 * @param bool $title
 	 */
-	public static function logContent( $text ) {
+	public static function logContent( $text, $title = false ) {
 		$datetime = new DateTime();
 		$time     = $datetime->format( 'Y-m-d H:i:s' );
-		$text     = $time . ': ' . $text . "\n";
-		file_put_contents( APD_LOG_FILE, $text, FILE_APPEND );
+		if ( $title ) {
+			$text1 = '----------------------------------';
+			$text2 = "= " . $text;
+			$text1 = $time . ': ' . $text1 . "\n";
+			$text2 = $time . ': ' . $text2 . "\n";
+			file_put_contents( APD_LOG_FILE, "\n", FILE_APPEND );
+			file_put_contents( APD_LOG_FILE, $text1, FILE_APPEND );
+			file_put_contents( APD_LOG_FILE, $text2, FILE_APPEND );
+			file_put_contents( APD_LOG_FILE, $text1, FILE_APPEND );
+
+		} else {
+			$text = $time . ': ' . $text . "\n";
+			file_put_contents( APD_LOG_FILE, $text, FILE_APPEND );
+		}
 	}
 }
 

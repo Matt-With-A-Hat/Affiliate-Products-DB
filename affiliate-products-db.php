@@ -81,6 +81,13 @@ define( 'AMAZON_COUNTRY_CODE', 'DE' );
 define( 'AMAZON_API_CONNECTION_TYPE', 'http' );
 
 /**
+ * =APD Data
+ * @todo this is supposed to go into a database
+ */
+define( 'APD_AUTOMOWERS_PPR_FACTOR_1', 4900 / 17 );
+define( 'APD_AUTOMOWERS_PPR_FACTOR_2', 10 / 17 );
+
+/**
  * User Settings
  */
 define( 'APD_EMPTY_PRICE_TEXT', '<span class="text-red not-available">Derzeit nicht verfügbar</span>' );

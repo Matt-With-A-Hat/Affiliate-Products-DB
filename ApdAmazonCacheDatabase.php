@@ -119,9 +119,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		$successfulRequestsThreshold = $this->getOption( 'successful_requests_threshold' );
 		$cronjobName                 = ApdAmazonCache::getCronjobName();
 
-		ApdCore::logContent( '----------------------------------' );
-		ApdCore::logContent( '$cronjobName: ' . $cronjobName );
-		ApdCore::logContent( '-' );
+		ApdCore::logContent( '$cronjobName: ' . $cronjobName, 1 );
 		ApdCore::logContent( '$itemsPerUpdate: ' . $itemsPerUpdate );
 		ApdCore::logContent( '$currentInterval: ' . $currentInterval );
 		ApdCore::logContent( '$incInterval: ' . $incInterval );
@@ -159,7 +157,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 			// update items in cache with returned amazon items
 
 			$lastUpdatedId = $this->updateCacheProducts( $amazonItems );
-			ApdCore::logContent( '$lastUpdatedId: ' . $lastUpdatedId );
+			ApdCore::logContent( '$lastUpdatedId: ' . $lastUpdatedId, 1 );
 
 			// set new last updated item
 			//@todo Sometimes an empty row is inserted and mysteriously counts up endlessly, which causes the ID to always be different.
@@ -167,22 +165,22 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 			$pointerId = 0;
 			if ( $lastUpdatedId === false ) {
 				$pointerId = 0;
-				ApdCore::logContent('$lastUpdatedId === false: No amazon cache item was updated');
+				ApdCore::logContent( '$lastUpdatedId === false: No amazon cache item was updated' );
 			} else if ( $lastCheckedId == $lastUpdatedId ) {
 				$pointerId = 0;
-				ApdCore::logContent('$lastUpdatedId === lastCheckedId: Cache update has reached end of '.$this->tablenameCache.' table');
+				ApdCore::logContent( '$lastUpdatedId === lastCheckedId: Cache update has reached end of ' . $this->tablenameCache . ' table' );
 			} else if ( $lastUpdatedId - $lastCheckedId == 1 ) {
-				ApdCore::logContent('$lastUpdatedId - lastCheckedId == 1: Cache update might have reached end of '.$this->tablenameCache.' table');
+				ApdCore::logContent( '$lastUpdatedId - lastCheckedId == 1: Cache update might have reached end of ' . $this->tablenameCache . ' table' );
 				$pointerId = 0;
 			} else if ( $lastUpdatedId !== null ) {
 				$pointerId = $lastUpdatedId;
-				ApdCore::logContent('$lastUpdatedId !== null: Cache update might have reached end of '.$this->tablenameCache.' table');
+				ApdCore::logContent( '$lastUpdatedId !== null: Cache update might have reached end of ' . $this->tablenameCache . ' table' );
 			} else if ( $lastUpdatedId === null ) {
 				$pointerId = $lastCheckedId - $currentInterval;
-				ApdCore::logContent('$lastUpdatedId === null: Something went wrong with the cache update');
+				ApdCore::logContent( '$lastUpdatedId === null: Something went wrong with the cache update' );
 			}
 
-			if($lastUpdatedId !== false){
+			if ( $lastUpdatedId !== false ) {
 				//apdlog
 				$logtext = "Updated Products: ";
 				foreach ( $amazonItems as $amazonItem ) {
@@ -327,6 +325,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 			if ( ! $result ) {
 				$error = "Amazon item $amazonItem[ASIN] couldn't be updated";
 				print_error( $error, __METHOD__, __LINE__ );
+				(new ApdDatabaseService())->checkDatabaseTables();
 			} else {
 				$asin      = $amazonItem['ASIN'];
 				$sql       = "SELECT id FROM $this->tablenameCache WHERE `ASIN` = '$asin'";

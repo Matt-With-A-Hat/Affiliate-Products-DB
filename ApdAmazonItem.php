@@ -245,6 +245,38 @@ class ApdAmazonItem extends ApdAmazonCache {
 				$amazonPriceFormatted = APD_EMPTY_PRICE_TEXT;
 			}
 
+			/* =try to create price performance ratio */
+			$customItem       = new ApdCustomItem( $amazonObject->ASIN );
+			$customItemArrayA = $customItem->getArrayA();
+			if ( $customItemArrayA['OverallRatingPercent'] !== null ) {
+				$rating  = $customItemArrayA['OverallRatingPercent'];
+				$price   = (float) str_replace( ',', '.', str_replace( '.', '', $amazonPrice ) );
+				$factor1 = APD_AUTOMOWERS_PPR_FACTOR_1;
+				$factor2 = APD_AUTOMOWERS_PPR_FACTOR_2;
+				if ( $price == 0 OR $price == null ) {
+					$pricePerformanceRating = '.k A.';
+				} else {
+					$pricePerformanceRating = $factor1 * $rating / $price + $factor2;
+					$pricePerformanceRating = round( $pricePerformanceRating, 2 );
+				}
+
+				$longname = $customItemArrayA['Longname'];
+
+				//log
+				ApdCore::logContent( 'Price-performance-rating calculation of Amazon item: ' . $longname, 1 );
+				ApdCore::logContent( '$rating: ' . $rating );
+				ApdCore::logContent( '$price: ' . $price );
+				ApdCore::logContent( '$factor1: ' . $factor1 );
+				ApdCore::logContent( '$factor2: ' . $factor2 );
+				ApdCore::logContent( '$pricePerformanceRating: ' . $pricePerformanceRating );
+			} else {
+				$pricePerformanceRating = 'k. A.';
+				$longname               = $customItemArrayA['Longname'];
+
+				ApdCore::logContent( 'Price-performance-rating calculation of Amazon item: ' . $longname, 1 );
+				ApdCore::logContent( 'This item doesn\'t have a price-performance-rating' );
+			}
+
 			$totalOffers = $amazonObject->Offers->TotalNew + $amazonObject->Offers->TotalUsed +
 			               $amazonObject->Offers->TotalCollectible + $amazonObject->Offers->TotalRefurbished;
 
@@ -327,6 +359,7 @@ class ApdAmazonItem extends ApdAmazonCache {
 				$offerMainPriceAmount,
 				$offerMainPriceCurrencyCode,
 				$offerMainPriceFormatted,
+				$pricePerformanceRating,
 				current_time( 'mysql' ),
 				$manualUpdate,
 				$errorMessage
