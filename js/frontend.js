@@ -12,12 +12,12 @@ jQuery(document).ready(function ($) {
 
     //tabbing general
     $('.tablink').click(function () {
-        $tabs = $(this).closest('.products-box').find('.tablink');
-        $tabcontent = $(this).closest('.products-box').find('.tab-content');
+        $tabs = $(this).closest('.tabbing-box').find('.tablink');
+        $tabcontent = $(this).closest('.tabbing-box').find('.tab-content');
         $(this).addClass('active');
 
         id = $(this).data('toggle');
-        $activetab = $(this).closest('.products-box').find('#' + id);
+        $activetab = $(this).closest('.tabbing-box').find('#' + id);
         $tabs.not($(this)).removeClass('active');
         $tabcontent.removeClass('active');
         $activetab.addClass('active');

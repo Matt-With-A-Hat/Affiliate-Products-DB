@@ -147,7 +147,7 @@ function apd_tpl_handler( $atts, $asin = null ) {
 function apd_group_handler( $atts, $shortcodes ) {
 	preg_match_all( '/\[apd-tpl(.)*\]/', $shortcodes, $matches );
 	$html       = '';
-	$htmlBefore = '<div class="products-box"><div class="tabs"><ul class="nav nav-tabs">';
+	$htmlBefore = '<div class="tabbing-box"><div class="tabs"><ul class="nav nav-tabs">';
 	$htmlAfter  = '</div></div>';
 
 	$i = 0;
