@@ -90,10 +90,12 @@ class ApdAmazonCache {
 		'OffersMainPriceAmount',
 		'OffersMainPriceCurrencyCode',
 		'OffersMainPriceFormattedPrice',
-		'PricePerformanceRating',
 		'LastCacheUpdate',
 		'ManualUpdate',
-		'ErrorMessage'
+		'ErrorMessage',
+		'PricePerformanceRating',
+		'PricePerformanceRatingGrade',
+		'PricePerformanceRatingText'
 	);
 
 	protected $tablenameCache;

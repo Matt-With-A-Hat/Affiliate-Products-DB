@@ -433,3 +433,54 @@ function get_fields( $item ) {
 
 	return $result;
 }
+
+
+function convert_percent_to_grade( $percent, $text = false ) {
+	switch ( $percent ) {
+		case ( $percent > 0.95 ):
+			return ( $text ) ? "Sehr Gut" : "1,0";
+			break;
+		case ( $percent > 0.90 ):
+			return ( $text ) ? "Sehr Gut-" : "1,3";
+			break;
+		case ( $percent > 0.85 ):
+			return ( $text ) ? "Gut+" : "1,7";
+			break;
+		case ( $percent > 0.80 ):
+			return ( $text ) ? "Gut" : "2,0";
+			break;
+		case ( $percent > 0.75 ):
+			return ( $text ) ? "Gut-" : "2,3";
+			break;
+		case ( $percent > 0.70 ):
+			return ( $text ) ? "Befriedigend+" : "2,7";
+			break;
+		case ( $percent > 0.65 ):
+			return ( $text ) ? "Befriedigend" : "3,0";
+			break;
+		case ( $percent > 0.60 ):
+			return ( $text ) ? "Befriedigend-" : "3,3";
+			break;
+		case ( $percent > 0.55 ):
+			return ( $text ) ? "Ausreichend+" : "3,7";
+			break;
+		case ( $percent > 0.50 ):
+			return ( $text ) ? "Ausreichend" : "4,0";
+			break;
+		case ( $percent > 0.45 ):
+			return ( $text ) ? "Ausreichend-" : "4,3";
+			break;
+		case ( $percent > 0.40 ):
+			return ( $text ) ? "Mangelhaft+" : "4,7";
+			break;
+		case ( $percent > 0.35 ):
+			return ( $text ) ? "Mangelhaft" : "5,0";
+			break;
+		case ( $percent > 0.30 ):
+			return ( $text ) ? "Mangelhaft-" : "5,3";
+			break;
+		default:
+			return ( $text ) ? "Ungenügend" : "6,0";
+			break;
+	}
+}

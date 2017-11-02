@@ -245,7 +245,7 @@ class ApdAmazonItem extends ApdAmazonCache {
 				$amazonPriceFormatted = APD_EMPTY_PRICE_TEXT;
 			}
 
-			/* =try to create price performance ratio */
+			/* =try to create price performance ratio rating */
 			$customItem       = new ApdCustomItem( $amazonObject->ASIN );
 			$customItemArrayA = $customItem->getArrayA();
 			if ( $customItemArrayA['OverallRatingPercent'] !== null ) {
@@ -256,8 +256,10 @@ class ApdAmazonItem extends ApdAmazonCache {
 				if ( $price == 0 OR $price == null ) {
 					$pricePerformanceRating = '.k A.';
 				} else {
-					$pricePerformanceRating = $factor1 * $rating / $price + $factor2;
-					$pricePerformanceRating = round( $pricePerformanceRating, 2 );
+					$pricePerformanceRating      = ($factor1 * ($rating / $price) + $factor2) * 100;
+					$pricePerformanceRating      = round( $pricePerformanceRating, 2 );
+					$pricePerformanceRatingGrade = convert_percent_to_grade( $pricePerformanceRating/100 );
+					$pricePerformanceRatingText  = convert_percent_to_grade( $pricePerformanceRating/100, true );
 				}
 
 				$longname = $customItemArrayA['Longname'];
@@ -271,12 +273,15 @@ class ApdAmazonItem extends ApdAmazonCache {
 				ApdCore::logContent( '$pricePerformanceRating: ' . $pricePerformanceRating );
 			} else {
 				$pricePerformanceRating = 'k. A.';
+				$pricePerformanceRatingGrade = 'k. A.';
+				$pricePerformanceRatingText = 'k. A.';
 				$longname               = $customItemArrayA['Longname'];
 
 				ApdCore::logContent( 'Price-performance-rating calculation of Amazon item: ' . $longname, 1 );
 				ApdCore::logContent( 'This item doesn\'t have a price-performance-rating' );
 			}
 
+			/* Other */
 			$totalOffers = $amazonObject->Offers->TotalNew + $amazonObject->Offers->TotalUsed +
 			               $amazonObject->Offers->TotalCollectible + $amazonObject->Offers->TotalRefurbished;
 
@@ -359,10 +364,12 @@ class ApdAmazonItem extends ApdAmazonCache {
 				$offerMainPriceAmount,
 				$offerMainPriceCurrencyCode,
 				$offerMainPriceFormatted,
-				$pricePerformanceRating,
 				current_time( 'mysql' ),
 				$manualUpdate,
-				$errorMessage
+				$errorMessage,
+				$pricePerformanceRating,
+				$pricePerformanceRatingGrade,
+				$pricePerformanceRatingText
 			);
 
 			return $amazonItemArray;
