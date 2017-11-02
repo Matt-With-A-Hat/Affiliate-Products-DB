@@ -11,7 +11,7 @@
                         <div class="text-center">
                             <a class="neat-link" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen" target="_blank" rel="nofollow">{$RatingStars}</a>
                         </div>
-                        <a class="neat-link" href="{$Permalink}" title="{$Longname} Produktbeschreibung"><h3>{$Longname}</h3></a>
+                        <a class="neat-link" href="{$Permalink}" title="{$Longname} Produktbeschreibung"><h3 class="text-center">{$Longname}</h3></a>
                         <div class="text-center product--price">
                             <a class="neat-link" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen" target="_blank" rel="nofollow">EUR {$AmazonPrice}</a><span class="affiliate-hint">*</span>
                         </div>
@@ -56,11 +56,11 @@
                 </tr>
                 <tr>
                     <td>Arbeitsleistung</td>
-                    <td>{$SurfaceArea} &plusmn; 20%</td>
+                    <td>{$SurfaceArea} <span class="text--addition">&plusmn;20%</span></td>
                 </tr>
                 <tr>
                     <td>Stromverbrauch</td>
-                    <td>k.A.</td>
+                    <td>{$EnergyConsumption} <span class="text--addition">&plusmn;20%</span></td>
                 </tr>
                 <tr>
                     <td>Schnitthöhe</td>
