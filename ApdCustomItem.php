@@ -204,7 +204,7 @@ class ApdCustomItem {
 	public function setItemTable() {
 		global $wpdb;
 
-		$sql       = "SELECT `table` FROM $this->asinTable WHERE `Asin` = %s";
+		$sql = "SELECT `table` FROM $this->asinTable WHERE `Asin` = %s";
 //		krumo($wpdb->prepare( $sql, $this->asin ));
 		$itemTable = $wpdb->get_var( $wpdb->prepare( $sql, $this->asin ) );
 
@@ -283,7 +283,7 @@ class ApdCustomItem {
 		foreach ( $customItemObject as $key => $value ) {
 			/**
 			 * =Reformat list values
-			 * creates two adjacent columns in bootstrap
+			 * creates two adjacent columns in bootstrap and shorter version
 			 */
 			if ( preg_match( '/(List:)/', $value ) ) {
 				$value = str_replace( "List:", "", $value );
@@ -292,13 +292,16 @@ class ApdCustomItem {
 				//if list is empty, put 'k. A.' as one list item
 				( $list[0] === '' ) ? $list[0] = 'k. A.' : true;
 
-				$HtmlListWide   = '<div class="row"><div class="col-md-6"><ul>{$column1}</ul></div><div class="col-md-6"><ul>{$column2}</ul></div></div>';
-				$HtmlListNarrow = '<div class="row"><div class="col-md-12"><ul>{$columnNarrow}</ul></div></div>';
-				$columnSize     = ceil( sizeof( $list ) / 2 );
-				$i              = 0;
-				$column1        = '';
-				$column2        = '';
-				$columnNarrow   = '';
+				$HtmlListWideTpl   = '<div class="row"><div class="col-md-6"><ul>{$column1}</ul></div><div class="col-md-6"><ul>{$column2}</ul></div></div>';
+				$HtmlListNarrowTpl = '<div class="row"><div class="col-md-12"><ul>{$columnNarrow}</ul></div></div>';
+				$columnSize        = ceil( sizeof( $list ) / 2 );
+				$i                 = 0;
+				$j                 = 0;
+				$column1           = '';
+				$column2           = '';
+				$columnNarrow      = '';
+				$columnShort       = '';
+				$columnOne         = '';
 				foreach ( $list as $listitem ) {
 					if ( $i < $columnSize ) {
 						$column1 .= "<li>$listitem</li>";
@@ -306,15 +309,28 @@ class ApdCustomItem {
 						$column2 .= "<li>$listitem</li>";
 					}
 					$columnNarrow .= "<li>$listitem</li>";
+					if ( $j < 3 ) {
+						$columnShort .= "<li>$listitem</li>";
+					}
+					if ( $j < 1 ) {
+						$columnOne .= "<li>$listitem</li>";
+					}
 					$i ++;
+					$j ++;
 				}
-				$HtmlListWide   = preg_replace( '/{\$column1}/', $column1, $HtmlListWide );
+				$HtmlListWide   = preg_replace( '/{\$column1}/', $column1, $HtmlListWideTpl );
 				$HtmlListWide   = preg_replace( '/{\$column2}/', $column2, $HtmlListWide );
-				$HtmlListNarrow = preg_replace( '/{\$columnNarrow}/', $columnNarrow, $HtmlListNarrow );
+				$HtmlListNarrow = preg_replace( '/{\$columnNarrow}/', $columnNarrow, $HtmlListNarrowTpl );
+				$HtmlListShort  = preg_replace( '/{\$columnNarrow}/', $columnShort, $HtmlListNarrowTpl );
+				$HtmlListOne    = preg_replace( '/{\$columnNarrow}/', $columnOne, $HtmlListNarrowTpl );
 
-				$customItemObject->$key    = $HtmlListWide;
-				$newkey                    = $key . "Narrow";
-				$customItemObject->$newkey = $HtmlListNarrow;
+				$customItemObject->$key           = $HtmlListWide;
+				$narrowListKey                    = $key . "Narrow";
+				$customItemObject->$narrowListKey = $HtmlListNarrow;
+				$shortListKey                     = $key . "Short";
+				$customItemObject->$shortListKey  = $HtmlListShort;
+				$shortListKey                     = $key . "One";
+				$customItemObject->$shortListKey  = $HtmlListOne;
 			}
 
 			/**

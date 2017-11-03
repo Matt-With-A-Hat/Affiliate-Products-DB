@@ -257,7 +257,7 @@ class ApdAmazonItem extends ApdAmazonCache {
 					$pricePerformanceRating = '.k A.';
 				} else {
 					$pricePerformanceRating      = ($factor1 * ($rating / $price) + $factor2) * 100;
-					$pricePerformanceRating      = round( $pricePerformanceRating, 2 );
+					$pricePerformanceRating      = round( $pricePerformanceRating, 1 );
 					$pricePerformanceRatingGrade = convert_percent_to_grade( $pricePerformanceRating/100 );
 					$pricePerformanceRatingText  = convert_percent_to_grade( $pricePerformanceRating/100, true );
 				}

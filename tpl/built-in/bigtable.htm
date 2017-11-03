@@ -6,7 +6,7 @@
         var dataTable = jQuery('#bigtable').DataTable({
             fixedHeader: true,
             "paging": false,
-            "order": [[0, "asc"]],
+            "order": [[2, "desc"]],
             "columnDefs": [
                 {
                     "targets": [0],
@@ -33,176 +33,78 @@
         </ul>
         <div class="affiliate-products-db">
             <div id="automowers-compact-table" class="tab-content active">
-                <div class="table-responsive">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
-                                <input type="text" id="searchbox" class="form-control" placeholder="Suche" aria-describedby="basic-addon1">
-                            </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
+                            <input type="text" id="searchbox" class="form-control" placeholder="Suche" aria-describedby="basic-addon1">
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="automowers-expanded-table" class="tab-content">
-                asdasdasd
-            </div>
-        </div>
-
-
-
-    </div>
-</div>
-
-
-<div class="affiliate-products-db bigtable table--products">
-    <div class="table-responsive">
-        <div class="row">
-            <!--<div class="col-md-3">-->
-                <!--<div class="input-group">-->
-                    <!--<span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>-->
-                    <!--<input type="text" id="searchbox" class="form-control" placeholder="Suche" aria-describedby="basic-addon1">-->
-                <!--</div>-->
-            <!--</div>-->
-        </div>
-        <table id="bigtable" class="table">
-            <thead>
-                <tr>
-                    <th class="text-center invisible">intern_ranking</th>
-                    <th class="text-center border-right nowrap">Modell</th>
-                    <th class="text-center">günstigster Preis</th>
-                    <th class="text-center">Bewertung<br>(Note)</th>
-                    <th class="text-center">Bewertung<br>(%)</th>
-                    <th class="text-center border-right">Amazon Bewertung</th>
-                    <th class="text-center">Mähwerk<br>(15%)</th>
-                    <th class="text-center">Lautstärke<br>(20%)</th>
-                    <th class="text-center">Akku-Leistung<br>(20%)</th>
-                    <th class="text-center">Bedienung<br>(30%)</th>
-                    <th class="text-center border-right">Sicherheit<br>(15%)</th>
-                    <th class="text-center">Hersteller</th>
-                    <th class="text-center">Fläche</th>
-                    <th class="text-center border-right">Max. Steigung</th>
-
-                    <th class="text-center">Mähwerk</th>
-                    <th class="text-center">Schnittbreite</th>
-                    <th class="text-center border-right">Schnitthöhe</th>
-                    <th class="text-center border-right">Lautstärke</th>
-                    <th class="text-center">Akku-Typ</th>
-                    <th class="text-center">Ladezeit</th>
-                    <th class="text-center border-right">Laufzeit</th>
-                    <th class="text-center">Gewicht</th>
-                    <th class="text-center">Timer</th>
-                    <th class="text-center">Abfahren nach Zufallsprinzip</th>
-                    <th class="text-center">Logicut-Navigation</th>
-                    <th class="text-center">Regensensor</th>
-                    <th class="text-center">Wetter-Timer</th>
-                    <th class="text-center">GPS-Navigation</th>
-                    <th class="text-center">Optionale Fernbedienung</th>
-                    <th class="text-center">Kalenderfunktion</th>
-                    <th class="text-center border-right">Smartphone Steuerung</th>
-                    <th class="text-center">Stoßsensor</th>
-                    <th class="text-center">Pincodesperre</th>
-                    <th class="text-center">Hebe- und Neigungssperre</th>
-                    <th class="text-center">Zeitschloss</th>
-                    <th class="text-center">Alarmsystem</th>
-                    <th class="text-center">GPS Diebstahlschutz</th>
-                    <th class="text-center">Installationssperre</th>
-                    <th class="text-center border-right">Kindersicherung</th>
-                    <th class="text-center">Begrenzungskabel</th>
-                    <th class="text-center">Suchschleife</th>
-                </tr>
-            </thead>
-            <tbody>
-                {loop-start}
-                <tr>
-                    <td class="text-center invisible {$PromoClass}">{$InternRanking}</td>
-                    <td class="model text-center {$PromoClass} border-right nowrap">
-                        <div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div><a class="neat-link" href="{$Permalink}" title="{$Title}">{$Longname}</a></div>
-                                    <div class="infobox-thumbnail">
+                <div class="table-responsive table--products">
+                    <table id="bigtable" class="table bigtable">
+                        <thead>
+                            <tr>
+                                <th class="text-center invisible">intern_ranking</th>
+                                <th class="text-center width-140">Modell</th>
+                                <th class="text-center width-160">Gesamtwertung</th>
+                                <th class="text-center width-160">Preis-Leistung</th>
+                                <th class="text-center width-80">Einzelwertung</th>
+                                <th class="text-center width-160">Preis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loop-start}
+                            <tr>
+                                <td class="text-center invisible {$PromoClass}">{$InternRanking}</td>
+                                <td class="model text-center {$PromoClass} border-right">
+                                    <div><a class="neat-link" href="{$Permalink}" title="{$Title}"><strong>{$Longname}</strong></a></div>
+                                    <div class="small-amazon-image">
                                         <a href="{$Permalink}" title="{$Title}">
                                             <img src="{$SmallImageUrl}">
-                                            <!--<img src="http://placehold.it/100x50">-->
                                         </a>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <span class="text-center table-promotion {$PromoClass}">{$Promo}</span>
-                    </td>
-                    <td class="text-center {$PromoClass}">
-                        <a class="neat-link" rel="nofollow" target="_blank" title="{$Title} - Aktuelles Angebot: EUR {$AmazonPrice} auf amazon.de" href="{$AmazonUrl}">
-                            <span>EUR {$AmazonPrice}<span class="affiliate-hint">*</span></span>
-                        </a>
-                    </td>
-                    <td class="text-center {$PromoClass}"><span class="overall-rating">{$OverallRating}</span><br><span class="overall-rating-text">{$OverallRatingText}</span></td>
-                    <td class="text-center {$PromoClass}">{$OverallRatingPP}</td>
-                    <td class="text-center {$PromoClass} border-right">
-                        <div class="center-block small-column">
-                            <a class="neat-link" rel="nofollow" target="_blank" title="({$TotalReviews}) auf Amazon" href="{$ProductReviewsURL}">{$RatingStars}<br>({$TotalReviews})</a>
-                        </div>
-                        <br>
-                        <a class="btn btn-apd-default btn-amazon btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Produkt auf amazon.de anschauen">
-                            <i class="fa fa-amazon"></i><span>zu Amazon<span class="affiliate-hint">*</span></span>
-                        </a>
-                    </td>
+                                    <div class="center-block small-column">
+                                        <a class="neat-link" rel="nofollow" target="_blank" title="({$TotalReviews}) auf Amazon" href="{$ProductReviewsURL}">{$RatingStars}</a>
+                                    </div>
+                                </td>
+                                <td class="text-center table--progress">
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width:{$OverallRatingPercent}%;"><span class="progress-bar-tooltip my-progress-bar-tooltip">{$OverallRatingPP}%</span></div>
+                                    </div>
+                                    <!--<span>{$OverallRatingText} ({$OverallRating})</span>-->
+                                </td>
+                                <td class="text-center table--progress">
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width:{$PricePerformanceRating}%;"><span class="progress-bar-tooltip">{$PricePerformanceRating}%</span></div>
+                                    </div>
+                                    <!--<span>{$PricePerformanceRatingText} ({$PricePerformanceRatingGrade})</span>-->
+                                </td>
+                                <td class="table--pro-con">
+                                    <div class="list-pro list-narrow">
+                                        {$AdvantagesShort}
+                                    </div>
+                                    <div class="list-con list-narrow">
+                                        {$DisadvantagesOne}
+                                    </div>
+                                </td>
+                                <td class="text-center table--price">
+                                    <span>{$AmazonPriceFormatted}</span>
+                                    <a class="btn btn-apd-heavy btn-amazon btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Title} - Produkt auf amazon.de anschauen">
+                                        <i class="fa fa-amazon"></i><span>zu Amazon<span class="affiliate-hint">*</span></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            {loop-end}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="automowers-expanded-table" class="tab-content">
+                <div class="text-center coming-soon">Hier erscheint demnächst eine detailiertere Tabelle zu all unseren Modellen</div>
+            </div>
+        </div>
 
-                    <!--Ratings-->
-                    <td class="text-center {$PromoClass}">{$RotaryMowerRatingPP}</td>
-                    <td class="text-center {$PromoClass}">{$LoudnessRatingPP}</td>
-                    <td class="text-center {$PromoClass}">{$BatteryPowerRatingPP}</td>
-                    <td class="text-center {$PromoClass}">{$HandlingRatingPP}</td>
-                    <td class="text-center {$PromoClass} border-right">{$SecurityRatingPP}</td>
 
-                    <!--Ungewertet 1-->
-                    <td class="text-center {$PromoClass}">{$Manufacturer}</td>
-                    <td class="text-center {$PromoClass}">{$SurfaceArea}</td>
-                    <td class="text-center {$PromoClass}  border-right">{$MaxRaising}</td>
-
-                    <!--Mährwerk-->
-                    <td class="text-center {$PromoClass} nowrap">{$RotaryMowerType}</td>
-                    <td class="text-center {$PromoClass}">{$CuttingWidthCm} cm</td>
-                    <td class="text-center {$PromoClass} border-right">{$CuttingHeightMinMm} - {$CuttingHeightMaxMm} mm</td>
-
-                    <!--Lautstärke-->
-                    <td class="text-center {$PromoClass} border-right">{$LoudnessDb} dB</td>
-
-                    <!--Akku-Leistung-->
-                    <td class="text-center {$PromoClass}">{$PowerSource}</td>
-                    <td class="text-center {$PromoClass}">{$ChargingTimeText}</td>
-                    <td class="text-center {$PromoClass} border-right">{$RunTimeText}</td>
-
-                    <!--Bedienung-->
-                    <td class="text-center {$PromoClass}">{$WeightKg} Kg</td>
-                    <td class="text-center {$PromoClass}">{$Timer}</td>
-                    <td class="text-center {$PromoClass}">{$RandomMovement}</td>
-                    <td class="text-center {$PromoClass}">{$LogicutNavigation}</td>
-                    <td class="text-center {$PromoClass}">{$RainDetection}</td>
-                    <td class="text-center {$PromoClass}">{$WeatherTimer}</td>
-                    <td class="text-center {$PromoClass}">{$GpsNavigation}</td>
-                    <td class="text-center {$PromoClass}">{$OptionalRemote}</td>
-                    <td class="text-center {$PromoClass}">{$CalendarFunction}</td>
-                    <td class="text-center {$PromoClass} border-right">{$SmartphoneControl}</td>
-
-                    <!--Sicherheit-->
-                    <td class="text-center {$PromoClass}">{$ImpactDetection}</td>
-                    <td class="text-center {$PromoClass}">{$PincodeLock}</td>
-                    <td class="text-center {$PromoClass}">{$LiftTiltLock}</td>
-                    <td class="text-center {$PromoClass}">{$Timelock}</td>
-                    <td class="text-center {$PromoClass}">{$AlarmSystem}</td>
-                    <td class="text-center {$PromoClass}">{$GpsAntiTheft}</td>
-                    <td class="text-center {$PromoClass}">{$InstallationLock}</td>
-                    <td class="text-center {$PromoClass} border-right">{$ChildProtection}</td>
-
-                    <!--Ungewertet 1-->
-                    <td class="text-center {$PromoClass}">{$GuideWire}</td>
-                    <td class="text-center {$PromoClass} border-right">{$GuideLoop}</td>
-
-                </tr>
-                {loop-end}
-            </tbody>
-        </table>
     </div>
 </div>
