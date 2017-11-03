@@ -115,6 +115,11 @@ class ApdAmazonCacheItem extends ApdAmazonCache {
 		}
 
 		$this->arrayA = array_combine( $fieldsArray, $valuesArray );
+		if($this->arrayA === false){
+			$error = "Number of fields nodes not match. Checking database tables...";
+			print_error( $error, __METHOD__, __LINE__ );
+			(new ApdDatabaseService())->checkDatabaseTables();
+		}
 	}
 
 	/**

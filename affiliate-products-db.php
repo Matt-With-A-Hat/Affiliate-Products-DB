@@ -107,7 +107,8 @@ require( dirname( __FILE__ ) . '/apd-functions.php' );
 /**
  * =Debug Functions & Settings
  */
-if ( isLocalInstallation() ) {
+$domain_name = $_SERVER['HTTP_HOST'];
+if ( isLocalInstallation() OR $domain_name == 'wp-apd.refugeek.net') {
 	define( 'APD_DEBUG', true );
 	define( 'APD_REPLACE_TABLES', false ); //WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
 } else {
