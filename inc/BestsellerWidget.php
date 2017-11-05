@@ -1,10 +1,10 @@
 <?php
 // Register and load the widget
-function wpb_load_widget() {
+function wpb_load_bestseller_widget() {
 	register_widget( 'BestsellerWidget' );
 }
 
-add_action( 'widgets_init', 'wpb_load_widget' );
+add_action( 'widgets_init', 'wpb_load_bestseller_widget' );
 
 // Creating the widget
 class BestsellerWidget extends WP_Widget {

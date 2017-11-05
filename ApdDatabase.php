@@ -188,9 +188,6 @@ class ApdDatabase {
 	 * @param mixed $tablename
 	 */
 	public function setTablename( $tablename ) {
-
-		$wpdb = $this->db;
-
 		$this->tablename = add_table_prefix( $tablename );
 	}
 
@@ -804,5 +801,36 @@ class ApdDatabase {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Selects every element from the table by matching values on columns.
+	 *
+	 * array = (
+	 *      'column_1' => 'value_1',
+	 *      'column_2" => 'value_2'
+	 * )
+	 *
+	 * @param $conditions
+	 *
+	 * @return array|bool
+	 */
+	public function filterByColumns( $conditions ) {
+		global $wpdb;
+
+		if ( ! is_array( $conditions ) ) {
+			return false;
+		}
+
+		$sql = "SELECT Asin FROM $this->tablename WHERE ";
+		foreach ( $conditions as $column => $value ) {
+			$sql .= "`$column` = '%s' AND ";
+		}
+		$sql = rtrim( $sql, ' AND' );
+		$sql .= ";";
+
+		$asins = $wpdb->get_results( $wpdb->prepare( $sql, $conditions ), ARRAY_N );
+
+		return $asins = array_values_recursive( $asins );
 	}
 }

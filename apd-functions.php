@@ -112,6 +112,44 @@ function field_is_null( $field ) {
 }
 
 /**
+ * @param $atts
+ * @param $values
+ *
+ * @return bool
+ */
+function apd_filter_handler( $atts, $values ) {
+
+	if ( $atts[0] === 'disabled' ) {
+		return null;
+	}
+
+	$template  = $atts[0];
+	$tablename = $atts[1];
+	$title     = $atts[2];
+	( $title == '-' ) ? $title = '' : true;
+	$columns = array_slice( $atts, 3 );
+
+	$allowedDelimiters = "/[ ,;]/";
+	if ( preg_match( $allowedDelimiters, $values ) ) {
+		$values = preg_split( $allowedDelimiters, $values );
+	}
+	$values  = (array) $values;
+
+	$filter = array();
+	foreach ( $columns as $key => $column ) {
+		$filter[ $column ] = $values[ $key ];
+	}
+	$productsDatabase = new ApdDatabase( $tablename );
+	$asins            = $productsDatabase->filterByColumns( $filter );
+
+	$newAtts[] = $template;
+	$newAtts[] = $title;
+
+	return apd_get_item( $asins, $newAtts );
+}
+
+
+/**
  * shortcode handler for [apd] tags
  *
  * @param array $atts
@@ -123,7 +161,7 @@ function field_is_null( $field ) {
  */
 function apd_tpl_handler( $atts, $asin = null ) {
 
-	if ( $atts[2] === 'disabled' ) {
+	if ( $atts[0] === 'disabled' ) {
 		return false;
 	}
 

@@ -5,6 +5,7 @@ update_option( '_asa_get_rating_alternative', 2 );
 // register shortcode handlers
 add_shortcode( 'apd-tpl', 'apd_tpl_handler' );
 add_shortcode( 'apd-group', 'apd_group_handler' );
+add_shortcode( 'apd-filter', 'apd_filter_handler' );
 add_shortcode( 'apd-data', 'apd_tpl_handler' );
 
 /**
