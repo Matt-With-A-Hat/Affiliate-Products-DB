@@ -1,0 +1,154 @@
+<div class="affiliate-products-db">
+    {loop-start}
+    <div class="col-md-12">
+        <div class="box--normal apd-product-list-box">
+            <h2>{$Longname}</h2>
+            <a class="anchor" id="technische-daten"></a>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="product--box">
+                        <div class="product--image-box">
+                            <div class="image--promotion-widget">{$Promo}</div>
+                            <div class="product--teaser">
+                                <a href="{$AmazonUrl}" title="{$Longname}" target="_blank" rel="nofollow"><img class="image-responsive" src="{$MediumImageUrl}" alt="{$Longname}"></a>
+                                <div class="text-center product--amazon-rating">
+                                    <a class="neat-link" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen" target="_blank" rel="nofollow">{$RatingStars}</a>
+                                </div>
+                                <a class="neat-link" href="{$Permalink}" title="{$Longname} Produktbeschreibung"><h3 class="text-center">{$Longname}</h3></a>
+                                <div class="text-center product--price">
+                                    <a class="neat-link" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen" target="_blank" rel="nofollow">EUR {$AmazonPrice}</a><span class="affiliate-hint">*</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="spacing-top-20"></div>
+                        <a class="btn btn-apd-default btn-block" target="_self" rel="nofollow" href="{$Permalink}" title="{$Longname} Produktbeschreibung lesen"><span>Mehr Informationen</span></a>
+                        <div class="spacing-top-20 visible-xs visible-sm"></div>
+                        <div class="spacing-top-5 visible-md visible-lg"></div>
+                        <a class="btn btn-apd-default btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen"><i class="fa fa-amazon"></i><span>zu Amazon<span class="affiliate-hint">*</span></span></a>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-lg-6 col-xs-12">
+                            <table class="table table--structured">
+                                <tr>
+                                    <th class="category">Grundinformationen</th>
+                                    <!--<th></th>-->
+                                </tr>
+                                <tr>
+                                    <td>Hersteller</td>
+                                    <td>{$Manufacturer}</td>
+                                </tr>
+                                <tr>
+                                    <td>Rasenfläche</td>
+                                    <td>{$SurfaceArea} <span class="text--addition">&plusmn;20%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Maximale Steigung</td>
+                                    <td>{$MaxRaising}</td>
+                                </tr>
+                                <tr>
+                                    <td>Gewicht</td>
+                                    <td>{$WeightKg} Kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Lautstärke</td>
+                                    <td>{$LoudnessDb} dB</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Vergleichsergebnis</strong></td>
+                                    <td><strong>{$OverallRatingText} ({$OverallRating})</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="clearfix visible-md"></div>
+                        <div class="col-lg-6 col-xs-12">
+                            <table class="table table--structured">
+                                <tr>
+                                    <th class="category">Bedienung</th>
+                                    <!--<th></th>-->
+                                </tr>
+                                <tr>
+                                    <td>Timer Funktion</td>
+                                    <td>{$Timer}</td>
+                                </tr>
+                                <tr>
+                                    <td>Regensensor</td>
+                                    <td>{$RainDetection}</td>
+                                </tr>
+                                <tr>
+                                    <td>GPS-Navigation</td>
+                                    <td>{$GpsNavigation}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mähen nach Plan</td>
+                                    <td>{$LogicutNavigation}</td>
+                                </tr>
+                                <tr>
+                                    <td>Kalender Funktion</td>
+                                    <td>{$CalendarFunction}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-xs-12">
+                            <table class="table table--structured">
+                                <tr>
+                                    <th class="category">Sicherheit</th>
+                                    <!--<th></th>-->
+                                </tr>
+                                <tr>
+                                    <td>Pincode-Sperre</td>
+                                    <td>{$PincodeLock}</td>
+                                </tr>
+                                <tr>
+                                    <td>Installationssperre</td>
+                                    <td>{$InstallationLock}</td>
+                                </tr>
+                                <tr>
+                                    <td>Hebe- und Neigungssperre</td>
+                                    <td>{$LiftTiltLock}</td>
+                                </tr>
+                                <tr>
+                                    <td>Stoßsensor</td>
+                                    <td>{$ImpactDetection}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="clearfix visible-md"></div>
+                        <div class="col-lg-6">
+                            <table class="table table--structured">
+                                <tr>
+                                    <th class="category">Batterie</th>
+                                    <!--<th></th>-->
+                                </tr>
+                                <tr>
+                                    <td>Typ</td>
+                                    <td>{$PowerSource} Akku</td>
+                                </tr>
+                                <tr>
+                                    <td>Laufzeit</td>
+                                    <td>{$RunTimeText}</td>
+                                </tr>
+                                <tr>
+                                    <td>Ladezeit</td>
+                                    <td>{$ChargingTimeText}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 visible-xs visible-sm">
+                            <div class="spacing-top-20"></div>
+                            <a class="btn btn-apd-default btn-block" target="_self" rel="nofollow" href="{$Permalink}" title="{$Longname} Produktbeschreibung lesen"><span>Mehr Informationen</span></a>
+                            <div class="spacing-top-20"></div>
+                            <a class="btn btn-apd-default btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} auf Amazon ansehen"><i class="fa fa-amazon"></i><span>zu Amazon<span class="affiliate-hint">*</span></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {loop-end}
+</div>
