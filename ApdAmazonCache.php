@@ -79,6 +79,7 @@ class ApdAmazonCache {
 		'PercentageSaved',
 		'Prime',
 		'PrimePic',
+		'PrimeCheck',
 		'ProductReviewsURL',
 		'IFrameUrl',
 		'TrackingId',

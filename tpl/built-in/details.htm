@@ -80,8 +80,19 @@
                                                     <span>Versand</span>
                                                 </div>
                                                 <div class="col-xs-7">
-                                                    <span class="text-success" title="Versandkostenfreie Lieferung innerhalb von Deutschland sowie nach Belgien, Niederlande und Österreich">
-                                                        <i class="fa fa-mr fa-thumbs-o-up"></i>kostenlos
+                                                    <span class="text--availability" title="{$AmazonAvailability}">
+                                                        {$AmazonAvailability}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-xs-5">
+                                                    <span>Prime</span>
+                                                </div>
+                                                <div class="col-xs-7">
+                                                    <span class="text--availability" title="{$AmazonAvailability}">
+                                                        {$PrimeCheck}
                                                     </span>
                                                 </div>
                                             </div>
@@ -135,7 +146,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-6">
                                                         <div class="amazon-rating">
                                                             <div class="aggregate-rating" itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating">
                                                                 <a class="btn btn-default btn-xs btn-block" target="_blank" rel="nofollow" title="{$Title} - {$AverageRating} von 5 Sternen ({$TotalReviews} Kundenbewertungen auf amazon.de)" href="{$AmazonUrl}">

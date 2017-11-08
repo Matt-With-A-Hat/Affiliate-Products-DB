@@ -256,10 +256,10 @@ class ApdAmazonItem extends ApdAmazonCache {
 				if ( $price == 0 OR $price == null ) {
 					$pricePerformanceRating = '.k A.';
 				} else {
-					$pricePerformanceRating      = ($factor1 * ($rating / $price) + $factor2) * 100;
-					$pricePerformanceRating      = round( $pricePerformanceRating, 1 );
-					$pricePerformanceRatingGrade = convert_percent_to_grade( $pricePerformanceRating/100 );
-					$pricePerformanceRatingText  = convert_percent_to_grade( $pricePerformanceRating/100, true );
+					$pricePerformanceRating      = ( $factor1 * ( $rating / $price ) + $factor2 ) * 100;
+					$pricePerformanceRating      = min( 100, round( $pricePerformanceRating, 1 ) );
+					$pricePerformanceRatingGrade = convert_percent_to_grade( $pricePerformanceRating / 100 );
+					$pricePerformanceRatingText  = convert_percent_to_grade( $pricePerformanceRating / 100, true );
 				}
 
 				$longname = $customItemArrayA['Longname'];
@@ -272,13 +272,21 @@ class ApdAmazonItem extends ApdAmazonCache {
 				ApdCore::logContent( '$factor2: ' . $factor2 );
 				ApdCore::logContent( '$pricePerformanceRating: ' . $pricePerformanceRating );
 			} else {
-				$pricePerformanceRating = 'k. A.';
+				$pricePerformanceRating      = 'k. A.';
 				$pricePerformanceRatingGrade = 'k. A.';
-				$pricePerformanceRatingText = 'k. A.';
-				$longname               = $customItemArrayA['Longname'];
+				$pricePerformanceRatingText  = 'k. A.';
+				$longname                    = $customItemArrayA['Longname'];
 
 				ApdCore::logContent( 'Price-performance-rating calculation of Amazon item: ' . $longname, 1 );
 				ApdCore::logContent( 'This item doesn\'t have a price-performance-rating' );
+			}
+
+			/* AmazonPrimeCheck */
+			$amazonPrimeCheck = '';
+			if ( $amazonObject->Offers->Offers[0]->IsEligibleForSuperSaverShipping == 'AmazonPrime' ) {
+				$amazonPrimeCheck = "<i class='check'></i>";
+			} else {
+				$amazonPrimeCheck = "<i class='times'></i>";
 			}
 
 			/* Other */
@@ -353,6 +361,7 @@ class ApdAmazonItem extends ApdAmazonCache {
 				! empty( $percentageSaved ) ? $percentageSaved : 0,
 				! empty( $amazonObject->Offers->Offers[0]->IsEligibleForSuperSaverShipping ) ? 'AmazonPrime' : '',
 				! empty( $amazonObject->Offers->Offers[0]->IsEligibleForSuperSaverShipping ) ? '<img src="' . apd_plugins_url( 'img/amazon_prime.png', __FILE__ ) . '" class="asa_prime_pic" />' : '',
+				$amazonPrimeCheck,
 				$apdCore->getAmazonShopUrl() . 'product-reviews/' . $amazonObject->ASIN . '/&tag=' . $apdCore->getTrackingId(),
 				$customerReviews->iframeUrl,
 				$apdCore->getTrackingId(),

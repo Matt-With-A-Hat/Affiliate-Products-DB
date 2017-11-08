@@ -123,8 +123,8 @@ function apd_filter_handler( $atts, $values ) {
 		return null;
 	}
 
-	$template  = $atts[0];
-	$tablename = $atts[1];
+	$tablename = $atts[0];
+	$template  = $atts[1];
 	$title     = $atts[2];
 	( $title == '-' ) ? $title = '' : true;
 	$columns = array_slice( $atts, 3 );

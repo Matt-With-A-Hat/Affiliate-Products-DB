@@ -91,7 +91,7 @@ define( 'APD_AUTOMOWERS_PPR_FACTOR_2', 10 / 17 );
  * User Settings
  */
 define( 'APD_EMPTY_PRICE_TEXT', '<span class="text-red not-available">Derzeit nicht verfügbar</span>' );
-define( 'APD_EMPTY_AVAILABILITY_TEXT', '<span class="text-red not-available">Derzeit nicht verfügbar</span>' );
+define( 'APD_EMPTY_AVAILABILITY_TEXT', 'Händlerabhängig' );
 
 //csv import field types
 const BOOLEAN_TYPES = array( 'BOOLEAN', 'BOOL', 'TINYINT(1)' );
