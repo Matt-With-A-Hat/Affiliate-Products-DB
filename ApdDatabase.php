@@ -205,6 +205,18 @@ class ApdDatabase {
 	}
 
 	/**
+	 * Get a list of all manufacturers of the supplied table (Manufacturer is a required column for any product table)
+	 *
+	 * @return array|null|object
+	 */
+	public function getManufacturers() {
+		global $wpdb;
+		$sql = "SELECT `Manufacturer` FROM $this->tablename GROUP BY `Manufacturer`";
+
+		return array_values_recursive( $wpdb->get_results( $sql ) );
+	}
+
+	/**
 	 * @param mixed $tableDiff
 	 */
 	public function setTableDiff( $tableDiff ) {

@@ -51,6 +51,12 @@ function apd_get_item( $asin, $atts = false ) {
 	return $apdCore->getElement( $asin, $atts );
 }
 
+function apd_get_page( $content, $atts ) {
+	global $apdCore;
+
+	return $apdCore->getPage( $content, $atts );
+}
+
 /**
  * checks if field is boolean
  *
@@ -133,7 +139,7 @@ function apd_filter_handler( $atts, $values ) {
 	if ( preg_match( $allowedDelimiters, $values ) ) {
 		$values = preg_split( $allowedDelimiters, $values );
 	}
-	$values  = (array) $values;
+	$values = (array) $values;
 
 	$filter = array();
 	foreach ( $columns as $key => $column ) {
@@ -148,6 +154,19 @@ function apd_filter_handler( $atts, $values ) {
 	return apd_get_item( $asins, $newAtts );
 }
 
+function apd_widget_handler( $atts, $content = null ) {
+	if ( $atts[0] === 'disabled' ) {
+		return false;
+	}
+
+	//catch content arrays
+	$allowedDelimiters = "/[ ,;]/";
+	if ( preg_match( $allowedDelimiters, $content ) ) {
+		$content = preg_split( $allowedDelimiters, $content );
+	}
+
+	return apd_get_page( $content, $atts );
+}
 
 /**
  * shortcode handler for [apd] tags

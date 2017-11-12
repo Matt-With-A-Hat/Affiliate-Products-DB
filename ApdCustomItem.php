@@ -65,6 +65,13 @@ class ApdCustomItem {
 	protected $objectR;
 
 	/**
+	 * The refined object as json
+	 *
+	 * @var
+	 */
+	protected $json;
+
+	/**
 	 * the objects fields
 	 *
 	 * @var
@@ -73,6 +80,12 @@ class ApdCustomItem {
 
 	function __construct( $asin ) {
 
+		if ( empty( $asin ) ) {
+			$error = "No ASIN has been supplied";
+			print_error( $error, __METHOD__, __LINE__ );
+
+			return null;
+		}
 		$this->setAsinTable();
 		$this->setAsin( $asin );
 		$this->setItemTable();
@@ -80,8 +93,9 @@ class ApdCustomItem {
 		$this->arrayN  = $this->getItem( ARRAY_N );
 		$this->arrayA  = $this->getItem( ARRAY_A );
 		$this->object  = $this->getItem();
-		$this->objectR = $this->getRefinedObject();
+		$this->objectR = $this->refineObject();
 		$this->arrayR  = $this->getRefinedArray();
+		$this->json    = json_encode( $this->getObjectR() );
 
 	}
 
@@ -159,20 +173,6 @@ class ApdCustomItem {
 	/**
 	 * @return mixed
 	 */
-	public function getArrayR() {
-		return $this->arrayR;
-	}
-
-	/**
-	 * @param mixed $arrayR
-	 */
-	public function setArrayR( $arrayR ) {
-		$this->arrayR = $arrayR;
-	}
-
-	/**
-	 * @return mixed
-	 */
 	public function getObjectR() {
 		return $this->objectR;
 	}
@@ -182,6 +182,34 @@ class ApdCustomItem {
 	 */
 	public function setObjectR( $objectR ) {
 		$this->objectR = $objectR;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getJson() {
+		return $this->json;
+	}
+
+	/**
+	 * @param mixed $json
+	 */
+	public function setJson( $json ) {
+		$this->json = $json;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getArrayR() {
+		return $this->arrayR;
+	}
+
+	/**
+	 * @param mixed $arrayR
+	 */
+	public function setArrayR( $arrayR ) {
+		$this->arrayR = $arrayR;
 	}
 
 	/**
@@ -253,7 +281,7 @@ class ApdCustomItem {
 	 *
 	 * @return array|bool|null|object|void
 	 */
-	private function getRefinedObject() {
+	private function refineObject() {
 		$database         = new ApdDatabase( $this->itemTable );
 		$tableinfo        = $database->getTableInfo();
 		$customItemObject = $this->getObject();
@@ -373,7 +401,7 @@ class ApdCustomItem {
 
 	private function getRefinedArray() {
 		if ( empty( $this->objectR ) ) {
-			return (array) $this->getRefinedObject();
+			return (array) $this->refineObject();
 		} else {
 			return (array) $this->objectR;
 		}

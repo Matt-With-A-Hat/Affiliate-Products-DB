@@ -9,15 +9,21 @@ Class ApdApi {
 	 * get an item with every value from the custom database and from amazon by its asin
 	 *
 	 * @param $asin
+	 * @param $refined
 	 *
 	 * @return array
 	 */
-	public function getItemByAsin( $asin ) {
+	public function getItemByAsin( $asin, $refined = true ) {
 		$amazonCacheItem = new ApdAmazonCacheItem( $asin );
 		$apdCustomItem   = new ApdCustomItem( $asin );
 
-		$amazonCacheItemArrayA = $amazonCacheItem->getArrayA();
-		$apdCustomItemArrayA   = $apdCustomItem->getArrayR();
+		if ( $refined ) {
+			$amazonCacheItemArrayA = $amazonCacheItem->getArrayA();
+			$apdCustomItemArrayA   = $apdCustomItem->getArrayR();
+		} else {
+			$amazonCacheItemArrayA = $amazonCacheItem->getArrayA();
+			$apdCustomItemArrayA   = $apdCustomItem->getArrayA();
+		}
 
 		return array_merge( $amazonCacheItemArrayA, $apdCustomItemArrayA );
 	}

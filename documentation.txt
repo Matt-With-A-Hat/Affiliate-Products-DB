@@ -1,2 +1,8 @@
 [apd-tpl [disabled] <template> [<title>]] <asin1> [<asin2>] [/apd-tpl]
 [apd-filter [disabled] <tablename> <template> [<title> [<filter1>, ...]]] <condition1> [<condition2>] [/apd-tpl]
+
+
+Necessary columns for product tables:
+Asin
+Longname
+Manufacturer

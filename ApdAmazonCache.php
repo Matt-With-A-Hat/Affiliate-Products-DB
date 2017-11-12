@@ -47,6 +47,7 @@ class ApdAmazonCache {
 		'LowestUsedPrice',
 		'LowestUsedOfferFormattedPrice',
 		'AmazonPrice',
+		'AmazonPriceInteger',
 		'AmazonPriceFormatted',
 		'ListPriceFormatted',
 		'AmazonCurrency',

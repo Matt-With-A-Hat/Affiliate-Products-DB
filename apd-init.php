@@ -6,6 +6,7 @@ update_option( '_asa_get_rating_alternative', 2 );
 add_shortcode( 'apd-tpl', 'apd_tpl_handler' );
 add_shortcode( 'apd-group', 'apd_group_handler' );
 add_shortcode( 'apd-filter', 'apd_filter_handler' );
+add_shortcode( 'apd-widget', 'apd_widget_handler' );
 add_shortcode( 'apd-data', 'apd_tpl_handler' );
 
 /**
@@ -23,7 +24,7 @@ add_action( 'admin_menu', 'setupBackendMenu' );
  */
 function add_apd_stylesheets() {
 	wp_enqueue_style( 'apdplugin', plugins_url( '/css/apdplugin.css', __FILE__ ), array(), APD_PLUGIN_VERSION );
-	wp_enqueue_style( 'font-awesome', plugins_url( '/css/font-awesome.min.css', __FILE__ ), array(), APD_PLUGIN_VERSION );
+	wp_enqueue_style( 'vendor', plugins_url( '/css/vendor/vendor.css', __FILE__ ), array(), APD_PLUGIN_VERSION );
 }
 
 add_action( 'wp_enqueue_scripts', 'add_apd_stylesheets' );
@@ -33,8 +34,8 @@ add_action( 'wp_enqueue_scripts', 'add_apd_stylesheets' );
  */
 function add_apd_admin_stylesheets() {
 	if ( $_GET['page'] == APD_MENU_SLUG ) {
-		wp_enqueue_style( 'bootstrap', plugins_url( '/css/bootstrap.min.css', __FILE__ ), array(), APD_PLUGIN_VERSION );
-		wp_enqueue_style( 'setupmenu', plugins_url( '/css/setupmenu.css', __FILE__ ), array(), APD_PLUGIN_VERSION );
+//		wp_enqueue_style( 'bootstrap', plugins_url( '/css/bootstrap.min.css', __FILE__ ), array(), APD_PLUGIN_VERSION );
+		wp_enqueue_style( 'vendor', plugins_url( '/css/vendor/vendor.css', __FILE__ ), array(), APD_PLUGIN_VERSION );
 	}
 }
 
@@ -47,6 +48,7 @@ add_action( 'admin_enqueue_scripts', 'add_apd_admin_stylesheets' );
 function add_apd_scripts() {
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'apd-functions', plugins_url( '/js/frontend.js', __FILE__ ) );
+	wp_enqueue_script( 'bootstrap-slider', plugins_url( '/js/bootstrap-slider.min.js', __FILE__ ) );
 }
 
 add_action( 'wp_enqueue_scripts', 'add_apd_scripts' );

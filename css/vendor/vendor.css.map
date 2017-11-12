@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA;;EAEE;AAEM,8BAAmB;AACnB,qCAA0B;AAC1B,iCAAsB",
+"sources": ["vendor.scss"],
+"names": [],
+"file": "vendor.css"
+}

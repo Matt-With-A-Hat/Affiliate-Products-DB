@@ -163,7 +163,7 @@ class ApdCore {
 	}
 
 	/**
-	 * Gets an element specified by the supplied asin, template and tablename.
+	 * Gets an element specified by the supplied asin and template.
 	 *
 	 * @param $asin
 	 * @param $atts
@@ -193,6 +193,33 @@ class ApdCore {
 		} elseif ( is_array( $asin ) ) {
 			$item_html .= $this->parseMultiTpl( $tpl_src, $asin, $atts );
 		}
+
+		return $item_html;
+	}
+
+	/**
+	 * Gets a widget-template specified by the supplied widget name.
+	 *
+	 * @param $content
+	 * @param $atts
+	 *
+	 * @return bool|string
+	 */
+	public function getPage( $content, $atts ) {
+		$item_html = '';
+
+		$count = count( $atts );
+		if ( $count < 1 ) {
+			if ( APD_DEBUG ) {
+				echo "Missing attribute in shortcode.<br>";
+			}
+
+			return false;
+		} else if ( $count < 2 ) {
+			$tpl_src = $this->getTpl( $atts[0] );
+		}
+
+		$item_html .= $this->parseTpl( $tpl_src, null, $atts );
 
 		return $item_html;
 	}
@@ -246,7 +273,8 @@ class ApdCore {
 	public function getTplLocations() {
 		$tplLocations = array(
 			dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR,
-			dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'built-in' . DIRECTORY_SEPARATOR
+			dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR,
+			dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR . 'widgets' . DIRECTORY_SEPARATOR
 		);
 
 		return apply_filters( 'adp_tpl_locations', $tplLocations );
@@ -341,6 +369,26 @@ class ApdCore {
 		$html = preg_replace( $placeholders, $replace, $tpl );
 
 		//--------------------------------------------------------------
+		// =JSON
+		//--------------------------------------------------------------
+		if ( ! empty( $asin ) ) {
+			$tpl = $html;
+
+			$placeholders = array(
+				'JSON'
+			);
+			$placeholders = $this->getTplPlaceholders( $placeholders, true );
+
+			$json = json_encode( ( new ApdApi() )->getItemByAsin( $asin, 0 ) );
+
+			$replace = array(
+				$json
+			);
+
+			$html = preg_replace( $placeholders, $replace, $tpl );
+		}
+
+		//--------------------------------------------------------------
 		// =replace with custom information
 		//--------------------------------------------------------------
 
@@ -348,6 +396,7 @@ class ApdCore {
 
 		$placeholders = array(
 			'AutomowerModels',
+			'SelectAutomowerManufacturers',
 			'ManufacturerDescription',
 			'ManufacturerLogo',
 			'Time'
@@ -362,6 +411,12 @@ class ApdCore {
 		$automowerModelsHtml = "";
 		foreach ( $automowerModels as $automowerModel ) {
 			$automowerModelsHtml .= "<li data-tag='$automowerModel[Tags]'>$automowerModel[Longname]</li>";
+		}
+
+		$manufacturers                = ( new ApdDatabase( 'automowers' ) )->getManufacturers();
+		$selectAutomowerManufacturers = '';
+		foreach ( $manufacturers as $manufacturer ) {
+			$selectAutomowerManufacturers .= "<option value='$manufacturer'>$manufacturer</option>";
 		}
 
 		/**
@@ -410,6 +465,7 @@ class ApdCore {
 		$placeholders = $this->getTplPlaceholders( $placeholders, true );
 		$replace      = array(
 			$automowerModelsHtml,
+			$selectAutomowerManufacturers,
 			$manufacturerDescription,
 			$manufacturerLogo,
 			$time

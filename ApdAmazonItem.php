@@ -245,6 +245,10 @@ class ApdAmazonItem extends ApdAmazonCache {
 				$amazonPriceFormatted = APD_EMPTY_PRICE_TEXT;
 			}
 
+			/* =create AmazonPriceInteger */
+			$price              = (float) str_replace( ',', '.', str_replace( '.', '', $amazonPrice ) );
+			$amazonPriceInteger = (int) round( $price );
+
 			/* =try to create price performance ratio rating */
 			$customItem       = new ApdCustomItem( $amazonObject->ASIN );
 			$customItemArrayA = $customItem->getArrayA();
@@ -328,6 +332,7 @@ class ApdAmazonItem extends ApdAmazonCache {
 				empty( $lowestUsedPrice ) ? '---' : $lowestUsedPrice,
 				str_replace( '$', '\$', $lowestUsedOfferFormattedPrice ),
 				empty( $amazonPrice ) ? '---' : str_replace( '$', '\$', $amazonPrice ),
+				empty( $amazonPriceInteger ) ? 0 : str_replace( '$', '\$', $amazonPriceInteger ),
 				empty( $amazonPriceFormatted ) ? '---' : str_replace( '$', '\$', $amazonPriceFormatted ),
 				empty( $listPriceFormatted ) ? '---' : str_replace( '$', '\$', $listPriceFormatted ),
 				isset( $amazonObject->Offers->Offers[0]->CurrencyCode ) ? $amazonObject->Offers->Offers[0]->CurrencyCode : '',
