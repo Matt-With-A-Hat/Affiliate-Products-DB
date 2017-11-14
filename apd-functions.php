@@ -123,7 +123,9 @@ function field_is_null( $field ) {
  *
  * @return bool
  */
-function apd_filter_handler( $atts, $values ) {
+function apd_filter_handler( $atts, $values = 0 ) {
+
+	( empty( $atts[3] ) ) ? $atts[3] = 'Disabled' : true; //fallback, so filter can be empty
 
 	if ( $atts[0] === 'disabled' ) {
 		return null;
@@ -132,6 +134,7 @@ function apd_filter_handler( $atts, $values ) {
 	$tablename = $atts[0];
 	$template  = $atts[1];
 	$title     = $atts[2];
+
 	( $title == '-' ) ? $title = '' : true;
 	$columns = array_slice( $atts, 3 );
 
@@ -154,6 +157,14 @@ function apd_filter_handler( $atts, $values ) {
 	return apd_get_item( $asins, $newAtts );
 }
 
+/**
+ * currently not used
+ *
+ * @param $atts
+ * @param null $content
+ *
+ * @return bool|string
+ */
 function apd_widget_handler( $atts, $content = null ) {
 	if ( $atts[0] === 'disabled' ) {
 		return false;

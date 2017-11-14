@@ -6,3 +6,4 @@ Necessary columns for product tables:
 Asin
 Longname
 Manufacturer
+Disabled

@@ -173,6 +173,7 @@ require_once( dirname( __FILE__ ) . '/ApdPostGenerator.php' );
  * =Widgets
  */
 require_once( dirname( __FILE__ ) . '/inc/BestsellerWidget.php' );
+require_once( dirname( __FILE__ ) . '/inc/FilterWidget.php' );
 
 
 /**

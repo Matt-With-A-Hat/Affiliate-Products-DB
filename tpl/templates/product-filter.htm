@@ -9,6 +9,8 @@
         $sliders = $('.apd-slider');
         $checkboxes = $('.apd-checkbox');
 
+        var filterValuesJson = sessionStorage.getItem('automowersFilter');
+        var filterValues = JSON.parse(filterValuesJson);
 
         /**
          * =Slider initialization
@@ -66,10 +68,21 @@
 
         /**
          * --------------------------------------------------------------
+         * =Execute on page load
+         * --------------------------------------------------------------
+         * */
+        if (filterValues !== null) {
+            setSelectValues();
+            setSliderValues();
+            setCheckboxValues();
+            updateVisibility(getHiddenItems());
+        }
+
+        /**
+         * --------------------------------------------------------------
          * =Functions
          * --------------------------------------------------------------
          */
-
         function getProductData() {
             if (gProductData === null) {
                 var productData = {};
@@ -116,6 +129,16 @@
             return selects;
         }
 
+        function setSelectValues() {
+            $selects.each(function (index, element) {
+                var id = $(element).attr('id');
+                if (id in filterValues) {
+                    var filterVal = filterValues[id];
+                    $(element).val(filterVal);
+                }
+            })
+        }
+
         function getCheckboxValues() {
             var checkboxes = {};
             $checkboxes.each(function () {
@@ -125,6 +148,18 @@
             return checkboxes;
         }
 
+        function setCheckboxValues() {
+            $checkboxes.each(function (index, element) {
+                var id = $(element).attr('id');
+                if (id in filterValues) {
+                    var filterVal = filterValues[id];
+                    if (filterVal === true) {
+                        $(element).attr('checked', true)
+                    }
+                }
+            })
+        }
+
         function getSliderValues() {
             var sliders = {};
             $sliders.each(function () {
@@ -132,6 +167,16 @@
                 sliders[id] = $(this).slider('getValue');
             });
             return sliders;
+        }
+
+        function setSliderValues() {
+            $sliders.each(function (index, element) {
+                var id = $(this).attr('id');
+                if (id in filterValues) {
+                    var filterVal = filterValues[id];
+                    $(this).slider('setValue', filterVal);
+                }
+            })
         }
 
         function updateVisibility(hiddenItems) {
@@ -144,6 +189,18 @@
                     item.fadeOut();
                 }
             }
+            var countItems = 0;
+            var countHiddenItems = 0;
+
+            for (asin in items) {
+                countItems++;
+            }
+            for (asin in hiddenItems) {
+                countHiddenItems++;
+            }
+
+            var visibleItems = countItems - countHiddenItems;
+            $('#filter-results').html(visibleItems);
         }
 
         /**
@@ -218,13 +275,15 @@
             return hiddenItems;
         }
 
+        function getHiddenItems() {
+            return hiddenItems = $.extend(checkCheckboxes(), checkSelects(), checkSliders());
+        }
+
         /**
          * =Make stuff happen
          */
         $selects.add($sliders).add($checkboxes).change(function () {
-            var hiddenItems = checkCheckboxes();
-            hiddenItems = $.extend(hiddenItems, checkSelects(), checkSliders());
-
+            var hiddenItems = getHiddenItems();
             updateVisibility(hiddenItems);
         });
     });
@@ -336,6 +395,14 @@
                         <label class="label--checkbox" for="ImpactDetectionRatingPercent">Stoßsensor</label>
                     </div>
                     <div class="col-md-4"></div>
+                </div>
+                <div class="row">
+                    <div class="spacing-top-30"></div>
+                    <div class="col-md-12">
+                        <div class="pull-right box--results">
+                            <span class="text--results">Ergebnisse: <span id="filter-results">-</span></span>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

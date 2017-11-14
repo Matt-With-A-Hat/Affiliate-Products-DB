@@ -47,7 +47,7 @@ add_action( 'admin_enqueue_scripts', 'add_apd_admin_stylesheets' );
  */
 function add_apd_scripts() {
 	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'apd-functions', plugins_url( '/js/frontend.js', __FILE__ ) );
+	wp_enqueue_script( 'apd-functions', plugins_url( '/js/custom.js', __FILE__ ) );
 	wp_enqueue_script( 'bootstrap-slider', plugins_url( '/js/bootstrap-slider.min.js', __FILE__ ) );
 }
 

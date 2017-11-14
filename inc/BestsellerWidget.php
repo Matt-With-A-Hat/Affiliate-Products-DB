@@ -1,25 +1,25 @@
 <?php
 // Register and load the widget
-function wpb_load_bestseller_widget() {
-	register_widget( 'BestsellerWidget' );
+function wpb_load_apd_bestseller_widget() {
+	register_widget( 'ApdBestsellerWidget' );
 }
 
-add_action( 'widgets_init', 'wpb_load_bestseller_widget' );
+add_action( 'widgets_init', 'wpb_load_apd_bestseller_widget' );
 
 // Creating the widget
-class BestsellerWidget extends WP_Widget {
+class ApdBestsellerWidget extends WP_Widget {
 
 	function __construct() {
 		parent::__construct(
 
 // Base ID of your widget
-			'bestseller_widget',
+			'apd_bestseller_widget',
 
 // Widget name will appear in UI
-			__( 'BestsellerWidget', 'bestseller_widget' ),
+			__( 'ApdBestsellerWidget', 'apd_bestseller_widget' ),
 
 // Widget description
-			array( 'description' => __( 'Widget to display bestsellers', 'bestseller widget' ), )
+			array( 'description' => __( 'Widget to display bestsellers', 'apd bestseller widget' ), )
 		);
 	}
 

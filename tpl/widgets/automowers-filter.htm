@@ -1,0 +1,196 @@
+<script>
+    jQuery(document).ready(function ($) {
+        /**
+         * =Global variables
+         */
+        $selects = $('.apd-select');
+        $sliders = $('.apd-slider');
+        $checkboxes = $('.apd-checkbox');
+
+
+        $("#AmazonPriceInteger").slider({
+            id: "AmazonPriceInteger",
+            min: 0,
+            max: 5000,
+            range: true,
+            value: [0, 5000],
+        });
+        $("#OverallRatingPP").slider({
+            id: "OverallRatingPP",
+            min: 0,
+            max: 100,
+            range: true,
+            value: [0, 100],
+        });
+        $("#SurfaceArea").slider({
+            id: "SurfaceArea",
+            min: 0,
+            max: 6000,
+            range: true,
+            value: [0, 6000],
+        });
+        $("#MaxRaising").slider({
+            id: "MaxRaising",
+            min: 0,
+            max: 70,
+            range: true,
+            value: [0, 70],
+        });
+        $("#LoudnessDb").slider({
+            id: "LoudnessDb",
+            min: 0,
+            max: 100,
+            range: true,
+            value: [0, 100],
+        });
+
+        /**
+         * =Functions
+         */
+        function getSelectValues() {
+            var selects = {};
+            $selects.each(function (index, element) {
+                var id = $(this).attr('id');
+                selects[id] = $(element).val();
+            });
+            return selects;
+        }
+
+        function getCheckboxValues() {
+            var checkboxes = {};
+            $checkboxes.each(function () {
+                var id = $(this).attr('id');
+                checkboxes[id] = $(this)[0].checked;
+            });
+            return checkboxes;
+        }
+
+        function getSliderValues() {
+            var sliders = {};
+            $sliders.each(function () {
+                var id = $(this).attr('id');
+                sliders[id] = $(this).slider('getValue');
+            });
+            return sliders;
+        }
+
+        function storeValuesInJson() {
+            var selectValues = getSelectValues();
+            var sliderValues = getSliderValues();
+            var checkboxValues = getCheckboxValues();
+            values = $.extend(selectValues, sliderValues, checkboxValues);
+            sessionStorage.setItem('automowersFilter', JSON.stringify(values));
+        }
+
+        storeValuesInJson();
+
+        /**
+         * =Store data in local storage
+         */
+        $selects.add($sliders).add($checkboxes).change(function () {
+            storeValuesInJson();
+        });
+    });
+</script>
+
+<h2>{$AttributeTitle}</h2>
+<form action="">
+    <div class="row">
+        <div class="col-md-12">
+            <label class="label--slider" for="Manufacturer">Hersteller</label>
+            <div class="box--select">
+                <select id="Manufacturer" class="apd-select form-control">
+                    <option value="">Alle</option>
+                    {$SelectAutomowerManufacturers}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="label--slider" for="AmazonPriceInteger">Preis (EUR)</label>
+            <div class="box--slider">
+                <span>0</span><input id="AmazonPriceInteger" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>5000</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="label--slider" for="OverallRatingPP">Vergleichsergebnis (%)</label>
+            <div class="box--slider">
+                <span>0</span><input id="OverallRatingPP" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>100</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="label--slider" for="SurfaceArea">Rasenfläche (m²)</label>
+            <div class="box--slider">
+                <span>0</span><input id="SurfaceArea" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>6000</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="label--slider" for="MaxRaising">Maximale Steigung (%)</label>
+            <div class="box--slider">
+                <span>0</span><input id="MaxRaising" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>70</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="label--slider" for="MaxRaising">Lautstärke (dB)</label>
+            <div class="box--slider">
+                <span>0</span><input id="LoudnessDb" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>70</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="spacing-top-20"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input class="apd-checkbox" type="checkbox" id="TimerRatingPercent" value="1">
+            <label class="label--checkbox" for="TimerRatingPercent">Timer Funktion</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input class="apd-checkbox" type="checkbox" id="RainDetectionRatingPercent" value="1">
+            <label class="label--checkbox" for="RainDetectionRatingPercent">Regensensor</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input class="apd-checkbox" type="checkbox" id="GpsNavigationRatingPP" value="1">
+            <label class="label--checkbox" for="GpsNavigationRatingPP">GPS Navigation</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input class="apd-checkbox" type="checkbox" id="CalendarFunctionRatingPercent" value="1">
+            <label class="label--checkbox" for="CalendarFunctionRatingPercent">Kalendar Funktion</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input class="apd-checkbox" type="checkbox" id="PincodeLockRatingPercent" value="1">
+            <label class="label--checkbox" for="PincodeLockRatingPercent">Pincode Sperre</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input class="apd-checkbox" type="checkbox" id="InstallationLockRatingPercent" value="1">
+            <label class="label--checkbox" for="InstallationLockRatingPercent">Installationssperre</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input class="apd-checkbox" type="checkbox" id="LiftTiltLockRatingPercent" value="1">
+            <label class="label--checkbox" for="LiftTiltLockRatingPercent">Hebe- und Neigungssperre</label>
+        </div>
+    </div>
+</form>

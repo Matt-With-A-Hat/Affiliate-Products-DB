@@ -187,7 +187,6 @@ class ApdCore {
 			array_shift( $atts );
 		}
 
-
 		if ( is_string( $asin ) ) {
 			$item_html .= $this->parseTpl( $tpl_src, $asin, $atts );
 		} elseif ( is_array( $asin ) ) {
@@ -512,7 +511,6 @@ class ApdCore {
 
 			$html .= $blockHtml;
 		}
-
 		return $html;
 	}
 
