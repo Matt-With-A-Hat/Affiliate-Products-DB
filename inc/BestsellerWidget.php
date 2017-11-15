@@ -35,7 +35,7 @@ class ApdBestsellerWidget extends WP_Widget {
 //		krumo( $bestseller );
 
 		?>
-		<div class="product--box">
+		<div class="product--box box--widget">
 			<?= $title; ?>
 			<div class="product--image-box">
 				<div class="image--promotion-widget"><?= $bestseller->Promo; ?></div>

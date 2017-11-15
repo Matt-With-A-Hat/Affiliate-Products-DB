@@ -76,6 +76,12 @@
             setSliderValues();
             setCheckboxValues();
             updateVisibility(getHiddenItems());
+            setTimeout(function () {
+                $("#filter-toggle")[0].click();
+            }, 10);
+            setTimeout(function () {
+                $(".toggle-rotate").children("i").toggleClass("down");
+            }, 200);
         }
 
         /**
@@ -295,117 +301,125 @@
         <div class="box--normal">
             <h2>{$AttributeTitle}</h2>
             <p>Verwenden Sie unseren komfortablen Produktfilter, um das für Sie passende Produkt zu finden.</p>
-            <form action="">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="Manufacturer">Hersteller</label>
-                        <div class="box--select">
-                            <select id="Manufacturer" class="apd-select form-control">
-                                <option value="">Alle</option>
-                                {$SelectAutomowerManufacturers}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="AmazonPriceInteger">Preis (EUR)</label>
-                        <div class="box--slider">
-                            <span>0</span><input id="AmazonPriceInteger" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>5000</span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="OverallRatingPP">Vergleichsergebnis (%)</label>
-                        <div class="box--slider">
-                            <span>0</span><input id="OverallRatingPP" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>100</span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="SurfaceArea">Rasenfläche (m²)</label>
-                        <div class="box--slider">
-                            <span>0</span><input id="SurfaceArea" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>6000</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="MaxRaising">Maximale Steigung (%)</label>
-                        <div class="box--slider">
-                            <span>0</span><input id="MaxRaising" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>70</span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="LoudnessDb">Lautstärke (dB)</label>
-                        <div class="box--slider">
-                            <span>0</span><input id="LoudnessDb" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>100</span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="RunTime">Laufzeit (min)</label>
-                        <div class="box--slider">
-                            <span>0</span><input id="RunTime" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>300</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="ChargingTimeMin">Ladezeit (min)</label>
-                        <div class="box--slider">
-                            <span>0</span><input id="ChargingTimeMin" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>300</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="spacing-top-30"></div>
-                        <input class="apd-checkbox" type="checkbox" id="TimerRatingPercent" value="1">
-                        <label class="label--checkbox" for="TimerRatingPercent">Timer Funktion</label>
 
-                        <input class="apd-checkbox" type="checkbox" id="RainDetectionRatingPercent" value="1">
-                        <label class="label--checkbox" for="RainDetectionRatingPercent">Regensensor</label>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="spacing-top-30"></div>
-                        <input class="apd-checkbox" type="checkbox" id="GpsNavigationRatingPercent" value="value2">
-                        <label class="label--checkbox" for="GpsNavigationRatingPercent">GPS-Navigation</label>
-
-                        <input class="apd-checkbox" type="checkbox" id="LogicutNavigationRatingPercent" value="1">
-                        <label class="label--checkbox" for="LogicutNavigationRatingPercent">Mähen nach Plan</label>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="spacing-top-30"></div>
-                        <input class="apd-checkbox" type="checkbox" id="CalendarFunctionRatingPercent" value="1">
-                        <label class="label--checkbox" for="CalendarFunctionRatingPercent">Kalendar Funktion</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="spacing-top-30"></div>
-                        <input class="apd-checkbox" type="checkbox" id="PincodeLockRatingPercent" value="1">
-                        <label class="label--checkbox" for="PincodeLockRatingPercent">Pincode Sperre</label>
-
-                        <input class="apd-checkbox" type="checkbox" id="InstallationLockRatingPercent" value="1">
-                        <label class="label--checkbox" for="InstallationLockRatingPercent">Installationssperre</label>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="spacing-top-30"></div>
-                        <input class="apd-checkbox" type="checkbox" id="LiftTiltLockRatingPercent" value="1">
-                        <label class="label--checkbox" for="LiftTiltLockRatingPercent">Hebe- und Neigungssperre</label>
-
-                        <input class="apd-checkbox" type="checkbox" id="ImpactDetectionRatingPercent" value="1">
-                        <label class="label--checkbox" for="ImpactDetectionRatingPercent">Stoßsensor</label>
-                    </div>
-                    <div class="col-md-4"></div>
-                </div>
-                <div class="row">
-                    <div class="spacing-top-30"></div>
-                    <div class="col-md-12">
-                        <div class="pull-right box--results">
-                            <span class="text--results">Ergebnisse: <span id="filter-results">-</span></span>
+            <h3>
+                <a id="filter-toggle" class="text--collapse" role="button" data-toggle="collapse" href="#filter-settings" aria-expanded="false" aria-controls="filter-settings">
+                    <span class="toggle-rotate"><i class="fa fa-mr fa-caret-right rotate"></i>Filter Einstellungen</span>
+                </a>
+            </h3>
+            <div id="filter-settings" class="collapse">
+                <form action="">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="Manufacturer">Hersteller</label>
+                            <div class="box--select">
+                                <select id="Manufacturer" class="apd-select form-control">
+                                    <option value="">Alle</option>
+                                    {$SelectAutomowerManufacturers}
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="AmazonPriceInteger">Preis (EUR)</label>
+                            <div class="box--slider">
+                                <span>0</span><input id="AmazonPriceInteger" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>5000</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="OverallRatingPP">Vergleichsergebnis (%)</label>
+                            <div class="box--slider">
+                                <span>0</span><input id="OverallRatingPP" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>100</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="SurfaceArea">Rasenfläche (m²)</label>
+                            <div class="box--slider">
+                                <span>0</span><input id="SurfaceArea" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>6000</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="MaxRaising">Maximale Steigung (%)</label>
+                            <div class="box--slider">
+                                <span>0</span><input id="MaxRaising" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>70</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="LoudnessDb">Lautstärke (dB)</label>
+                            <div class="box--slider">
+                                <span>0</span><input id="LoudnessDb" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>100</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="RunTime">Laufzeit (min)</label>
+                            <div class="box--slider">
+                                <span>0</span><input id="RunTime" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>300</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="ChargingTimeMin">Ladezeit (min)</label>
+                            <div class="box--slider">
+                                <span>0</span><input id="ChargingTimeMin" type="text" class="span2 apd-slider" data-slider-handle="custom"/><span>300</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="spacing-top-30"></div>
+                            <input class="apd-checkbox" type="checkbox" id="TimerRatingPercent" value="1">
+                            <label class="label--checkbox" for="TimerRatingPercent">Timer Funktion</label>
+
+                            <input class="apd-checkbox" type="checkbox" id="RainDetectionRatingPercent" value="1">
+                            <label class="label--checkbox" for="RainDetectionRatingPercent">Regensensor</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="spacing-top-30"></div>
+                            <input class="apd-checkbox" type="checkbox" id="GpsNavigationRatingPercent" value="value2">
+                            <label class="label--checkbox" for="GpsNavigationRatingPercent">GPS-Navigation</label>
+
+                            <input class="apd-checkbox" type="checkbox" id="LogicutNavigationRatingPercent" value="1">
+                            <label class="label--checkbox" for="LogicutNavigationRatingPercent">Mähen nach Plan</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="spacing-top-30"></div>
+                            <input class="apd-checkbox" type="checkbox" id="CalendarFunctionRatingPercent" value="1">
+                            <label class="label--checkbox" for="CalendarFunctionRatingPercent">Kalendar Funktion</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="spacing-top-30"></div>
+                            <input class="apd-checkbox" type="checkbox" id="PincodeLockRatingPercent" value="1">
+                            <label class="label--checkbox" for="PincodeLockRatingPercent">Pincode Sperre</label>
+
+                            <input class="apd-checkbox" type="checkbox" id="InstallationLockRatingPercent" value="1">
+                            <label class="label--checkbox" for="InstallationLockRatingPercent">Installationssperre</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="spacing-top-30"></div>
+                            <input class="apd-checkbox" type="checkbox" id="LiftTiltLockRatingPercent" value="1">
+                            <label class="label--checkbox" for="LiftTiltLockRatingPercent">Hebe- und Neigungssperre</label>
+
+                            <input class="apd-checkbox" type="checkbox" id="ImpactDetectionRatingPercent" value="1">
+                            <label class="label--checkbox" for="ImpactDetectionRatingPercent">Stoßsensor</label>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <div class="row">
+                        <div class="spacing-top-30"></div>
+                        <div class="col-md-12">
+                            <div class="pull-right box--results">
+                                <span class="text--results">Ergebnisse: <span id="filter-results">-</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
