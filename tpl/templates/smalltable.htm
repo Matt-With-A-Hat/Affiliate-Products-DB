@@ -8,7 +8,7 @@
                 <tr>
                     <th></th>
                     {loop-start}
-                    <th class="text-center"><a href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">{$Longname}</a></th>
+                    <th class="text-center {$Asin}"><a href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">{$Longname}</a></th>
                     {loop-end}
                 </tr>
             </thead>
@@ -16,7 +16,7 @@
                 <tr class="image">
                     <td></td>
                     {loop-start}
-                    <td class="{$PromoClass}">
+                    <td class="{$PromoClass} {$Asin}">
                         <div class="row text-center">
                             <span class="text-center table--promotion {$PromoClass}">{$Promo}</span>
                             <div class="medium-amazon-image">
@@ -32,7 +32,7 @@
                 <tr class="model">
                     <td>Modell</td>
                     {loop-start}
-                    <td class="text-center {$PromoClass}">
+                    <td class="text-center {$PromoClass} {$Asin}">
                         <span><a class="neat-link" href="{$Permalink}" title="{$Title}" rel="nofollow">{$Longname}<span class="affiliate-hint">*</span></a><br></span>
                     </td>
                     {loop-end}
@@ -40,7 +40,7 @@
                 <tr class="price">
                     <td>Preis</td>
                     {loop-start}
-                    <td class="text-center {$PromoClass}">
+                    <td class="text-center {$PromoClass} {$Asin}">
                         <span><a class="neat-link" href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">EUR {$AmazonPrice}<span class="affiliate-hint">*</span></a><br></span>
                         <small>inkl. 19% gesetzlicher MwSt.</small>
                     </td>
@@ -49,7 +49,7 @@
                 <tr>
                     <td>Gesamt-Note</td>
                     {loop-start}
-                    <td class="text-center {$PromoClass}">
+                    <td class="text-center {$PromoClass} {$Asin}">
                         <span class="overall-rating">{$OverallRating}</span><br>
                         <span class="overall-rating-text">{$OverallRatingText}</span>
                     </td>
@@ -58,49 +58,49 @@
                 <tr>
                     <td>Amazon Bewertung</td>
                     {loop-start}
-                    <td class="text-center {$PromoClass}">{$RatingStars}</td>
+                    <td class="text-center {$PromoClass} {$Asin}">{$RatingStars}</td>
                     {loop-end}
                 </tr>
                 <tr>
                     <td>Max. Rasenfläche</td>
                     {loop-start}
-                    <td class="text-center {$PromoClass}">{$SurfaceArea}</td>
+                    <td class="text-center {$PromoClass} {$Asin}">{$SurfaceArea}</td>
                     {loop-end}
                 </tr>
                 <tr>
                     <td>PIN gesichert</td>
                     {loop-start}
-                    <td class="text-center {$PromoClass}">{$PincodeLock}</td>
+                    <td class="text-center {$PromoClass} {$Asin}">{$PincodeLock}</td>
                     {loop-end}
                 </tr>
                 <tr>
                     <td>Alarmgesichert</td>
                     {loop-start}
-                    <td class="text-center {$PromoClass}">{$AlarmSystem}</td>
+                    <td class="text-center {$PromoClass} {$Asin}">{$AlarmSystem}</td>
                     {loop-end}
                 </tr>
                 <tr>
                     <td>Schnitthöhe</td>
                     {loop-start}
-                    <td class="text-center {$PromoClass}">{$CuttingHeightMinMm} - {$CuttingHeightMaxMm}mm</td>
+                    <td class="text-center {$PromoClass} {$Asin}">{$CuttingHeightMinMm} - {$CuttingHeightMaxMm}mm</td>
                     {loop-end}
                 </tr>
                 <tr>
                     <td>Schnittbreite</td>
                     {loop-start}
-                    <td class="text-center {$PromoClass}">{$CuttingWidthCm}cm</td>
+                    <td class="text-center {$PromoClass} {$Asin}">{$CuttingWidthCm}cm</td>
                     {loop-end}
                 </tr>
                 <tr>
                     <td>Max. Steigung</td>
                     {loop-start}
-                    <td class="text-center {$PromoClass}">{$MaxRaising}</td>
+                    <td class="text-center {$PromoClass} {$Asin}">{$MaxRaising}</td>
                     {loop-end}
                 </tr>
                 <tr class="amazon-buttons">
                     <td></td>
                     {loop-start}
-                    <td class="text-center {$PromoClass}">
+                    <td class="text-center {$PromoClass} {$Asin}">
                         <a class="btn btn-apd-default btn-amazon btn-block" target="_blank" rel="nofollow" href="{$AmazonUrl}" title="{$Longname} - Produkt auf amazon.de anschauen">
                             <i class="fa fa-amazon"></i><span>zu Amazon<span class="affiliate-hint">*</span></span>
                         </a>

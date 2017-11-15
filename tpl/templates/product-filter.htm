@@ -284,6 +284,7 @@
          */
         $selects.add($sliders).add($checkboxes).change(function () {
             var hiddenItems = getHiddenItems();
+            console.log(hiddenItems);
             updateVisibility(hiddenItems);
         });
     });

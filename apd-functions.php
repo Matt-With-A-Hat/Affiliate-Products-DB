@@ -126,6 +126,7 @@ function field_is_null( $field ) {
 function apd_filter_handler( $atts, $values = 0 ) {
 
 	( empty( $atts[3] ) ) ? $atts[3] = 'Disabled' : true; //fallback, so filter can be empty
+	( empty ( $values ) ) ? $values = 0 : true;
 
 	if ( $atts[0] === 'disabled' ) {
 		return null;

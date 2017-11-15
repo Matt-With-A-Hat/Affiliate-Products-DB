@@ -204,6 +204,6 @@ $apdCore = new ApdCore();
 //$apdAmazonCacheDatabase = new ApdAmazonCacheDatabase();
 //$apdAmazonCacheDatabase->updateCache();
 
-//$databaseService = new ApdDatabaseService();
-//$databaseService->checkDatabaseTables();
+$databaseService = new ApdDatabaseService();
+$databaseService->checkDatabaseTables();
 //$databaseService->updateAsins();

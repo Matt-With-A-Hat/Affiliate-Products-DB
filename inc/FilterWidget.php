@@ -42,6 +42,7 @@ class ApdFilterWidget extends WP_Widget {
 		$html .= "<div class='spacing-top-20'>";
 		$html .= "<div class='row'><div class='col-md-12'><a href='$pageUrl' class='btn btn-apd-heavy btn-center'>Filter</a></div></div>";
 		$html .= "</div>";
+		$html .= "</div>";
 
 		echo $html;
 		echo $args['after_widget'];
