@@ -59,11 +59,6 @@
   background: #febd69;
   color: black; }
 
-span.amazon-stars {
-  color: #ffc200;
-  margin-right: 3px;
-  font-size: 18px; }
-
 .check:before {
   content: "";
   font-family: 'FontAwesome';
