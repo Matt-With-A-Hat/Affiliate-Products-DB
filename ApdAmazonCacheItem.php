@@ -109,9 +109,11 @@ class ApdAmazonCacheItem extends ApdAmazonCache {
 		if ( $fieldsArray === null ) {
 			$error = "Supplied fields array is empty";
 			print_error( $error, __METHOD__, __LINE__ );
+			return null;
 		} else if ( $valuesArray === null ) {
 			$error = "Supplied values array is empty";
 			print_error( $error, __METHOD__, __LINE__ );
+			return null;
 		}
 
 		$this->arrayA = array_combine( $fieldsArray, $valuesArray );

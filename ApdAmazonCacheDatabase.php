@@ -130,7 +130,6 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 
 		// request info for x items from Amazon API
 		$amazonItems = $this->getAmazonItems( $itemsPerUpdate, $lastCheckedId );
-
 		// if something went wrong with the request
 		if ( $amazonItems == 'throttle' ) {
 			//apdlog
@@ -155,7 +154,6 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 			// else
 		} else {
 			// update items in cache with returned amazon items
-
 			$lastUpdatedId = $this->updateCacheProducts( $amazonItems );
 			ApdCore::logContent( '$lastUpdatedId: ' . $lastUpdatedId, 1 );
 
@@ -209,7 +207,6 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 				$cronjob->setCronjob();
 			}
 		}
-
 	}
 
 	/**
@@ -225,7 +222,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		$apdCore   = new ApdCore();
 		$amazonWbs = $apdCore->amazonWbs;
 
-		$sql   = "SELECT Asin FROM $this->tablenameCache WHERE (`ManualUpdate` != '1' OR `ManualUpdate` IS NULL) AND id >= $startId LIMIT $numberOfRows";
+		$sql   = "SELECT DISTINCT Asin FROM $this->tablenameCache WHERE (`ManualUpdate` != '1' OR `ManualUpdate` IS NULL) AND id >= $startId LIMIT $numberOfRows";
 		$asins = $wpdb->get_results( $sql, ARRAY_A );
 		ApdCore::logContent( 'Query for selecting next items to update: ' . $sql );
 
@@ -264,7 +261,12 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 		$cacheAsins = array_filter( array_values_recursive( $cacheAsins ) );
 
 		//asins from product tables that don't exist in cache yet
-		$diffProducts = array_diff( $productAsins, $cacheAsins );
+		$diffProducts  = array_diff( $productAsins, $cacheAsins );
+		$diffProducts2 = array_diff( $cacheAsins, $productAsins );
+//		krumo( $productAsins );
+//		krumo( $cacheAsins );
+//		krumo( $diffProducts );
+//		krumo( $diffProducts2 );
 		if ( ! empty( $diffProducts ) ) {
 			$sql = "REPLACE INTO $this->tablenameCache (Asin) VALUES ";
 			foreach ( $diffProducts as $diffProduct ) {
@@ -272,11 +274,12 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 			}
 			$sql = rtrim( $sql, " ," ) . ";";
 			$wpdb->query( $wpdb->prepare( $sql, $diffProducts ) );
+//			krumo( $wpdb->prepare( $sql, $diffProducts ) );
 		}
-
 
 		//remove asins from cache table that don't exist in procuts anymore
 		$diffCache = array_diff( $cacheAsins, $productAsins );
+
 		if ( ! empty( $diffCache ) ) {
 			$sql = "DELETE FROM $this->tablenameCache WHERE `Asin` IN (";
 			foreach ( $diffCache as $item ) {
@@ -284,6 +287,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 			}
 			$sql = rtrim( $sql, " ," ) . ");";
 			$wpdb->query( $wpdb->prepare( $sql, $diffCache ) );
+			krumo( $wpdb->prepare( $sql, $diffCache ) );
 		}
 	}
 
@@ -301,7 +305,7 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 //		$sql = "SET @update_id := 0;";
 //		$wpdb->query( $sql );
 
-		$count     = count( $amazonItems );
+//		$count     = count( $amazonItems );
 		$i         = 0;
 		$updatedId = false;
 		foreach ( $amazonItems as $amazonItem ) {
@@ -314,23 +318,24 @@ class ApdAmazonCacheDatabase extends ApdAmazonCache {
 			$sql = rtrim( $sql, " ," );
 
 			//set the id for the last updated item and retrieve it later on
-			if ( $i == $count - 1 ) {
-				$sql .= ", id = (SELECT @update_id := id)";
-			}
+//			if ( $i == $count - 1 ) {
+//				$sql .= ", id = (SELECT @update_id := id)";
+//			}
 
-			$sql .= " WHERE `Asin` = '$amazonItem[ASIN]' AND `ManualUpdate` != '1' OR `ManualUpdate` IS NULL;";
+			$sql .= " WHERE `Asin` = '$amazonItem[ASIN]' AND (`ManualUpdate` != '1' OR `ManualUpdate` IS NULL);";
 
 			$result = $wpdb->query( $wpdb->prepare( $sql, $amazonItem ) );
+			ApdCore::logDebug( $wpdb->prepare( $sql, $amazonItem ) );
 
 			if ( ! $result ) {
 				$error = "Amazon item $amazonItem[ASIN] couldn't be updated";
 				print_error( $error, __METHOD__, __LINE__ );
-				(new ApdDatabaseService())->checkDatabaseTables();
+				( new ApdDatabaseService() )->checkDatabaseTables();
 			} else {
-				$asin      = $amazonItem['ASIN'];
-				$sql       = "SELECT id FROM $this->tablenameCache WHERE `ASIN` = '$asin'";
-				$updatedId = $wpdb->get_var( $sql );
+				$asin = $amazonItem['ASIN'];
+				$sql  = "SELECT id FROM $this->tablenameCache WHERE `ASIN` = '$asin'";
 			}
+			$updatedId = $wpdb->get_var( $sql );
 
 			$i ++;
 		}

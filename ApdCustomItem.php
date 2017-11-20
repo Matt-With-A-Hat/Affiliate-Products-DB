@@ -392,7 +392,9 @@ class ApdCustomItem {
 		//convert decimal percent values to percent numbers
 		foreach ( $customItemObject as $key => $item ) {
 			if ( preg_match( "/percent/i", $key ) ) {
-				$customItemObject->$key = $item * 100;
+				if(is_numeric($item)){
+					$customItemObject->$key = (float)$item * 100;
+				}
 			}
 		}
 

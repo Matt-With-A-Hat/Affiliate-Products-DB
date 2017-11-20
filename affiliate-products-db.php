@@ -69,7 +69,8 @@ define( 'APD_TABLE_PREFIX', 'apd_' );
  * Cron Jobs
  */
 define( 'APD_DB_CONSISTENCY_CRON', 'apd_database_consistency' );
-define( 'APD_LOG_FILE', APD_PLUGIN_DIR . '/apdlog.log' );
+define( 'APD_LOG_FILE', APD_PLUGIN_DIR . '/apd.log' );
+define( 'APD_DEBUG_LOG_FILE', APD_PLUGIN_DIR . '/apd-debug.log' );
 
 /**
  * User Constants
@@ -108,7 +109,7 @@ require( dirname( __FILE__ ) . '/apd-functions.php' );
  * =Debug Functions & Settings
  */
 $domain_name = $_SERVER['HTTP_HOST'];
-if ( isLocalInstallation() OR $domain_name == 'wp-apd.refugeek.net') {
+if ( isLocalInstallation() OR $domain_name == 'wp-apd.refugeek.net' ) {
 	define( 'APD_DEBUG', true );
 	define( 'APD_REPLACE_TABLES', false ); //WARNING: THIS WILL DROP TABLES FROM DB IF THEY ALREADY EXIST UPON CREATION
 } else {
@@ -117,7 +118,9 @@ if ( isLocalInstallation() OR $domain_name == 'wp-apd.refugeek.net') {
 }
 if ( APD_DEBUG ) {
 	require dirname( __FILE__ ) . '/debug.php';
-	require_once dirname( __FILE__ ) . '/vendor/mmucklo/krumo/class.krumo.php';
+	if ( ! class_exists( 'Krumo' ) ) {
+		require_once dirname( __FILE__ ) . '/vendor/mmucklo/krumo/class.krumo.php';
+	}
 }
 
 /**
