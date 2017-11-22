@@ -25,7 +25,11 @@ Class ApdApi {
 			$apdCustomItemArrayA   = $apdCustomItem->getArrayA();
 		}
 
-		return array_merge( $amazonCacheItemArrayA, $apdCustomItemArrayA );
+		if ( is_array( $amazonCacheItem ) AND is_array( $apdCustomItemArrayA ) ) {
+			return array_merge( $amazonCacheItemArrayA, $apdCustomItemArrayA );
+		} else {
+			return null;
+		}
 	}
 
 	/**
