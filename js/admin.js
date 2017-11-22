@@ -11,6 +11,7 @@ jQuery(document).ready(function ($) {
     });
 
     $('#product-tables-selection').change(function () {
+        console.log("IN");
         hideAndShow();
     });
 
