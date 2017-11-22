@@ -422,6 +422,11 @@ function add_table_prefix( $tablename ) {
 
 }
 
+/**
+ * @param $tablename
+ *
+ * @return mixed
+ */
 function remove_table_prefix( $tablename ) {
 	global $wpdb;
 	$apdTablePrefix = APD_TABLE_PREFIX;
@@ -433,12 +438,43 @@ function remove_table_prefix( $tablename ) {
 	return $tablename;
 }
 
+/**
+ * @param $error
+ * @param $function
+ * @param $line
+ */
 function print_error( $error, $function, $line ) {
 
 	if ( APD_DEBUG ) {
 		echo "Error in " . $function . " line " . $line . ": " . $error . "<br>\n";
 	}
 
+}
+
+/**
+ * Publish posts which have been missed by auto publishing
+ * @todo not tested yet
+ */
+function schedule_missed_posts() {
+	$args     = array(
+		'numberposts' => - 1,
+		'post_type'   => 'post',
+		'post_status' => 'any'
+	);
+	$posts    = get_posts( $args );
+	$datetime = new DateTime();
+	$unixtime = $datetime->getTimestamp();
+
+	foreach ( $posts as $post ) {
+		$publishtime = strtotime( $post->post_date_gmt );
+		if ( $post->post_status == 'published' AND $publishtime < $unixtime ) {
+			$postarr = array(
+				'ID'          => $post->ID,
+				'post_status' => 'published',
+			);
+			wp_update_post( $postarr );
+		}
+	}
 }
 
 /**
@@ -503,7 +539,12 @@ function get_fields( $item ) {
 	return $result;
 }
 
-
+/**
+ * @param $percent
+ * @param bool $text
+ *
+ * @return string
+ */
 function convert_percent_to_grade( $percent, $text = false ) {
 	switch ( $percent ) {
 		case ( $percent > 0.95 ):
