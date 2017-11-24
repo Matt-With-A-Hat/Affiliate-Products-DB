@@ -8,7 +8,7 @@
                 <tr>
                     <th></th>
                     {loop-start}
-                    <th class="text-center {$Asin}"><a href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">{$Longname}</a></th>
+                    <th class="text-center {$Asin}"><a href="{$AmazonUrl}" title="{$Longname}" target="_blank" rel="nofollow">{$Longname}</a></th>
                     {loop-end}
                 </tr>
             </thead>
@@ -21,7 +21,7 @@
                             <span class="text-center table--promotion {$PromoClass}">{$Promo}</span>
                             <div class="medium-amazon-image">
                                 <a href="{$AmazonUrl}" title="{$Title}" target="_blank" rel="nofollow">
-                                    <img src="{$MediumImageUrl}">
+                                    <img src="{$MediumImageUrl}" title="{$Longname}" alt="{$Longname}" width="{$MediumImageWidth}" height="{$MediumImageHeight}">
                                     <!--<img src="http://placehold.it/100x50">-->
                                 </a>
                             </div>
