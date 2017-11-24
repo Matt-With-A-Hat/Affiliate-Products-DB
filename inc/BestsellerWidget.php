@@ -40,7 +40,7 @@ class ApdBestsellerWidget extends WP_Widget {
 			<div class="product--image-box">
 				<div class="image--promotion-widget"><?= $bestseller->Promo; ?></div>
 				<div class="product--teaser">
-					<a href="<?= $bestseller->AmazonUrl; ?>" title="<?= $bestseller->Longname; ?>" target="_blank" rel="nofollow"><img class="image-responsive" src="<?= $bestseller->MediumImageUrl; ?>" alt="<?= $bestseller->Longname; ?>"></a>
+					<a href="<?= $bestseller->AmazonUrl; ?>" title="<?= $bestseller->Longname; ?>" target="_blank" rel="nofollow"><img class="image-responsive" src="<?= $bestseller->MediumImageUrl; ?>" title="<?= $bestseller->Longname; ?>" alt="<?= $bestseller->Longname; ?>" width="<?= $bestseller->MediumImageWidth; ?>" height="<?= $bestseller->MediumImageHeight; ?>"></a>
 					<div class="product--amazon-rating text-center">
 						<a class="neat-link" href="<?= $bestseller->AmazonUrl; ?>" title="<?= $bestseller->Longname; ?> auf Amazon ansehen" target="_blank" rel="nofollow"><?= $bestseller->RatingStars; ?></a>
 					</div>
