@@ -62,7 +62,7 @@
 atlassian-ide-plugin.xml
 
 # Custom Folder for testing
-git.untracked/
+.git.untracked/
 
 #Ignore debug tools
 krumo*/

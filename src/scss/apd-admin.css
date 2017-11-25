@@ -1,0 +1,127 @@
+/**
+* --------------------------------------------------------------
+* =APD Menu styles
+* --------------------------------------------------------------
+*/
+/* =Utilities */
+/**
+* ==============================================================
+* =Variables
+* ==============================================================
+*/
+/**
+* --------------------------------------------------------------
+* =Colors
+* --------------------------------------------------------------
+*/
+/**
+* Blue nimaji theme
+*/
+/**
+* --------------------------------------------------------------
+* =Time
+* --------------------------------------------------------------
+*/
+/**
+* ==============================================================
+* =Mixins
+* ==============================================================
+*/
+/**
+* =CSV Upload
+*/
+.apdsetupmenu {
+  margin-top: 30px; }
+  .apdsetupmenu h1 {
+    font-size: 24px; }
+  .apdsetupmenu h2 {
+    font-size: 18px; }
+  .apdsetupmenu label {
+    font-weight: 300;
+    margin-bottom: 0; }
+  .apdsetupmenu .form-group {
+    margin-top: 20px; }
+  .apdsetupmenu .hint {
+    padding: 10px;
+    background: lightgray; }
+
+/**
+* =Generate Posts
+*/
+.apdsetupmenu input[type=radio], .apdsetupmenu input[type=checkbox] {
+  margin: 0;
+  margin-right: 4px; }
+.apdsetupmenu .column-box {
+  -webkit-transition: display 0.3s ease-in;
+  -moz-transition: display 0.3s ease-in;
+  -ms-transition: display 0.3s ease-in;
+  -o-transition: display 0.3s ease-in;
+  transition: display 0.3s ease-in;
+  display: none; }
+.apdsetupmenu .product-box {
+  -webkit-transition: display 0.3s ease-in;
+  -moz-transition: display 0.3s ease-in;
+  -ms-transition: display 0.3s ease-in;
+  -o-transition: display 0.3s ease-in;
+  transition: display 0.3s ease-in;
+  display: none; }
+.apdsetupmenu .post-generation {
+  background-color: #EFEFFF; }
+  .apdsetupmenu .post-generation .form-group .row {
+    padding: 10px 0; }
+
+/**
+* --------------------------------------------------------------
+* =Elements
+* --------------------------------------------------------------
+*/
+.apdsetupmenu h1, .apdsetupmenu h2 {
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 20px; }
+.apdsetupmenu .display-block {
+  display: block !important; }
+.apdsetupmenu .display-none {
+  display: none !important; }
+.apdsetupmenu .disabled {
+  color: #f9f9f9; }
+.apdsetupmenu .spacing-top-10 {
+  margin-top: 10px; }
+.apdsetupmenu .spacing-top-20 {
+  margin-top: 20px; }
+.apdsetupmenu .spacing-top-30 {
+  margin-top: 30px; }
+.apdsetupmenu .spacing-top-40 {
+  margin-top: 40px; }
+.apdsetupmenu .spacing-top-50 {
+  margin-top: 50px; }
+.apdsetupmenu .spacing-top-60 {
+  margin-top: 60px; }
+.apdsetupmenu .spacing-top-70 {
+  margin-top: 70px; }
+.apdsetupmenu .spacing-top-80 {
+  margin-top: 80px; }
+.apdsetupmenu .spacing-top-90 {
+  margin-top: 90px; }
+.apdsetupmenu .spacing-top-100 {
+  margin-top: 100px; }
+.apdsetupmenu .spacing-top-110 {
+  margin-top: 110px; }
+.apdsetupmenu .spacing-top-120 {
+  margin-top: 120px; }
+.apdsetupmenu .spacing-top-130 {
+  margin-top: 130px; }
+.apdsetupmenu .spacing-top-140 {
+  margin-top: 140px; }
+.apdsetupmenu .spacing-top-150 {
+  margin-top: 150px; }
+.apdsetupmenu .spacing-top-160 {
+  margin-top: 160px; }
+.apdsetupmenu .spacing-top-170 {
+  margin-top: 170px; }
+.apdsetupmenu .spacing-top-180 {
+  margin-top: 180px; }
+.apdsetupmenu .spacing-top-190 {
+  margin-top: 190px; }
+
+/*# sourceMappingURL=apd-admin.css.map */
