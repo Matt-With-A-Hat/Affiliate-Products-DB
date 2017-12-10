@@ -46,8 +46,8 @@ function add_apd_scripts() {
 	wp_register_script( 'bootstrap-slider', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js', array(), $the_theme->get( 'Version' ), true );
 	wp_register_script( 'apd-frontend', plugins_url( '/js/apd-frontend.min.js', __FILE__ ), array(), $the_theme->get( 'Version' ), true );
 	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'apd-frontend' );
 	wp_enqueue_script( 'bootstrap-slider' );
+	wp_enqueue_script( 'apd-frontend' );
 }
 
 add_action( 'wp_enqueue_scripts', 'add_apd_scripts' );
