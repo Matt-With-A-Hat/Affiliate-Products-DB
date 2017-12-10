@@ -102,7 +102,7 @@ gulp.task('default', ['sass', 'js', 'img', 'php']);
  */
 gulp.task('extract', function () {
 
-    var files = ['../**/*', '!../.git*', '!../gulp/**/*'];
+    var files = ['../**/*', '!../.git*', '!../gulp/**/*', '!../gulp'];
     // var files = '**/*';
     gulp.src(files)
         .pipe(zip('affiliate-products-db.zip'))
