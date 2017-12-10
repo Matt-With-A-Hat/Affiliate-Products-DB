@@ -58,8 +58,8 @@ add_action( 'wp_enqueue_scripts', 'add_apd_scripts' );
 function add_apd_admin_stylesheets() {
 	if ( $_GET['page'] == APD_MENU_SLUG ) {
 		$the_theme = wp_get_theme();
-		wp_register_style( 'bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', array(), $the_theme->get( 'Version' ), true );
-		wp_register_style( 'apd-admin', plugins_url( '/css/apd-frontend.min.css', __FILE__ ), array(), APD_PLUGIN_VERSION, true );
+		wp_register_style( 'bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', array(), $the_theme->get( 'Version' ) );
+		wp_register_style( 'apd-admin', plugins_url( '/css/apd-admin.min.css', __FILE__ ), array(), APD_PLUGIN_VERSION );
 		wp_enqueue_style( 'bootstrap' );
 		wp_enqueue_style( 'apd-admin' );
 	}
@@ -71,8 +71,9 @@ add_action( 'admin_enqueue_scripts', 'add_apd_admin_stylesheets' );
  * include backend scripts
  */
 function add_apd_admin_scripts() {
-	wp_register_script( 'apd-admin', plugins_url( '/js/admin.min.js', __FILE__ ) );
-	wp_enqueue_style( 'apd-admin' );
+	$the_theme = wp_get_theme();
+	wp_register_script( 'apd-admin', plugins_url( '/js/apd-admin.min.js', __FILE__ ), array(), $the_theme->get( 'Version' ), true );
+	wp_enqueue_script( 'apd-admin' );
 }
 
 add_action( 'admin_enqueue_scripts', 'add_apd_admin_scripts' );
@@ -104,13 +105,3 @@ function apd_options_install() {
 }
 
 register_activation_hook( APD_BASE_FILE, 'apd_options_install' );
-
-/**
- * load fonts
- */
-function load_fonts() {
-	wp_register_style( 'apdGoogleFonts', 'https://fonts.googleapis.com/css?family=Droid+Sans:400,700|Roboto:400,400i,700,700i' );
-	wp_enqueue_style( 'apdGoogleFonts' );
-}
-
-add_action( 'wp_print_styles', 'load_fonts' );

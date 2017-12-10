@@ -313,15 +313,15 @@ class ApdCustomItem {
 			 * =Reformat list values
 			 * creates two adjacent columns in bootstrap and shorter version
 			 */
-			if ( preg_match( '/(List:)/', $value ) ) {
+			if ( preg_match( '/^(List:)/', $value ) ) {
 				$value = str_replace( "List:", "", $value );
 				$list  = explode( "*", $value );
 
 				//if list is empty, put 'k. A.' as one list item
 				( $list[0] === '' ) ? $list[0] = 'k. A.' : true;
 
-				$HtmlListWideTpl   = '<div class="row"><div class="col-md-6"><ul>{$column1}</ul></div><div class="col-md-6"><ul>{$column2}</ul></div></div>';
-				$HtmlListNarrowTpl = '<div class="row"><div class="col-md-12"><ul>{$columnNarrow}</ul></div></div>';
+				$htmlListWideTpl   = '<div class="row"><div class="col-md-6"><ul>{$column1}</ul></div><div class="col-md-6"><ul>{$column2}</ul></div></div>';
+				$htmlListNarrowTpl = '<div class="row"><div class="col-md-12"><ul>{$columnNarrow}</ul></div></div>';
 				$columnSize        = ceil( sizeof( $list ) / 2 );
 				$i                 = 0;
 				$j                 = 0;
@@ -346,19 +346,67 @@ class ApdCustomItem {
 					$i ++;
 					$j ++;
 				}
-				$HtmlListWide   = preg_replace( '/{\$column1}/', $column1, $HtmlListWideTpl );
-				$HtmlListWide   = preg_replace( '/{\$column2}/', $column2, $HtmlListWide );
-				$HtmlListNarrow = preg_replace( '/{\$columnNarrow}/', $columnNarrow, $HtmlListNarrowTpl );
-				$HtmlListShort  = preg_replace( '/{\$columnNarrow}/', $columnShort, $HtmlListNarrowTpl );
-				$HtmlListOne    = preg_replace( '/{\$columnNarrow}/', $columnOne, $HtmlListNarrowTpl );
+				$htmlListWide   = preg_replace( '/{\$column1}/', $column1, $htmlListWideTpl );
+				$htmlListWide   = preg_replace( '/{\$column2}/', $column2, $htmlListWide );
+				$htmlListNarrow = preg_replace( '/{\$columnNarrow}/', $columnNarrow, $htmlListNarrowTpl );
+				$htmlListShort  = preg_replace( '/{\$columnNarrow}/', $columnShort, $htmlListNarrowTpl );
+				$htmlListOne    = preg_replace( '/{\$columnNarrow}/', $columnOne, $htmlListNarrowTpl );
 
-				$customItemObject->$key           = $HtmlListWide;
+				$customItemObject->$key           = $htmlListWide;
 				$narrowListKey                    = $key . "Narrow";
-				$customItemObject->$narrowListKey = $HtmlListNarrow;
+				$customItemObject->$narrowListKey = $htmlListNarrow;
 				$shortListKey                     = $key . "Short";
-				$customItemObject->$shortListKey  = $HtmlListShort;
+				$customItemObject->$shortListKey  = $htmlListShort;
 				$shortListKey                     = $key . "One";
-				$customItemObject->$shortListKey  = $HtmlListOne;
+				$customItemObject->$shortListKey  = $htmlListOne;
+			}
+
+			/**
+			 * =Reformat vertical list values
+			 */
+			if ( preg_match( '/^(VList:)/', $value ) ) {
+				$value = str_replace( "VList:", "", $value );
+				$list  = explode( "*", $value );
+
+				$htmlList = '<ul class="v-list">';
+				foreach ( $list as $item ) {
+					$htmlList .= '<li>';
+					$htmlList .= $item;
+					$htmlList .= '</li>';
+				}
+				$htmlList .= '</ul>';
+
+				$customItemObject->$key = $htmlList;
+			}
+
+			/**
+			 * =Reformat stars
+			 */
+			if ( preg_match( '/^(Stars:)/', $value ) ) {
+				$numberStars = str_replace( "Stars:", "", $value );
+
+				$ratingStarsHtml = '<span class="rating-stars">';
+				$fullStar        = '<i class="fa fa-star"></i>';
+				$halfStar        = '<i class="fa fa-star-half-o"></i>';
+				$emptyStar       = '<i class="fa fa-star-o"></i>';
+
+				$nFullStars  = floor( $numberStars );
+				$nHalfStars  = $numberStars - $nFullStars;
+				$nEmptyStars = floor( 5 - $numberStars );
+
+				for ( $i = 0; $i < $nFullStars; $i ++ ) {
+					$ratingStarsHtml .= $fullStar;
+				}
+				if ( $nHalfStars != 0 ) {
+					$ratingStarsHtml .= $halfStar;
+				}
+				for ( $i = 0; $i < $nEmptyStars; $i ++ ) {
+					$ratingStarsHtml .= $emptyStar;
+				}
+				$ratingStarsHtml .= "</span>";
+
+//				$htmlKey                    = $key . "Html";
+				$customItemObject->$key = $ratingStarsHtml;
 			}
 
 			/**
@@ -392,8 +440,8 @@ class ApdCustomItem {
 		//convert decimal percent values to percent numbers
 		foreach ( $customItemObject as $key => $item ) {
 			if ( preg_match( "/percent/i", $key ) ) {
-				if(is_numeric($item)){
-					$customItemObject->$key = (float)$item * 100;
+				if ( is_numeric( $item ) ) {
+					$customItemObject->$key = (float) $item * 100;
 				}
 			}
 		}
