@@ -26,11 +26,13 @@ function add_apd_stylesheets() {
 	$the_theme = wp_get_theme();
 
 	wp_register_style( 'bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', array(), $the_theme->get( 'Version' ) );
+//	wp_register_style( 'apd-frontend', plugins_url( '/css/apd-frontend.min.css', __FILE__ ), array(), $the_theme->get( 'Version' ) );
 	wp_register_style( 'bootstrap-slider', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css', array( 'bootstrap' ), $the_theme->get( 'Version' ) );
 //	wp_register_style( 'fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', array(), $the_theme->get( 'Version' ), true );
 //	wp_register_style( 'apd-frontend', plugins_url( '/css/apd-frontend.min.css', __FILE__ ), array(), APD_PLUGIN_VERSION, true );
 //	wp_enqueue_style( 'apd-frontend' );
 	wp_enqueue_style( 'bootstrap' );
+//	wp_enqueue_style( 'apd-frontend' );
 	wp_enqueue_style( 'bootstrap-slider' );
 //	wp_enqueue_style( 'fontawesome' );
 }
@@ -42,9 +44,9 @@ add_action( 'wp_enqueue_scripts', 'add_apd_stylesheets' );
  */
 function add_apd_scripts() {
 	$the_theme = wp_get_theme();
-	wp_register_script( 'jquery', 'https://code.jquery.com/jquery-3.2.1.min.js', array(), $the_theme->get( 'Version' ), true );
-	wp_register_script( 'bootstrap-slider', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js', array(), $the_theme->get( 'Version' ), true );
-	wp_register_script( 'apd-frontend', plugins_url( '/js/apd-frontend.min.js', __FILE__ ), array(), $the_theme->get( 'Version' ), true );
+	wp_register_script( 'jquery', 'https://code.jquery.com/jquery-3.2.1.min.js', array(), $the_theme->get( 'Version' ), false);
+	wp_register_script( 'bootstrap-slider', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js', array(), $the_theme->get( 'Version' ), false);
+	wp_register_script( 'apd-frontend', plugins_url( '/js/apd-frontend.min.js', __FILE__ ), array(), $the_theme->get( 'Version' ), false);
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'bootstrap-slider' );
 	wp_enqueue_script( 'apd-frontend' );

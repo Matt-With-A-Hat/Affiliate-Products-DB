@@ -19,6 +19,10 @@ gulp.task('sass', function () {
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('../css'));
 
+    var frontend = sass('src/scss/apd-frontend.scss', {style: 'compressed'})
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest('../css'));
+
 });
 
 /**
